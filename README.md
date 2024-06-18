@@ -1,6 +1,8 @@
-## React Native Web + App
+# 심심조각 (Dear My Peace)
 
-Web, Android, iOS 동시 개발 진행
+- [**React Native**](https://reactnative.dev)
+- bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+- Web, Android, iOS 동시 개발 진행
 
 ## Commit Convention
 
