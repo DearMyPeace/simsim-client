@@ -92,3 +92,27 @@
   font-family: 'Zocial';
   src: url(./fonts/Zocial.ttf);
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  overflow: hidden;
+}
+
+#root {
+  min-width: 375px;
+  width: 50%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
