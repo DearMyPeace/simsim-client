@@ -12,8 +12,8 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
     uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
-    // path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
-    // path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+    path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
+    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
   ],
   use: {
     loader: 'babel-loader',
