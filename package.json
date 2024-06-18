@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
-    "start": "react-native start --reset-cache",
+    "start": "react-native start",
     "test": "jest",
     "build-react": "BABEL_ENV=web webpack --mode production",
     "start-react": "BABEL_ENV=web webpack serve --config ./webpack.config.js --mode development"
