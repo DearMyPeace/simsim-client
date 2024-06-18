@@ -1,11 +1,14 @@
 import React from 'react';
+import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { Text, View } from 'react-native';
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello World!</Text>
-    </View>
+    <RecoilRoot>
+      <View>
+        <Text>Hello World!</Text>
+      </View>
+    </RecoilRoot>
   );
 };
 
