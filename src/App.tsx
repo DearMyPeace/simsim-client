@@ -1,13 +1,70 @@
 import React from 'react';
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import { Text, View } from 'react-native';
+import { RecoilRoot } from 'recoil';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+
+import Diary from './diary/DiaryStackNavigator';
+import MyPage from './mypage/MyPage';
 
 const App = () => {
+  const Tab = createBottomTabNavigator();
+
   return (
     <RecoilRoot>
-      <View>
-        <Text>Hello World!</Text>
-      </View>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: { backgroundColor: 'white' },
+            tabBarActiveTintColor: 'tomato',
+            tabBarInactiveTintColor: 'gray',
+          }}
+        >
+          <Tab.Screen
+            name="Diary"
+            component={Diary}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Diary',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="book" color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Peace"
+            component={Diary}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Peace',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="home" color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="3"
+            component={Diary}
+            options={{
+              headerShown: false,
+              tabBarLabel: '3',
+              tabBarIcon: ({ color }) => <Entypo name="colours" color={color} size={26} />,
+            }}
+          />
+          <Tab.Screen
+            name="MyPage"
+            component={MyPage}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Profile',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="account" color={color} size={26} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
     </RecoilRoot>
   );
 };
