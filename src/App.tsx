@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import Diary from './diary/DiaryStackNavigator';
-import MyPage from './mypage/MyPage';
+import Diary from '@navigators/DiaryStackNavigator';
+import MyPage from '@screens/mypage/MyPage';
 
 const App = () => {
   const Tab = createBottomTabNavigator();

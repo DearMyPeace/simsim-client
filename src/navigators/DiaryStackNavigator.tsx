@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import DiaryPage from './DiaryPage';
+import DiaryPage from '@screens/diary/DiaryPage';
 
 const Stack = createStackNavigator();
 

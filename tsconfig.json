@@ -1,7 +1,19 @@
 {
   "compilerOptions": {
-      "jsx": "react",
-      "esModuleInterop": true
+    "jsx": "react",
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@navigators/*": ["navigators/*"],
+      "@screens/*": ["screens/*"],
+      "@stores/*": ["stores/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
+    }
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
