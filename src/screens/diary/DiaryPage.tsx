@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import MyCalendar from '@components/diary/MyCalendar';
 
 const DiaryPage = () => {
   const [diaryList, setDiaryList] = useState([]);
@@ -55,6 +56,7 @@ const DiaryPage = () => {
 
   return (
     <View style={styles.container}>
+      <MyCalendar />
       <FlatList data={diaryList} renderItem={renderItem} keyExtractor={(item) => item.id} />
       <Button title="Add Diary" onPress={() => setIsVisible(true)} />
       <Modal

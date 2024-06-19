@@ -4,7 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, './');
 
-const uncompiled = ['react-native-vector-icons', '@react-navigation'];
+const uncompiled = [
+  'react-native-vector-icons',
+  '@react-navigation',
+  'react-native-calendars',
+  'react-native-swipe-gestures',
+];
 
 const babelLoaderConfiguration = {
   test: /\.(tsx|ts|jsx|js|mjs)$/,
@@ -12,8 +17,6 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
     uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
-    path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
-    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
   ],
   use: {
     loader: 'babel-loader',
