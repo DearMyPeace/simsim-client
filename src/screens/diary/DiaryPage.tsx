@@ -94,7 +94,7 @@ const DiaryPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    padding: 16,
   },
   itemContainer: {
     padding: 10,
