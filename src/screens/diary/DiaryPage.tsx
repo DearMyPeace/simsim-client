@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
   },
   date: {
     fontSize: 14,
