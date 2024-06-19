@@ -9,6 +9,7 @@ const uncompiled = [
   '@react-navigation',
   'react-native-calendars',
   'react-native-swipe-gestures',
+  'react-native-paper',
 ];
 
 const babelLoaderConfiguration = {
