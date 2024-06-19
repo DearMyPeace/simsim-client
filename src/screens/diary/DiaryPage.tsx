@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import MyText from '@components/common/MyText';
 import {
   View,
   FlatList,
   Button,
-  Text,
   Modal,
   StyleSheet,
   TextInput,
@@ -40,9 +40,9 @@ const DiaryPage = () => {
   // 다이어리 항목을 렌더링하는 함수
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.date}>{item.date}</Text>
-      <Text style={styles.content}>{item.content}</Text>
+      <MyText style={styles.title}>{item.title}</MyText>
+      <MyText style={styles.date}>{item.date}</MyText>
+      <MyText style={styles.content}>{item.content}</MyText>
     </View>
   );
 
