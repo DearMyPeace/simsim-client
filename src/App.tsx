@@ -7,6 +7,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import Diary from '@navigators/DiaryStackNavigator';
 import MyPage from '@screens/mypage/MyPage';
+import AiLetter from '@navigators/AiLetterStackNavigator';
+
+const DiaryIcon = ({ color }) => <MaterialCommunityIcons name="book" color={color} size={26} />;
+const AiLetterIcon = ({ color }) => (
+  <MaterialCommunityIcons name="email-outline" color={color} size={26} />
+);
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -44,12 +50,12 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="3"
-            component={Diary}
+            name="AI Letter"
+            component={AiLetter}
             options={{
               headerShown: false,
-              tabBarLabel: '3',
-              tabBarIcon: ({ color }) => <Entypo name="colours" color={color} size={26} />,
+              tabBarLabel: 'AI Letter',
+              tabBarIcon: AiLetterIcon,
             }}
           />
           <Tab.Screen
