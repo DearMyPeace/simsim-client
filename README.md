@@ -45,6 +45,9 @@ pod:
 repod:
 	cd ios && pod deintegrate && pod cache clean --all && pod install
 
+asset:
+	npx react-native-asset
+
 clean:
 	rm -rf ./node_modules
 	rm -rf ./ios/Pods
