@@ -26,7 +26,7 @@ const moduleResolver = [
       '@navigators': './src/navigators',
       '@screens': './src/screens',
       '@stores': './src/stores',
-      '@types': './src/types',
+      '@type': './src/types',
       '@utils': './src/utils',
     },
   },

@@ -11,7 +11,7 @@
       "@navigators/*": ["navigators/*"],
       "@screens/*": ["screens/*"],
       "@stores/*": ["stores/*"],
-      "@types/*": ["types/*"],
+      "@type/*": ["types/*"],
       "@utils/*": ["utils/*"]
     }
   },
