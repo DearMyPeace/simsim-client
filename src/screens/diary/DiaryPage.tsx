@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import MyCalendar from '@components/diary/MyCalendar';
+import MyCalendar from '@components/diary/calendar/MyCalendar';
 
 const DiaryPage = () => {
   const [diaryList, setDiaryList] = useState([]);

@@ -7,8 +7,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import Diary from '@navigators/DiaryStackNavigator';
 import MyPage from '@screens/mypage/MyPage';
-import PieceChip from '@components/diary/PieceChip';
-import SettingButton from '@components/diary/SettingButton';
+import PieceChip from '@components/diary/header/PieceChip';
+import SettingButton from '@components/diary/header/SettingButton';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -31,6 +31,9 @@ const App = () => {
               headerRight: () => <SettingButton />,
               headerShadowVisible: false,
               headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'transparent',
+              },
               headerLeftContainerStyle: { paddingLeft: 16 },
               tabBarLabel: 'Diary',
               tabBarIcon: ({ color }) => (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CalendarArrow, { Direction } from '@components/diary/CalendarArrow';
+import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
 import { StyleSheet, View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import { format } from 'date-fns';
