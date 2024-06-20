@@ -18,26 +18,31 @@ const App = () => {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
-            tabBarStyle: { backgroundColor: 'white' },
+            tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
+            tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
             tabBarActiveTintColor: 'tomato',
             tabBarInactiveTintColor: 'gray',
+            headerLeft: () => <PieceChip />,
+            headerRight: () => <SettingButton />,
+            headerShadowVisible: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'transparent',
+            },
+            headerLeftContainerStyle: { paddingLeft: 16 },
+            tabBarLabel: '달력',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="calendar-edit" color={color} size={26} />
+            ),
           }}
         >
           <Tab.Screen
             name="Diary"
             component={Diary}
             options={{
-              headerLeft: () => <PieceChip />,
-              headerRight: () => <SettingButton />,
-              headerShadowVisible: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
-              },
-              headerLeftContainerStyle: { paddingLeft: 16 },
-              tabBarLabel: 'Diary',
+              tabBarLabel: '달력',
               tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="book" color={color} size={26} />
+                <MaterialCommunityIcons name="calendar-edit" color={color} size={26} />
               ),
             }}
           />
@@ -45,8 +50,7 @@ const App = () => {
             name="Peace"
             component={Diary}
             options={{
-              headerShown: false,
-              tabBarLabel: 'Peace',
+              tabBarLabel: '조각',
               tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="home" color={color} size={26} />
               ),
@@ -56,8 +60,7 @@ const App = () => {
             name="3"
             component={Diary}
             options={{
-              headerShown: false,
-              tabBarLabel: '3',
+              tabBarLabel: '인공지능 편지',
               tabBarIcon: ({ color }) => <Entypo name="colours" color={color} size={26} />,
             }}
           />
@@ -65,8 +68,7 @@ const App = () => {
             name="MyPage"
             component={MyPage}
             options={{
-              headerShown: false,
-              tabBarLabel: 'Profile',
+              tabBarLabel: '조각상점',
               tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="account" color={color} size={26} />
               ),
