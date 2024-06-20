@@ -7,6 +7,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import Diary from '@navigators/DiaryStackNavigator';
 import MyPage from '@screens/mypage/MyPage';
+import AiLetter from '@navigators/AiLetterStackNavigator';
+
+const DiaryIcon = ({ color }) => <MaterialCommunityIcons name="book" color={color} size={26} />;
+const AiLetterIcon = ({ color }) => (
+  <MaterialCommunityIcons name="email-outline" color={color} size={26} />
+);
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
 
@@ -17,6 +23,7 @@ const App = () => {
     <RecoilRoot>
       <NavigationContainer>
         <Tab.Navigator
+          initialRouteName="AiLetter"
           screenOptions={{
             tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
             tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
@@ -57,11 +64,12 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="3"
-            component={Diary}
+            name="AiLetter"
+            component={AiLetter}
             options={{
+              headerShown: false,
               tabBarLabel: '인공지능 편지',
-              tabBarIcon: ({ color }) => <Entypo name="colours" color={color} size={26} />,
+              tabBarIcon: AiLetterIcon,
             }}
           />
           <Tab.Screen

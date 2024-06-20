@@ -7,6 +7,8 @@ const appDirectory = path.resolve(__dirname, './');
 const uncompiled = [
   'react-native-vector-icons',
   '@react-navigation',
+  'react-native-collapsible',
+  'react-native-collapsible/Accordion',
   'react-native-calendars',
   'react-native-swipe-gestures',
   'react-native-paper',
