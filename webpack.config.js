@@ -4,7 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, './');
 
-const uncompiled = ['react-native-vector-icons', '@react-navigation', 'react-native-collapsible'];
+const uncompiled = [
+  'react-native-vector-icons',
+  '@react-navigation',
+  'react-native-collapsible',
+  'react-native-collapsible/Accordion',
+];
 
 const babelLoaderConfiguration = {
   test: /\.(tsx|ts|jsx|js|mjs)$/,
