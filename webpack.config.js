@@ -9,6 +9,9 @@ const uncompiled = [
   '@react-navigation',
   'react-native-collapsible',
   'react-native-collapsible/Accordion',
+  'react-native-calendars',
+  'react-native-swipe-gestures',
+  'react-native-paper',
 ];
 
 const babelLoaderConfiguration = {
@@ -17,8 +20,6 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
     uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
-    path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
-    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
   ],
   use: {
     loader: 'babel-loader',

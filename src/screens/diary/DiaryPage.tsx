@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import MyText from '@components/common/MyText';
 import {
   View,
   FlatList,
   Button,
-  Text,
   Modal,
   StyleSheet,
   TextInput,
@@ -11,6 +11,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import MyCalendar from '@components/diary/calendar/MyCalendar';
+import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 
 const DiaryPage = () => {
   const [diaryList, setDiaryList] = useState([]);
@@ -40,9 +42,9 @@ const DiaryPage = () => {
   // 다이어리 항목을 렌더링하는 함수
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.date}>{item.date}</Text>
-      <Text style={styles.content}>{item.content}</Text>
+      <MyText style={styles.title}>{item.title}</MyText>
+      <MyText style={styles.date}>{item.date}</MyText>
+      <MyText style={styles.content}>{item.content}</MyText>
     </View>
   );
 
@@ -55,9 +57,11 @@ const DiaryPage = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList data={diaryList} renderItem={renderItem} keyExtractor={(item) => item.id} />
-      <Button title="Add Diary" onPress={() => setIsVisible(true)} />
-      <Modal
+      <MyCalendar />
+      <DiaryCarousel />
+      {/* <FlatList data={diaryList} renderItem={renderItem} keyExtractor={(item) => item.id} /> */}
+      {/* <Button title="Add Diary" onPress={() => setIsVisible(true)} /> */}
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={isVisible}
@@ -84,7 +88,7 @@ const DiaryPage = () => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -92,7 +96,7 @@ const DiaryPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingHorizontal: 16,
   },
   itemContainer: {
     padding: 10,
@@ -101,7 +105,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
   },
   date: {
     fontSize: 14,
