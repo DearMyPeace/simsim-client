@@ -3,6 +3,9 @@ import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArr
 import { StyleSheet, View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import { format } from 'date-fns';
+import setLocaleConfig from '@utils/localeConfig';
+
+setLocaleConfig();
 
 const MyCalendar = () => {
   const today = format(new Date(), 'yyyy-MM-dd');
@@ -18,9 +21,9 @@ const MyCalendar = () => {
   };
 
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={styles.container}>
       <Calendar
-        style={styles.container}
+        style={styles.calendar}
         theme={{
           textDayFontFamily: 'GowunBatang-Regular',
           textMonthFontFamily: 'GowunBatang-Regular',
@@ -28,6 +31,9 @@ const MyCalendar = () => {
           textDayFontSize: 15,
           textDayHeaderFontSize: 15,
           textMonthFontSize: 20,
+          dayTextColor: '#666666',
+          arrowColor: '#666666',
+          monthTextColor: '#333333',
           selectedDayBackgroundColor: '#C48E24',
           selectedDayTextColor: '#FFFFFF',
           todayTextColor: '#C48E24',
@@ -41,8 +47,11 @@ const MyCalendar = () => {
             header: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              padding: 10,
               alignItems: 'center',
+            },
+            dayHeader: {
+              color: '#333333',
+              fontFamily: 'GowunBatang-Regular',
             },
           },
         }}
@@ -63,9 +72,15 @@ export default MyCalendar;
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 16,
+  },
+  calendar: {
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: '#EBEBEB',
     borderRadius: 12,
+    marginHorizontal: 14,
     padding: 10,
   },
 });
