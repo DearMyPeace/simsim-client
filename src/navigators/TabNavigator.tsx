@@ -23,6 +23,7 @@ const TabNavigator = () => {
         headerTitle: '',
         headerStyle: {
           backgroundColor: 'transparent',
+          height: 50,
         },
         headerLeftContainerStyle: { paddingLeft: 16 },
       }}
