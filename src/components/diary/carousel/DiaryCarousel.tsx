@@ -1,23 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Dimensions, Platform } from 'react-native';
+import { ScrollView, StyleSheet, View, Platform } from 'react-native';
 import MyText from '@components/common/MyText';
 import { Icon } from 'react-native-paper';
-
-const { width } = Dimensions.get('window');
-
-const PaginationDot = ({ active }: { active: boolean }) => {
-  return (
-    <View
-      style={{
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: active ? '#C48E24' : '#C4C4C4',
-        marginHorizontal: 4,
-      }}
-    />
-  );
-};
 
 const DiaryCarousel = () => {
   return (
@@ -41,7 +25,6 @@ const DiaryCarousel = () => {
           </View>
         </ScrollView>
       </View>
-      <PaginationDot active />
     </View>
   );
 };
