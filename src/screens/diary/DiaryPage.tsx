@@ -12,6 +12,7 @@ import {
   Keyboard,
 } from 'react-native';
 import MyCalendar from '@components/diary/calendar/MyCalendar';
+import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 
 const DiaryPage = () => {
   const [diaryList, setDiaryList] = useState([]);
@@ -57,9 +58,10 @@ const DiaryPage = () => {
   return (
     <View style={styles.container}>
       <MyCalendar />
-      <FlatList data={diaryList} renderItem={renderItem} keyExtractor={(item) => item.id} />
-      <Button title="Add Diary" onPress={() => setIsVisible(true)} />
-      <Modal
+      <DiaryCarousel />
+      {/* <FlatList data={diaryList} renderItem={renderItem} keyExtractor={(item) => item.id} /> */}
+      {/* <Button title="Add Diary" onPress={() => setIsVisible(true)} /> */}
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={isVisible}
@@ -86,7 +88,7 @@ const DiaryPage = () => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };

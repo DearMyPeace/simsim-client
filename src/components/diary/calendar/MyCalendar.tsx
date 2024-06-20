@@ -22,9 +22,9 @@ const MyCalendar = () => {
       <Calendar
         style={styles.container}
         theme={{
-          textDayFontFamily: 'Inder-Regular',
-          textMonthFontFamily: 'Inder-Regular',
-          textDayHeaderFontFamily: 'Inder-Regular',
+          textDayFontFamily: 'GowunBatang-Regular',
+          textMonthFontFamily: 'GowunBatang-Regular',
+          textDayHeaderFontFamily: 'GowunBatang-Regular',
           textDayFontSize: 15,
           textDayHeaderFontSize: 15,
           textMonthFontSize: 20,

@@ -98,6 +98,16 @@
   src: url(./fonts/Inder-Regular.ttf);
 }
 
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url(./fonts/GowunBatang-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'GowunBatang-Bold';
+  src: url(./fonts/GowunBatang-Bold.ttf);
+}
+
 html,
 body {
   height: 100%;

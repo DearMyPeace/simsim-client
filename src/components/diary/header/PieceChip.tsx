@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: '#000000',
-    fontFamily: 'Inder-Regular',
+    fontFamily: 'GowunBatang-Regular',
     fontSize: 11,
   },
 });
