@@ -19,7 +19,16 @@ const App = () => {
           }}
         >
           <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="Settings" component={SettingPage} />
+          <Stack.Screen
+            name="Settings"
+            component={SettingPage}
+            options={{
+              title: '설정',
+              headerStyle: { backgroundColor: 'white' },
+              headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
+              headerShadowVisible: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
