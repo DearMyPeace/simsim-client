@@ -21,6 +21,7 @@ const App = () => {
     <RecoilRoot>
       <NavigationContainer>
         <Tab.Navigator
+          initialRouteName="AiLetter"
           screenOptions={{
             tabBarStyle: { backgroundColor: 'white' },
             tabBarActiveTintColor: 'tomato',
@@ -50,7 +51,7 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="AI Letter"
+            name="AiLetter"
             component={AiLetter}
             options={{
               headerShown: false,
