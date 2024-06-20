@@ -10,7 +10,7 @@ const DiaryCarousel = () => {
         {/* 시간 */}
         <View style={styles.header}>
           <MyText>오늘</MyText>
-          {Platform.OS === 'web' ? <Icon source="dots-horizontal" size={16} /> : null}
+          {/* {Platform.OS === 'web' ? <Icon source="dots-horizontal" size={16} /> : null} */}
           <Icon source="close" size={16} />
         </View>
         {/* 다이어리 */}
