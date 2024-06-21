@@ -131,6 +131,6 @@ body {
 /* 데스크탑 뷰 */
 @media (min-width: 1024px) {
   #root {
-    width: 30vw;
+    max-width: 430px;
   }
 }
