@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := start
+PROJECT_NAME = $(shell node -p "require('./package.json').name")
 
 # ---- Command ---- #
 
@@ -21,6 +22,9 @@ pod:
 
 repod:
 	cd ios && pod deintegrate && pod cache clean --all && pod install
+
+ios-open:
+	open ios/$(PROJECT_NAME).xcworkspace
 
 asset:
 	npx react-native-asset

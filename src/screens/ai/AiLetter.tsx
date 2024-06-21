@@ -1,105 +1,82 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
-  Text,
   FlatList,
   StyleSheet,
   ListRenderItem,
-  TouchableHighlight,
   TouchableOpacity,
   ActivityIndicator,
   Platform,
   RefreshControl,
 } from 'react-native';
-import AiLetterEntries from '@api/mock/AiLetterEntries';
+import { useQuery } from '@tanstack/react-query';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Accordion from 'react-native-collapsible/Accordion';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
-
-const generateDateRange = (startDate: Date, endDate: Date): Date[] => {
-  let dates = [];
-  let currentDate = new Date(startDate);
-
-  while (currentDate <= endDate) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return dates;
-};
-
-const fillDatesWithData = (dates: Date[], entries: IAiLetterEntry[]): IAiLetterEntry[] => {
-  const entriesByDate = entries.reduce<Record<string, IAiLetterEntry>>((acc, entry) => {
-    acc[new Date(entry.date).toISOString().slice(0, 10)] = entry;
-    return acc;
-  }, {});
-
-  return dates.map((date) => {
-    const dateStr = date.toISOString().slice(0, 10);
-    return entriesByDate[dateStr] || { date: dateStr, isPlaceholder: true };
-  });
-};
-
-const NotUsingDay: React.FC<{ date: string }> = ({ date }) => {
-  const dayOfWeek = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-  const color = dayOfWeek === 'Sunday' ? '#FF1F00' : 'gray';
-  return <Entypo name="dot-single" color={color} size={26} />;
-};
+import NotUsingDay from '@components/ai/NotUsingDay';
+import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
+import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
+import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
+import { fetchAiLetters, fetchNextAiLetter } from '@api/ai/api';
+import MockTestAiLetter from './MockTestAiLetter';
 
 const AiLetter: React.FC = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
 
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - 5);
-  const endDate = new Date();
+  let startDate = new Date();
+  let endDate = new Date();
 
-  useEffect(() => {
-    setAiLetterEntries(fillDatesWithData(generateDateRange(startDate, endDate), AiLetterEntries));
-  }, []);
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ['aiLetters', 1, 3],
+    queryFn: () => fetchAiLetters(1, 3),
+    onSuccess: (data) => {
+      if (data.length > 0) {
+        startDate = new Date(data[0].date);
+        endDate = new Date(data[data.length - 1].date);
+      }
 
-  const _renderHeader = (section: IAiLetterEntry, _: any, isActive: boolean) => (
-    <TouchableHighlight underlayColor="lightgray" onPress={() => handleAccordionChange(section)}>
-      <View style={[styles.incoming, isActive && styles.activeHeader]}>
-        <Text style={styles.date}>
-          {new Date(section.date).toLocaleDateString('ko-KR', {
-            month: 'long',
-            day: '2-digit',
-          })}
-        </Text>
-        <Text style={styles.summary} numberOfLines={1} ellipsizeMode="tail">
-          {section.summary}
-        </Text>
-      </View>
-    </TouchableHighlight>
-  );
+      const initialEntries = fillDatesWithData(generateDateRange(startDate, endDate), data);
 
-  const _renderContent = (section: IAiLetterEntry) => (
-    <View style={styles.content}>
-      <Text style={styles.contentText}>{section.content}</Text>
-    </View>
-  );
+      setAiLetterEntries(initialEntries);
 
-  const handleAccordionChange = (section: IAiLetterEntry) => {
-    const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
-    setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
-  };
+      const todayDateStr = new Date().toISOString().slice(0, 10);
+      const todayIndex = initialEntries.findIndex((entry) => entry.date === todayDateStr);
+      if (todayIndex !== -1) {
+        setActiveSections([todayIndex]);
+        setTimeout(() => {
+          if (flatListRef.current) {
+            flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
+          }
+        }, 0);
+      }
+    },
+  });
 
-  const loadMoreData = () => {
-    const firstEntryId = aiLetterEntries[0].id;
-    const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
+  const loadMoreData = async () => {
+    try {
+      const firstEntryId = aiLetterEntries[0]?.id;
+      const firstEntryIndex = data?.findIndex((entry) => entry.id === firstEntryId);
 
-    if (firstEntryIndex > 0) {
-      const additionalEntries = AiLetterEntries.slice(
-        Math.max(firstEntryIndex - 5, 0),
-        firstEntryIndex,
-      );
-      const newEntries = [...additionalEntries, ...aiLetterEntries];
+      if (firstEntryIndex > 0) {
+        const additionalEntries = await fetchNextAiLetter(firstEntryIndex - 5, 5);
+        const newEntries = [...additionalEntries, ...aiLetterEntries];
 
-      const firstNewEntryDate = new Date(newEntries[0].date);
-      startDate.setTime(firstNewEntryDate.getTime());
-      setAiLetterEntries(fillDatesWithData(generateDateRange(startDate, endDate), newEntries));
+        const firstNewEntryDate = new Date(newEntries[0].date);
+        const updatedStartDate = new Date(
+          Math.min(startDate.getTime(), firstNewEntryDate.getTime()),
+        );
+        const updatedEndDate = new Date();
+        setAiLetterEntries(
+          fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
+        );
+      }
+    } catch (error) {
+      console.error('Error loading more data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,7 +84,14 @@ const AiLetter: React.FC = () => {
     if (!loading) {
       setLoading(true);
       loadMoreData();
-      setLoading(false);
+    }
+  };
+
+  const handleAccordionChange = (section: IAiLetterEntry) => {
+    const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
+    setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({ index, animated: true });
     }
   };
 
@@ -136,8 +120,14 @@ const AiLetter: React.FC = () => {
           <Accordion
             sections={[item]}
             activeSections={activeSections.includes(index) ? [0] : []}
-            renderHeader={(section, _, isActive) => _renderHeader(section, _, isActive)}
-            renderContent={_renderContent}
+            renderHeader={(section, _, isActive) => (
+              <AiLetterEntryHeader
+                section={section}
+                isActive={isActive}
+                handleAccordionChange={handleAccordionChange}
+              />
+            )}
+            renderContent={(section) => <AiLetterEntryContent section={section} />}
             onChange={() => handleAccordionChange(item)}
           />
         )}
@@ -145,12 +135,40 @@ const AiLetter: React.FC = () => {
     );
   };
 
+  const getItemLayout = (data, index) => ({
+    length: 50, // 항목의 고정된 높이 (필요에 따라 조정)
+    offset: 50 * index,
+    index,
+  });
+
+  const onScrollToIndexFailed = (info) => {
+    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    wait.then(() => {
+      flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return <MockTestAiLetter />;
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
+        ref={flatListRef}
         data={aiLetterEntries}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        getItemLayout={getItemLayout}
+        onScrollToIndexFailed={onScrollToIndexFailed}
         refreshControl={
           Platform.OS === 'web' ? null : (
             <RefreshControl
@@ -176,6 +194,7 @@ const AiLetter: React.FC = () => {
             </TouchableOpacity>
           )
         }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -187,54 +206,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
   },
-  incoming: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    marginBottom: 10,
-    borderBottomColor: '#ccc',
-  },
-  activeHeader: {
-    // backgroundColor: 'lightgray',
-  },
-  date: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  summary: {
-    fontSize: 14,
-    color: 'gray',
-    flex: 1,
-    marginLeft: 20,
-    overflow: 'hidden',
-  },
-  content: {
-    padding: 10,
-    borderRadius: 12,
-    backgroundColor: '#F1E2CC',
-  },
-  contentText: {
-    color: 'black',
-  },
-  notusingItem: {
-    alignItems: 'center',
-  },
-  placeholderItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   loadMoreButton: {
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  loadMoreText: {
-    fontSize: 16,
-    color: 'gray',
-    marginLeft: 5,
+  notusingItem: {
+    alignItems: 'center',
   },
 });
 

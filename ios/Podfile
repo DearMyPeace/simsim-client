@@ -36,5 +36,16 @@ target 'dearmypeace' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # react-native-vector-icons에서 폰트 복사 단계 제거
+    installer.pods_project.targets.each do |target|
+      if target.name == 'RNVectorIcons'
+        target.build_phases.each do |phase|
+          if phase.respond_to?(:name) && phase.name == '[CP] Copy Pods Resources'
+            phase.remove_from_project
+          end
+        end
+      end
+    end
   end
 end
