@@ -27,6 +27,8 @@ const App = () => {
               headerStyle: { backgroundColor: 'white' },
               headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
               headerShadowVisible: false,
+              headerBackTitleVisible: false,
+              headerTintColor: 'black',
             }}
           />
         </Stack.Navigator>
