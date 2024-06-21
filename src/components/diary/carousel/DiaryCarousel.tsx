@@ -1,29 +1,69 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View, Platform } from 'react-native';
-import MyText from '@components/common/MyText';
-import { Icon } from 'react-native-paper';
+import React, { useCallback, useRef, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  FlatList,
+  Animated,
+  ListRenderItem,
+  ViewToken,
+  Platform,
+} from 'react-native';
+import DiaryList from '@api/mock/DiaryList';
+import DiaryCard from '@components/diary/carousel/DiaryCard';
+import { IDiary } from '@type/Diary';
+
+const { width } = Dimensions.get('screen');
+
+const CARD_WIDTH = Platform.OS === 'web' ? 800 : width - 32;
 
 const DiaryCarousel = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
+
+  const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+    useNativeDriver: false,
+  });
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    if (viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  }).current;
+
+  const renderItem: ListRenderItem<IDiary> = useCallback(
+    ({ item }) => <DiaryCard createdTime={item.createdTime} content={item.content} />,
+    [],
+  );
+
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        {/* 시간 */}
-        <View style={styles.header}>
-          <MyText>오늘</MyText>
-          {/* {Platform.OS === 'web' ? <Icon source="dots-horizontal" size={16} /> : null} */}
-          <Icon source="close" size={16} />
-        </View>
-        {/* 다이어리 */}
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.content}>
-            <MyText>
-              오늘은 정말 행복한 하루였다. 아침부터 밝은 햇살이 나를 반겨주었고, 출근길에는 신나는
-              음악이 내 기분을 더욱 들뜨게 했다. 회사에서 칭찬도 받고, 동료들과 점심으로 먹은 피자는
-              너무 맛있었다. 퇴근 후에는 오랜 친구를 만나 즐거운 대화를 나누며 웃음이 끊이지 않았다.
-              오늘 같은 날이 계속 이어졌으면 좋겠다.
-            </MyText>
-          </View>
-        </ScrollView>
+      <FlatList
+        horizontal
+        pagingEnabled
+        initialNumToRender={1}
+        maxToRenderPerBatch={1}
+        getItemLayout={(data, index) => ({
+          length: CARD_WIDTH,
+          offset: CARD_WIDTH * index,
+          index,
+        })}
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="normal"
+        snapToEnd={false}
+        data={DiaryList}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        showsHorizontalScrollIndicator={false}
+        onScroll={onScroll}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      <View style={styles.pagination}>
+        {DiaryList.map((diary, index) => {
+          return (
+            <View key={index} style={[styles.dot, activeIndex === index && styles.activeDot]} />
+          );
+        })}
       </View>
     </View>
   );
@@ -34,29 +74,23 @@ export default DiaryCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 6,
-    paddingBottom: 24,
-    paddingHorizontal: 10,
-  },
-  card: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#F1E2CC',
-    borderRadius: 12,
-    marginHorizontal: 6,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    marginBottom: 8,
   },
-  scrollView: {
-    flexGrow: 1,
+  pagination: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
-  content: {
-    paddingHorizontal: 10,
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#828282',
+    marginHorizontal: 5,
+  },
+  activeDot: {
+    backgroundColor: '#333333',
   },
 });
