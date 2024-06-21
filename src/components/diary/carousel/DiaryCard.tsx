@@ -1,22 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MyText from '@components/common/MyText';
 import { ScrollView, View, StyleSheet, Platform, Dimensions } from 'react-native';
 import { Icon } from 'react-native-paper';
 import { IDiaryCardProps } from '@type/Diary';
-import { format } from 'date-fns';
-
-const { width } = Dimensions.get('window');
-const CARD_WIDTH = Platform.OS === 'web' ? 800 : width - 32;
+import { CARD_WIDTH } from '@utils/Sizing';
 
 const DiaryCard = ({ createdTime, content }: IDiaryCardProps) => {
-  const [timeToShow, setTimeToShow] = useState(format(createdTime, 'HH:mm a'));
-
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         {/* 시간 */}
         <View style={styles.header}>
-          <MyText>{timeToShow}</MyText>
+          <MyText>{createdTime}</MyText>
           <View style={styles.icons}>
             <Icon source="close" size={16} />
           </View>
@@ -37,9 +32,13 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingBottom: 30,
     paddingHorizontal: 10,
+    ...Platform.select({
+      web: {
+        width: '90%',
+        height: '100%',
+      },
+    }),
   },
   card: {
     paddingVertical: 8,
@@ -47,6 +46,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1E2CC',
     borderRadius: 12,
     marginHorizontal: 6,
+    ...Platform.select({
+      web: {
+        width: '100%',
+        height: '100%',
+      },
+    }),
   },
   header: {
     flexDirection: 'row',

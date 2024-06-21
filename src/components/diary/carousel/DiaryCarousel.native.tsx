@@ -1,21 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  FlatList,
-  Animated,
-  ListRenderItem,
-  ViewToken,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View, FlatList, Animated, ListRenderItem, ViewToken } from 'react-native';
 import DiaryList from '@api/mock/DiaryList';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import { IDiary } from '@type/Diary';
-
-const { width } = Dimensions.get('screen');
-
-const CARD_WIDTH = Platform.OS === 'web' ? 800 : width - 32;
+import { CARD_WIDTH } from '@utils/Sizing';
+import { format } from 'date-fns';
+import DiaryPagination from './DiaryPagination';
 
 const DiaryCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,7 +22,9 @@ const DiaryCarousel = () => {
   }).current;
 
   const renderItem: ListRenderItem<IDiary> = useCallback(
-    ({ item }) => <DiaryCard createdTime={item.createdTime} content={item.content} />,
+    ({ item }) => (
+      <DiaryCard createdTime={format(item.createdTime, 'hh:mm a')} content={item.content} />
+    ),
     [],
   );
 
@@ -58,13 +50,7 @@ const DiaryCarousel = () => {
         onScroll={onScroll}
         onViewableItemsChanged={onViewableItemsChanged}
       />
-      <View style={styles.pagination}>
-        {DiaryList.map((diary, index) => {
-          return (
-            <View key={index} style={[styles.dot, activeIndex === index && styles.activeDot]} />
-          );
-        })}
-      </View>
+      <DiaryPagination activeIndex={activeIndex} />
     </View>
   );
 };
@@ -74,23 +60,5 @@ export default DiaryCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pagination: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#828282',
-    marginHorizontal: 5,
-  },
-  activeDot: {
-    backgroundColor: '#333333',
   },
 });
