@@ -12,10 +12,10 @@ const DiaryCarousel = () => {
   const [diary, setDiary] = useState<IDiary>(DiaryList[activeIndex]);
 
   useEffect(() => {
-    setDiary((prevDiary) => ({
-      ...prevDiary,
-      createdTime: format(DiaryList[activeIndex].createdTime, 'hh:mm a'),
-    }));
+    setDiary({
+      ...DiaryList[activeIndex],
+      createdTime: format(new Date(DiaryList[activeIndex].createdTime), 'hh:mm a'),
+    });
   }, [activeIndex]);
 
   const onLeftPress = () => {
