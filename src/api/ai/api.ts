@@ -15,4 +15,20 @@ export const fetchAiLetters = async (userId, total) => {
   return response.data;
 };
 
+export const fetchTodayAiLetters = async (count) => {
+  const response = await api.get(`aiLetters?total=${count}`, {
+    params: {
+      count,
+    },
+  });
+  return response.data;
+};
+
+export const fetchNextAiLetter = async (offset, count) => {
+  const response = await api.get(`aiLetters?offset=${offset}&total=${count}`, {
+    params: { offset, count },
+  });
+  return response.data;
+};
+
 export default api;

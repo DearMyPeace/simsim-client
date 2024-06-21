@@ -1,5 +1,4 @@
-// src/screens/ai/AiLetter.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   FlatList,
@@ -18,7 +17,7 @@ import NotUsingDay from '@components/ai/NotUsingDay';
 import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
 import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
 import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
-import { fetchAiLetters } from '@api/ai/api';
+import { fetchAiLetters, fetchNextAiLetter } from '@api/ai/api';
 import MockTestAiLetter from './MockTestAiLetter';
 
 const AiLetter: React.FC = () => {
@@ -33,19 +32,13 @@ const AiLetter: React.FC = () => {
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ['aiLetters', 1, 3],
     queryFn: () => fetchAiLetters(1, 3),
-  });
-
-  useEffect(() => {
-    if (data) {
-      console.log('Fetched data:', data);
-
+    onSuccess: (data) => {
       if (data.length > 0) {
         startDate = new Date(data[0].date);
         endDate = new Date(data[data.length - 1].date);
       }
 
       const initialEntries = fillDatesWithData(generateDateRange(startDate, endDate), data);
-      console.log('Initial Entries:', initialEntries);
 
       setAiLetterEntries(initialEntries);
 
@@ -59,23 +52,31 @@ const AiLetter: React.FC = () => {
           }
         }, 0);
       }
-    }
-  }, [data]);
+    },
+  });
 
-  const loadMoreData = () => {
-    const firstEntryId = aiLetterEntries[0]?.id;
-    const firstEntryIndex = data?.findIndex((entry) => entry.id === firstEntryId);
+  const loadMoreData = async () => {
+    try {
+      const firstEntryId = aiLetterEntries[0]?.id;
+      const firstEntryIndex = data?.findIndex((entry) => entry.id === firstEntryId);
 
-    if (firstEntryIndex > 0) {
-      const additionalEntries = data.slice(Math.max(firstEntryIndex - 5, 0), firstEntryIndex);
-      const newEntries = [...additionalEntries, ...aiLetterEntries];
+      if (firstEntryIndex > 0) {
+        const additionalEntries = await fetchNextAiLetter(firstEntryIndex - 5, 5);
+        const newEntries = [...additionalEntries, ...aiLetterEntries];
 
-      const firstNewEntryDate = new Date(newEntries[0].date);
-      const updatedStartDate = new Date(Math.min(startDate.getTime(), firstNewEntryDate.getTime()));
-      const updatedEndDate = new Date();
-      setAiLetterEntries(
-        fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
-      );
+        const firstNewEntryDate = new Date(newEntries[0].date);
+        const updatedStartDate = new Date(
+          Math.min(startDate.getTime(), firstNewEntryDate.getTime()),
+        );
+        const updatedEndDate = new Date();
+        setAiLetterEntries(
+          fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
+        );
+      }
+    } catch (error) {
+      console.error('Error loading more data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,7 +84,6 @@ const AiLetter: React.FC = () => {
     if (!loading) {
       setLoading(true);
       loadMoreData();
-      setLoading(false);
     }
   };
 
