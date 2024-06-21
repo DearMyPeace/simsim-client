@@ -37,20 +37,19 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
+        name="AiLetter"
+        component={AiLetter}
+        options={{
+          tabBarLabel: '편지',
+          tabBarIcon: AiLetterIcon,
+        }}
+      />
+      <Tab.Screen
         name="Peace"
         component={Diary}
         options={{
           tabBarLabel: '조각',
           tabBarIcon: PieceIcon,
-        }}
-      />
-      <Tab.Screen
-        name="AiLetter"
-        component={AiLetter}
-        options={{
-          headerShown: false,
-          tabBarLabel: '편지',
-          tabBarIcon: AiLetterIcon,
         }}
       />
       <Tab.Screen

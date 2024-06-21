@@ -5,32 +5,45 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
 import SettingPage from '@screens/setting/SettingPage';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
+  const queryClient = new QueryClient();
 
   return (
     <RecoilRoot>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            ...TransitionPresets.SlideFromRightIOS,
-          }}
-        >
-          <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen
-            name="Settings"
-            component={SettingPage}
-            options={{
-              title: '설정',
-              headerStyle: { backgroundColor: 'white' },
-              headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
-              headerShadowVisible: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                }}
+              >
+                <Stack.Screen
+                  name="Tabs"
+                  component={TabNavigator}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Settings"
+                  component={SettingPage}
+                  options={{
+                    title: '설정',
+                    headerStyle: { backgroundColor: 'white' },
+                    headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
+                    headerShadowVisible: false,
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </QueryClientProvider>
     </RecoilRoot>
   );
 };
