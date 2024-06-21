@@ -110,6 +110,7 @@
 
 html,
 body {
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -119,15 +120,17 @@ body {
   align-items: center;
 }
 
-body {
-  overflow: hidden;
-}
-
 #root {
-  min-width: 375px;
-  width: 50%;
+  width: 100%;
   height: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
+}
+
+/* 데스크탑 뷰 */
+@media (min-width: 1024px) {
+  #root {
+    width: 30vw;
+  }
 }
