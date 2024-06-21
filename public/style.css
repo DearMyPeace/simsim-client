@@ -128,9 +128,10 @@ body {
   flex-direction: column;
 }
 
-/* 데스크탑 뷰 */
-@media (min-width: 1024px) {
+/* 태블릿 뷰 */
+@media (min-width: 768px) {
   #root {
     max-width: 430px;
+    max-height: 932px;
   }
 }
