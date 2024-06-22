@@ -28,6 +28,7 @@ export interface IDate {
 
 export interface IMarkedDates {
   [key: string]: {
+    selected: boolean;
     marked: boolean;
     dotColor: string;
   };
@@ -42,7 +43,7 @@ export interface IDiaryListResponse {
   modifiedDate: Date;
 }
 
-export interface IDiaryCountResponse {
+export interface IDiaryCount {
   markedDate: string;
   diaryCount: number;
 }

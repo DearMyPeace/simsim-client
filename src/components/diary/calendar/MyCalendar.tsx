@@ -3,7 +3,7 @@ import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArr
 import { StyleSheet, View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import setLocaleConfig from '@utils/localeConfig';
-import { IDiaryCountResponse as IDiaryCount, IMarkedDates } from '@type/Diary';
+import { IDiaryCount, IMarkedDates } from '@type/Diary';
 import { dotColors } from '@utils/colors';
 
 setLocaleConfig();
@@ -16,7 +16,11 @@ interface IMyCalendarProps {
 
 const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IMyCalendarProps) => {
   const markedDatesList: IMarkedDates = markedDates.reduce((acc, date) => {
-    acc[date.markedDate] = { marked: true, dotColor: dotColors[date.diaryCount] };
+    acc[date.markedDate] = {
+      selected: date.markedDate === selectedDate,
+      marked: date.markedDate !== selectedDate,
+      dotColor: dotColors[date.diaryCount],
+    };
     return acc;
   }, {} as IMarkedDates);
 

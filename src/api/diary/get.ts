@@ -1,7 +1,7 @@
 import React from 'react';
 import instance from '@api/axios';
-import { IDate, IDiaryCountResponse, IDiaryListResponse } from '@type/Diary';
-import { useQuery } from '@tanstack/react-query';
+import { IDate, IDiaryCount, IDiaryListResponse } from '@type/Diary';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { format, isFuture, isToday } from 'date-fns';
 
 export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse[]> => {
@@ -37,13 +37,13 @@ export const useDiaryList = (targetDate: string) => {
   });
 };
 
-export const fetchDiaryCounts = async ({ year, month }: IDate): Promise<IDiaryCountResponse[]> => {
+export const fetchDiaryCounts = async ({ year, month }: IDate): Promise<IDiaryCount[]> => {
   console.log('fetchDiaryCounts', year, month);
   const response = await instance.get(`/diary/${year}/${month}`);
   return response.data;
 };
 
-export const useDiaryCounts = ({ year, month }: IDate) => {
+export const useDiaryCounts = ({ year, month }: IDate): UseQueryResult<IDiaryCount[]> => {
   return useQuery({
     queryKey: ['diaryCounts', year, month],
     queryFn: () => fetchDiaryCounts({ year, month }),

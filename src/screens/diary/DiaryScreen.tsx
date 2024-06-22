@@ -33,7 +33,7 @@ const DiaryScreen = () => {
       </View>
       <MySnackbar
         visible={snackbarText !== ''}
-        text="미래의 심심 기록은 작성할 수 없습니다"
+        text={snackbarText}
         onDissmiss={onDissmissSnackbar}
       />
     </>
