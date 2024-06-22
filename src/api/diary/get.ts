@@ -14,7 +14,7 @@ export const useDiaryList = (targetDate: string) => {
   return useQuery({
     queryKey: ['diaryList', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
-    enabled: !isFuture(new Date(targetDate)),
+    enabled: !isFuture(new Date(targetDate)) || isToday(new Date(targetDate)),
     select: (data) => {
       const diaryList = data.map((item) => ({
         id: item.diaryId.toString(),
@@ -30,7 +30,7 @@ export const useDiaryList = (targetDate: string) => {
         diaryList.push({
           id: 'newDiary',
           content: '오늘의 심심 기록을 남겨보세요',
-          createdTime: '',
+          createdTime: format(new Date(), 'HH:mm a'),
         });
       return diaryList;
     },

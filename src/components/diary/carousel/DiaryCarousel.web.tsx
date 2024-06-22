@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryPagination from '@components/diary/carousel/DiaryPagination';
 import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
 import { IDiaryCarouselProps } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
-import MyText from '@components/common/MyText';
+import CenterViewText from '@components/common/CenterViewText';
 
 const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -13,15 +13,14 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
 
   useEffect(() => {
     setActiveIndex(0);
-    console.log('diary list!!!', data);
   }, [data]);
 
   if (isPending) {
-    return <MyText>일기를 불러오고 있습니다.</MyText>;
+    return <CenterViewText text="심심 기록을 가져오는 중입니다." />;
   }
 
   if (isError) {
-    return <MyText>에러가 발생했습니다.</MyText>;
+    return <CenterViewText text="에러가 발생했습니다" />;
   }
 
   const onLeftPress = () => {
