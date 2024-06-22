@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 import setLocaleConfig from '@utils/localeConfig';
 import { IDiaryCount, IMarkedDates } from '@type/Diary';
@@ -82,5 +82,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 14,
     padding: 10,
+    ...Platform.select({
+      web: {
+        marginHorizontal: 28,
+      },
+    }),
   },
 });

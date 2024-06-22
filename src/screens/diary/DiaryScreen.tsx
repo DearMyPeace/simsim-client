@@ -21,22 +21,20 @@ const DiaryScreen = () => {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <MyCalendar
-          selectedDate={selectedDate}
-          markedDates={markedDates}
-          onDayPress={onDayPress}
-          onMonthChange={onMonthChange}
-        />
-        <DiaryCarousel selectedDate={selectedDate} dateStatus={dateStatus} />
-      </View>
+    <View style={styles.container}>
+      <MyCalendar
+        selectedDate={selectedDate}
+        markedDates={markedDates}
+        onDayPress={onDayPress}
+        onMonthChange={onMonthChange}
+      />
+      <DiaryCarousel selectedDate={selectedDate} dateStatus={dateStatus} />
       <MySnackbar
         visible={snackbarText !== ''}
         text={snackbarText}
         onDissmiss={onDissmissSnackbar}
       />
-    </>
+    </View>
   );
 };
 
