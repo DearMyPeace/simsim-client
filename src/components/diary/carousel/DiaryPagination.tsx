@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import DiaryList from '@api/mock/DiaryList';
+import { View, StyleSheet } from 'react-native';
+import { IDiary } from '@type/Diary';
 
-const DiaryPagination = ({ activeIndex }: { activeIndex: number }) => {
+interface IDiaryPaginationProps {
+  activeIndex: number;
+  diaryList: IDiary[];
+}
+
+const DiaryPagination = ({ activeIndex, diaryList }: IDiaryPaginationProps) => {
   return (
     <View style={styles.container}>
-      {DiaryList.map((diary, index) => {
+      {diaryList.length === 0 && <View style={[styles.dot, styles.empty]} />}
+      {diaryList.map((diary, index) => {
         return <View key={index} style={[styles.dot, activeIndex === index && styles.activeDot]} />;
       })}
     </View>
@@ -29,5 +35,8 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     backgroundColor: '#333333',
+  },
+  empty: {
+    backgroundColor: 'transparent',
   },
 });

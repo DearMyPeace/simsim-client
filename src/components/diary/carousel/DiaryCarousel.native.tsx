@@ -1,19 +1,15 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, View, FlatList, Animated, ListRenderItem, ViewToken } from 'react-native';
-import DiaryList from '@api/mock/DiaryList';
+import { StyleSheet, View, FlatList, ListRenderItem, ViewToken } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
-import { IDiary } from '@type/Diary';
+import DiaryPagination from '@components/diary/carousel/DiaryPagination';
+import { IDiary, IDiaryCarouselProps } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
-import { format } from 'date-fns';
-import DiaryPagination from './DiaryPagination';
+import useDiaryHook from '@hooks/diary/diaryHook';
+import MyText from '@components/common/MyText';
 
-const DiaryCarousel = () => {
+const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
+  const { data, isPending, isError } = useDiaryHook(selectedDate);
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
-
-  const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-    useNativeDriver: false,
-  });
 
   const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
     if (viewableItems.length > 0) {
@@ -21,12 +17,28 @@ const DiaryCarousel = () => {
     }
   }).current;
 
-  const renderItem: ListRenderItem<IDiary> = useCallback(
+  const renderDiaries: ListRenderItem<IDiary> = useCallback(
     ({ item }) => (
-      <DiaryCard createdTime={format(item.createdTime, 'hh:mm a')} content={item.content} />
+      <DiaryCard createdTime={item.createdTime} content={item.content} dateStatus={dateStatus} />
     ),
-    [],
+    [data],
   );
+
+  if (isPending) {
+    return <MyText>일기를 불러오고 있습니다.</MyText>;
+  }
+  if (isError) {
+    return <MyText>에러가 발생했습니다.</MyText>;
+  }
+
+  if (data.length === 0) {
+    return (
+      <View style={[styles.container, { marginBottom: 28 }]}>
+        <DiaryCard createdTime="" content="" dateStatus={dateStatus} />
+        <DiaryPagination activeIndex={0} diaryList={data} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -41,16 +53,15 @@ const DiaryCarousel = () => {
           index,
         })}
         snapToInterval={CARD_WIDTH}
-        decelerationRate="normal"
-        snapToEnd={false}
-        data={DiaryList}
-        renderItem={renderItem}
+        decelerationRate="fast"
+        data={data}
+        renderItem={renderDiaries}
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
-        onScroll={onScroll}
         onViewableItemsChanged={onViewableItemsChanged}
+        keyboardShouldPersistTaps="always"
       />
-      <DiaryPagination activeIndex={activeIndex} />
+      <DiaryPagination activeIndex={activeIndex} diaryList={data} />
     </View>
   );
 };

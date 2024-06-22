@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
 import { StyleSheet, View } from 'react-native';
-import { Calendar, DateData } from 'react-native-calendars';
-import { format } from 'date-fns';
+import { Calendar } from 'react-native-calendars';
 import setLocaleConfig from '@utils/localeConfig';
 
 setLocaleConfig();
+interface IMyCalendarProps {
+  selectedDate: string;
+  onDayPress: (date: any) => void;
+}
 
-const MyCalendar = () => {
-  const today = format(new Date(), 'yyyy-MM-dd');
-  const [selectedDate, setSelectedDate] = useState(today);
-
-  useEffect(() => {
-    console.log('날짜 선택', selectedDate);
-  }, [selectedDate]);
-
-  const onDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
-    console.log('click', day.dateString);
-  };
-
+const MyCalendar = ({ selectedDate, onDayPress }: IMyCalendarProps) => {
   return (
     <View style={styles.container}>
       <Calendar
@@ -38,12 +29,7 @@ const MyCalendar = () => {
           selectedDayTextColor: '#FFFFFF',
           todayTextColor: '#C48E24',
           'stylesheet.calendar.header': {
-            headerContainer: {
-              position: 'absolute',
-              flexDirection: 'row',
-              left: 10,
-              gap: 20,
-            },
+            headerContainer: { position: 'absolute', flexDirection: 'row', left: 10, gap: 20 },
             header: {
               flexDirection: 'row',
               justifyContent: 'flex-end',

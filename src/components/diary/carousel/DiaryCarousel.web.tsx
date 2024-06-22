@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import DiaryList from '@api/mock/DiaryList';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
-import { format } from 'date-fns';
-import DiaryPagination from './DiaryPagination';
-import DiaryArrowIcons from './DiaryArrowIcons';
-import { IDiary } from '@type/Diary';
+import DiaryPagination from '@components/diary/carousel/DiaryPagination';
+import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
+import { IDiaryCarouselProps } from '@type/Diary';
+import useDiaryHook from '@hooks/diary/diaryHook';
+import MyText from '@components/common/MyText';
 
-const DiaryCarousel = () => {
+const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [diary, setDiary] = useState<IDiary>(DiaryList[activeIndex]);
+  const { data, isPending, isError } = useDiaryHook(selectedDate);
 
   useEffect(() => {
-    setDiary({
-      ...DiaryList[activeIndex],
-      createdTime: format(new Date(DiaryList[activeIndex].createdTime), 'hh:mm a'),
-    });
-  }, [activeIndex]);
+    setActiveIndex(0);
+    console.log('diary list!!!', data);
+  }, [data]);
+
+  if (isPending) {
+    return <MyText>일기를 불러오고 있습니다.</MyText>;
+  }
+
+  if (isError) {
+    return <MyText>에러가 발생했습니다.</MyText>;
+  }
 
   const onLeftPress = () => {
     if (activeIndex === 0) return;
@@ -24,7 +30,7 @@ const DiaryCarousel = () => {
   };
 
   const onRightPress = () => {
-    if (activeIndex === DiaryList.length - 1) return;
+    if (activeIndex === data.length - 1) return;
     setActiveIndex(activeIndex + 1);
   };
 
@@ -32,10 +38,16 @@ const DiaryCarousel = () => {
     <View style={styles.container}>
       <View style={styles.cardContainer}>
         {activeIndex > 0 && <DiaryArrowIcons direction="left" onPress={onLeftPress} />}
-        <DiaryCard createdTime={diary.createdTime} content={diary.content} />
-        {activeIndex < 2 && <DiaryArrowIcons direction="right" onPress={onRightPress} />}
+        {activeIndex < data.length - 1 && (
+          <DiaryArrowIcons direction="right" onPress={onRightPress} />
+        )}
+        <DiaryCard
+          createdTime={data[activeIndex]?.createdTime || ''}
+          content={data[activeIndex]?.content || ''}
+          dateStatus={dateStatus}
+        />
       </View>
-      <DiaryPagination activeIndex={activeIndex} />
+      <DiaryPagination activeIndex={activeIndex} diaryList={data} />
     </View>
   );
 };
