@@ -1,20 +1,25 @@
-import * as React from 'react';
+// PieceChip.tsx
+import React from 'react';
 import { Chip } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { pieces } from '@stores/pieces';
 
-const PieceChip = () => (
-  <Chip
-    style={styles.container}
-    textStyle={styles.text}
-    mode="outlined"
-    icon="information"
-    onPress={() => console.log('Pressed')}
-  >
-    9999
-  </Chip>
-);
+const PieceChip = () => {
+  const count = useRecoilValue(pieces);
 
-export default PieceChip;
+  return (
+    <Chip
+      style={styles.container}
+      textStyle={styles.text}
+      mode="outlined"
+      icon="information"
+      onPress={() => console.log('Pressed')}
+    >
+      {count}
+    </Chip>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -22,10 +27,11 @@ const styles = StyleSheet.create({
     borderColor: '#DADADA',
     borderRadius: 8,
   },
-
   text: {
     color: '#000000',
     fontFamily: 'GowunBatang-Regular',
     fontSize: 11,
   },
 });
+
+export default PieceChip;
