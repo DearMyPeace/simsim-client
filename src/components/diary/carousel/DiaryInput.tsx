@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import MyTextInput from '@components/common/MyTextInput';
 import { DateStatus } from '@type/Diary';
-import MyText from '@components/common/MyText';
+import LengthCheckView from '@components/common/LengthCheckView';
 
 interface IDiaryInputProps {
+  isNew: boolean;
   content: string;
   dateStatus: DateStatus;
+  isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
 }
 
+// TODO: content랑 diaryContent 구분
 const MAX_LENGTH = 200;
-const DiaryInput = ({ content, dateStatus, setIsEditing }: IDiaryInputProps) => {
-  const [diaryContent, setDiaryContent] = useState(content);
+const DiaryInput = ({ isNew, content, dateStatus, isEditing, setIsEditing }: IDiaryInputProps) => {
+  const [diaryContent, setDiaryContent] = useState(isNew ? '' : content);
+
   const onChangeText = (text: string) => {
     if (text.length > 200) return;
     setDiaryContent(text);
   };
 
   const onFocus = () => {
-    if (dateStatus === 'PAST') {
-      console.log('과거 일기 수정 불가!');
-    }
     setIsEditing(true);
     console.log('focus');
   };
@@ -32,26 +33,22 @@ const DiaryInput = ({ content, dateStatus, setIsEditing }: IDiaryInputProps) => 
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
-        <View style={styles.content}>
+        <View style={[styles.content, isNew && { width: '100%', height: '100%' }]}>
           <MyTextInput
             multiline
             inputMode="text"
-            // value={diaryContent}
+            value={diaryContent}
             onChangeText={onChangeText}
-            readOnly={dateStatus !== 'TODAY'}
             autoCorrect={false}
             autoComplete="off"
             maxLength={200}
             onFocus={onFocus}
             placeholder={content}
+            style={[isNew && styles.empty]}
           />
         </View>
       </ScrollView>
-      <View style={{ flexDirection: 'row-reverse' }}>
-        <MyText size={13} style={{ color: '#C53333' }}>
-          {diaryContent.length}/{MAX_LENGTH}
-        </MyText>
-      </View>
+      {isEditing && <LengthCheckView data={content} maxLength={MAX_LENGTH} />}
     </KeyboardAvoidingView>
   );
 };
@@ -59,12 +56,16 @@ const DiaryInput = ({ content, dateStatus, setIsEditing }: IDiaryInputProps) => 
 const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
   },
   content: {
     flex: 1,
     paddingHorizontal: 10,
+  },
+  empty: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

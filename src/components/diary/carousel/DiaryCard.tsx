@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import MyText from '@components/common/MyText';
 import { View, StyleSheet, Platform, Pressable, Keyboard } from 'react-native';
-import { IconButton } from 'react-native-paper';
 import { IDiaryCardProps } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import DiaryInput from '@components/diary/carousel/DiaryInput';
+import DiaryContent from '@components/diary/carousel/DiaryContent';
+import DiaryCardHeader from '@components/diary/carousel/DiaryCardHeader';
 
 const DiaryCard = ({ createdTime, content, dateStatus }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState(content);
@@ -16,12 +16,11 @@ const DiaryCard = ({ createdTime, content, dateStatus }: IDiaryCardProps) => {
     console.log('삭제');
   };
 
-  useEffect(() => {
-    console.log('dateStatuㅁㅇㄹㅁㄴ', dateStatus);
-  }, [dateStatus]);
+  const onSave = () => {
+    console.log('저장');
+  };
 
   useEffect(() => {
-    console.log('card', dateStatus);
     setDiaryInput(content);
   }, [content, dateStatus]);
 
@@ -41,24 +40,25 @@ const DiaryCard = ({ createdTime, content, dateStatus }: IDiaryCardProps) => {
       disabled={Platform.OS === 'web'}
     >
       <View style={styles.card}>
-        {/* 시간 */}
-        <View style={styles.header}>
-          <MyText>{createdTime}</MyText>
-          {/* 아이콘 */}
-          <View style={styles.icons}>
-            {Platform.OS === 'web' && isEditing && (
-              <IconButton
-                icon="check"
-                size={16}
-                onPress={() => setIsEditing(false)}
-                style={styles.icon}
-              />
-            )}
-            <IconButton icon="close" size={16} onPress={onRemove} style={styles.icon} />
-          </View>
-        </View>
-        {/* 다이어리 */}
-        <DiaryInput content={diaryInput} dateStatus={dateStatus} setIsEditing={setIsEditing} />
+        {createdTime !== '' && (
+          <DiaryCardHeader
+            createdTime={createdTime}
+            isEditing={isEditing}
+            onRemove={onRemove}
+            onSave={onSave}
+          />
+        )}
+        {dateStatus === 'TODAY' ? (
+          <DiaryInput
+            isNew={createdTime === ''}
+            content={diaryInput}
+            dateStatus={dateStatus}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+          />
+        ) : (
+          <DiaryContent isEmpty={createdTime === ''} content={content} />
+        )}
       </View>
     </Pressable>
   );
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     }),
   },
   card: {
+    width: '100%',
+    height: '100%',
     paddingVertical: 8,
     paddingHorizontal: 16,
     backgroundColor: '#F1E2CC',
@@ -89,19 +91,6 @@ const styles = StyleSheet.create({
         height: '100%',
       },
     }),
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  icons: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  icon: {
-    margin: 0,
   },
 });
 
