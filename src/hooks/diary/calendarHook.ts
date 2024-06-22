@@ -9,16 +9,18 @@ const useCalendarHook = () => {
   const [today] = useState(getToday);
   const [selectedDate, setSelectedDate] = useState(today);
   const [dateStatus, setDateStatus] = useState<DateStatus>('TODAY');
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const onDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
     if (isSameDay(day.dateString, new Date(today))) {
       setDateStatus('TODAY');
     } else if (isPast(day.dateString)) {
       setDateStatus('PAST');
     } else if (isFuture(new Date(day.dateString))) {
-      setDateStatus('FUTURE');
+      setSnackbarVisible(true);
+      return;
     }
+    setSelectedDate(day.dateString);
   };
 
   useEffect(() => {
@@ -28,9 +30,12 @@ const useCalendarHook = () => {
   return {
     today,
     selectedDate,
+    setSelectedDate,
     dateStatus,
     setDateStatus,
     onDayPress,
+    snackbarVisible,
+    setSnackbarVisible,
   };
 };
 
