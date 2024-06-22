@@ -1,20 +1,8 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, Platform, View, ViewStyle } from 'react-native';
-import MyText from '@components/common/MyText';
 
 const MyTextInput = ({ textAlign = 'left', style, ...props }: TextInputProps) => {
-  return (
-    <View style={styles.container}>
-      <TextInput style={[{ textAlign }, styles.input, style]} {...props} />
-      {props.multiline && props.maxLength && (
-        <View style={{ flexDirection: 'row-reverse' }}>
-          <MyText size={13} style={[{ color: '#C53333' }]}>
-            {props.value?.length}/{props.maxLength}
-          </MyText>
-        </View>
-      )}
-    </View>
-  );
+  return <TextInput style={[{ textAlign }, styles.input, style]} {...props} />;
 };
 
 export default MyTextInput;
