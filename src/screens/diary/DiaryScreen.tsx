@@ -6,21 +6,33 @@ import useCalendarHook from '@hooks/diary/calendarHook';
 import MySnackbar from '@components/common/MySnackbar';
 
 const DiaryScreen = () => {
-  const { selectedDate, onDayPress, dateStatus, snackbarVisible, setSnackbarVisible } =
-    useCalendarHook();
+  const {
+    selectedDate,
+    onDayPress,
+    onMonthChange,
+    dateStatus,
+    snackbarText,
+    setSnackbarText,
+    markedDates,
+  } = useCalendarHook();
 
   const onDissmissSnackbar = () => {
-    setSnackbarVisible(false);
+    setSnackbarText('');
   };
 
   return (
     <>
       <View style={styles.container}>
-        <MyCalendar selectedDate={selectedDate} onDayPress={onDayPress} />
+        <MyCalendar
+          selectedDate={selectedDate}
+          markedDates={markedDates}
+          onDayPress={onDayPress}
+          onMonthChange={onMonthChange}
+        />
         <DiaryCarousel selectedDate={selectedDate} dateStatus={dateStatus} />
       </View>
       <MySnackbar
-        visible={snackbarVisible}
+        visible={snackbarText !== ''}
         text="미래의 심심 기록은 작성할 수 없습니다"
         onDissmiss={onDissmissSnackbar}
       />

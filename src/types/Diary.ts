@@ -21,6 +21,18 @@ export interface IDiaryCardProps {
   dateStatus: DateStatus;
 }
 
+export interface IDate {
+  year: string;
+  month: '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
+}
+
+export interface IMarkedDates {
+  [key: string]: {
+    marked: boolean;
+    dotColor: string;
+  };
+}
+
 // api 요청 관련 타입
 export interface IDiaryListResponse {
   diaryId: number;
@@ -28,6 +40,11 @@ export interface IDiaryListResponse {
   content: string;
   createdDate: Date;
   modifiedDate: Date;
+}
+
+export interface IDiaryCountResponse {
+  markedDate: string;
+  diaryCount: number;
 }
 
 export interface IDiaryPostRequest {

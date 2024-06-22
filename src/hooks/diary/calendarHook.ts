@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { format, isFuture, isPast, isSameDay } from 'date-fns';
 import { DateData } from 'react-native-calendars';
-import { DateStatus } from '@type/Diary';
+import { DateStatus, IDate } from '@type/Diary';
+import { useDiaryCounts } from '@api/diary/get';
 
 const getToday = () => format(new Date(), 'yyyy-MM-dd');
+const getYear = () => format(new Date(), 'yyyy');
+const getMonth = () => format(new Date(), 'MM') as IDate['month'];
 
 const useCalendarHook = () => {
   const [today] = useState(getToday);
+  const [selectedMonth, setSelectedMonth] = useState<IDate>({ year: getYear(), month: getMonth() });
   const [selectedDate, setSelectedDate] = useState(today);
   const [dateStatus, setDateStatus] = useState<DateStatus>('TODAY');
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+  const { data, isPending, isError } = useDiaryCounts(selectedMonth);
 
   const onDayPress = (day: DateData) => {
     if (isSameDay(day.dateString, new Date(today))) {
@@ -17,15 +22,17 @@ const useCalendarHook = () => {
     } else if (isPast(day.dateString)) {
       setDateStatus('PAST');
     } else if (isFuture(new Date(day.dateString))) {
-      setSnackbarVisible(true);
+      setSnackbarText('미래의 심심 기록은 작성할 수 없습니다');
       return;
     }
     setSelectedDate(day.dateString);
   };
 
-  useEffect(() => {
-    console.log('dateStatus!!', dateStatus);
-  }, [dateStatus]);
+  const onMonthChange = (date: DateData) => {
+    const year = date.year.toString();
+    const month = date.month.toString().padStart(2, '0') as IDate['month'];
+    setSelectedMonth({ year, month });
+  };
 
   return {
     today,
@@ -34,8 +41,12 @@ const useCalendarHook = () => {
     dateStatus,
     setDateStatus,
     onDayPress,
-    snackbarVisible,
-    setSnackbarVisible,
+    onMonthChange,
+    snackbarText,
+    setSnackbarText,
+    markedDates: data || [],
+    isPending,
+    isError,
   };
 };
 

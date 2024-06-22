@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
 import { StyleSheet, View } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateData } from 'react-native-calendars';
 import setLocaleConfig from '@utils/localeConfig';
+import { IDiaryCountResponse as IDiaryCount, IMarkedDates } from '@type/Diary';
+import { dotColors } from '@utils/colors';
 
 setLocaleConfig();
 interface IMyCalendarProps {
   selectedDate: string;
-  onDayPress: (date: any) => void;
+  markedDates: IDiaryCount[];
+  onDayPress: (date: DateData) => void;
+  onMonthChange: (date: DateData) => void;
 }
 
-const MyCalendar = ({ selectedDate, onDayPress }: IMyCalendarProps) => {
+const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IMyCalendarProps) => {
+  const markedDatesList: IMarkedDates = markedDates.reduce((acc, date) => {
+    acc[date.markedDate] = { marked: true, dotColor: dotColors[date.diaryCount] };
+    return acc;
+  }, {} as IMarkedDates);
+
   return (
     <View style={styles.container}>
       <Calendar
@@ -45,8 +54,10 @@ const MyCalendar = ({ selectedDate, onDayPress }: IMyCalendarProps) => {
         enableSwipeMonths
         firstDay={1}
         onDayPress={onDayPress}
+        onMonthChange={onMonthChange}
         markedDates={{
           [selectedDate]: { selected: true },
+          ...markedDatesList,
         }}
         renderArrow={(direction: Direction) => <CalendarArrow direction={direction} />}
       />
