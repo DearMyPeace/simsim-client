@@ -1,5 +1,5 @@
 export interface IDiary {
-  id: string;
+  id: number;
   content: string;
   createdTime: string;
 }
@@ -8,6 +8,8 @@ export interface IDiaryList {
   diaryList: IDiary[];
 }
 
+export const NEW_DIARY = -1;
+
 export type DateStatus = 'FUTURE' | 'TODAY' | 'PAST';
 
 export interface IDiaryCarouselProps {
@@ -15,9 +17,7 @@ export interface IDiaryCarouselProps {
   dateStatus: DateStatus;
 }
 
-export interface IDiaryCardProps {
-  createdTime: string;
-  content: string;
+export interface IDiaryCardProps extends IDiary {
   dateStatus: DateStatus;
 }
 
@@ -39,8 +39,8 @@ export interface IDiaryListResponse {
   diaryId: number;
   userId: number;
   content: string;
-  createdDate: Date;
-  modifiedDate: Date;
+  createdDate: string;
+  modifiedDate: string;
 }
 
 export interface IDiaryCount {
@@ -49,16 +49,21 @@ export interface IDiaryCount {
 }
 
 export interface IDiaryPostRequest {
-  userEmail: string;
-  createdTime: string; // yyyy-MM-dd HH:mm:ss
+  userId: number;
   content: string;
+  createdDate: string; // yyyy-MM-dd HH:mm:ss
+  modifiedDate: string; // yyyy-MM-dd HH:mm:ss (생성 시각과 동일)
 }
 
-export interface IDiaryEditRequest extends IDiaryPostRequest {
-  id: string;
+export interface IDiaryPostResponse {
+  diaryId: number;
+  userId: number;
+  content: string;
+  createdDate: string;
+  modifiedDate: string;
 }
 
-export interface IDiaryDeleteRequest {
-  userEmail: string;
-  id: string;
+export interface IDiaryPatchRequest {
+  id: number;
+  data: IDiaryPostRequest;
 }
