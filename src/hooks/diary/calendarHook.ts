@@ -26,11 +26,13 @@ const useCalendarHook = () => {
       const marked = data?.find((item) => item.markedDate === day.dateString);
       if (!marked) {
         setSnackbarText('작성된 심심 기록이 없습니다');
+        setDateStatus(null);
         return;
       }
       setDateStatus('PAST');
     } else if (isFuture(new Date(day.dateString))) {
       setSnackbarText('미래의 심심 기록은 작성할 수 없습니다');
+      setDateStatus(null);
       return;
     }
     setSelectedDate(day.dateString);

@@ -59,7 +59,6 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
     onSuccess: (data) => {
       setTimeStartWriting(data.createdDate);
-      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
       setSnackbar('수정이 완료되었습니다.');
     },

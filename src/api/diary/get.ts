@@ -1,20 +1,21 @@
 import React from 'react';
 import instance from '@api/axios';
-import { IDate, IDiaryCount, IDiaryListResponse, NEW_DIARY } from '@type/Diary';
+import { DateStatus, IDate, IDiaryCount, IDiaryListResponse, NEW_DIARY } from '@type/Diary';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { format, isFuture, isToday } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { isToday } from 'date-fns';
 
 export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse[]> => {
   const response = await instance.get(`/diary/${targetDate}`);
   return response.data;
 };
 
-export const useDiaryList = (targetDate: string) => {
+export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) => {
+  console.log('useDiaryList', targetDate, dateStatus);
   return useQuery({
     queryKey: ['diaryList', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
-    enabled: !isFuture(new Date(targetDate)) || isToday(new Date(targetDate)),
+    enabled: !!dateStatus,
+    staleTime: Infinity,
     select: (data) => {
       const diaryList = data.map((item) => ({
         id: item.diaryId,
@@ -44,5 +45,7 @@ export const useDiaryCounts = ({ year, month }: IDate): UseQueryResult<IDiaryCou
   return useQuery({
     queryKey: ['diaryCounts', year, month],
     queryFn: () => fetchDiaryCounts({ year, month }),
+    enabled: !!year && !!month,
+    staleTime: Infinity,
   });
 };

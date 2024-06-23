@@ -1,7 +1,10 @@
 import { useDiaryList } from '@api/diary/get';
+import { tense } from '@stores/tense';
+import { useRecoilValue } from 'recoil';
 
 const useDiaryHook = (selectedDate: string) => {
-  const { data, isPending, isError, isSuccess } = useDiaryList(selectedDate);
+  const dateStatus = useRecoilValue(tense);
+  const { data, isPending, isError, isSuccess } = useDiaryList(selectedDate, dateStatus);
 
   return {
     data: data || [],
