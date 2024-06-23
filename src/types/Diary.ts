@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export interface IDiary {
   id: number;
   content: string;
@@ -10,15 +12,15 @@ export interface IDiaryList {
 
 export const NEW_DIARY = -1;
 
-export type DateStatus = 'FUTURE' | 'TODAY' | 'PAST';
+export type DateStatus = 'TODAY' | 'PAST';
 
 export interface IDiaryCarouselProps {
   selectedDate: string;
-  dateStatus: DateStatus;
 }
 
 export interface IDiaryCardProps extends IDiary {
-  dateStatus: DateStatus;
+  isEditing: boolean;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface IDate {
@@ -51,8 +53,8 @@ export interface IDiaryCount {
 export interface IDiaryPostRequest {
   userId: number;
   content: string;
-  createdDate: string; // yyyy-MM-dd HH:mm:ss
-  modifiedDate: string; // yyyy-MM-dd HH:mm:ss (생성 시각과 동일)
+  createdDate: string; // iso8601
+  modifiedDate: string; // iso8601
 }
 
 export interface IDiaryPostResponse {

@@ -7,9 +7,10 @@ import { CARD_WIDTH } from '@utils/Sizing';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
 
-const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
+const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
   const { data, isPending, isError } = useDiaryHook(selectedDate);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
   const flatListRef = useRef<FlatList<IDiary>>(null);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -24,7 +25,8 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
         id={item.id}
         createdTime={item.createdTime}
         content={item.content}
-        dateStatus={dateStatus}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
       />
     ),
     [data],
@@ -48,7 +50,13 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   if (data.length === 0) {
     return (
       <View style={[styles.container, { marginBottom: 28 }]}>
-        <DiaryCard id={NEW_DIARY} createdTime="" content="" dateStatus={dateStatus} />
+        <DiaryCard
+          id={NEW_DIARY}
+          createdTime=""
+          content=""
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
         <DiaryPagination activeIndex={0} diaryList={data} />
       </View>
     );

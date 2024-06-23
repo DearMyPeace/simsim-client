@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { IconButton } from 'react-native-paper';
-import { DateStatus } from '@type/Diary';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import MyIconButton from '@components/common/MyIconButtons';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
@@ -12,8 +12,13 @@ interface DiaryCardHeaderProps {
   timeStartWriting: string;
   isEditing: boolean;
   onSave: () => void;
-  onRemove: () => void;
+  onClose: () => void;
 }
+
+const formatTime = (time: string) => {
+  if (!time) return '';
+  return format(new Date(time), 'a hh:mm', { locale: ko });
+};
 
 const DiaryCardHeader = ({
   isNew,
@@ -21,18 +26,27 @@ const DiaryCardHeader = ({
   timeStartWriting,
   isEditing,
   onSave,
-  onRemove,
+  onClose,
 }: DiaryCardHeaderProps) => {
   return (
     <View style={styles.header}>
-      <MyText>
-        {createdTime || (timeStartWriting && format(timeStartWriting, 'a hh:mm', { locale: ko }))}
-      </MyText>
+      <MyText>{formatTime(createdTime) || formatTime(timeStartWriting)}</MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <IconButton icon="check" size={16} onPress={onSave} style={styles.icon} />
         )}
-        {!isNew && <IconButton icon="close" size={16} onPress={onRemove} style={styles.icon} />}
+        {!isNew &&
+          (isEditing ? (
+            <IconButton icon="close" size={16} onPress={onClose} style={styles.icon} />
+          ) : (
+            <MyIconButton
+              iconSet="Feather"
+              name="trash-2"
+              size={16}
+              onPress={onClose}
+              style={styles.icon}
+            />
+          ))}
       </View>
     </View>
   );

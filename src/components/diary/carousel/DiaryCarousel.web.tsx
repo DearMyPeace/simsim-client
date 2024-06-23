@@ -7,9 +7,10 @@ import { IDiaryCarouselProps, NEW_DIARY } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
 
-const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
+const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { data, isPending, isError, isSuccess } = useDiaryHook(selectedDate);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -36,15 +37,18 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
-        {isSuccess && activeIndex > 0 && <DiaryArrowIcons direction="left" onPress={onLeftPress} />}
-        {isSuccess && activeIndex < data.length - 1 && (
+        {isSuccess && !isEditing && activeIndex > 0 && (
+          <DiaryArrowIcons direction="left" onPress={onLeftPress} />
+        )}
+        {isSuccess && !isEditing && activeIndex < data.length - 1 && (
           <DiaryArrowIcons direction="right" onPress={onRightPress} />
         )}
         <DiaryCard
           id={data[activeIndex]?.id || NEW_DIARY}
           createdTime={data[activeIndex]?.createdTime || ''}
           content={data[activeIndex]?.content || ''}
-          dateStatus={dateStatus}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
         />
       </View>
       <DiaryPagination activeIndex={activeIndex} diaryList={data} />

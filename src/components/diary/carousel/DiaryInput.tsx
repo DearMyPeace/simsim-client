@@ -39,6 +39,9 @@ const DiaryInput = ({
     if (text.length === 1 && !timeStartWriting) {
       setTimeStartWriting(new Date().toISOString());
     }
+    if (text.length === 0 && timeStartWriting) {
+      setTimeStartWriting('');
+    }
     setDiaryInput(text);
   };
 

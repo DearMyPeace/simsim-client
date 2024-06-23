@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, Pressable, Keyboard, TextInput } from 'react-native';
 import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
@@ -9,16 +9,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postDiary } from '@api/diary/post';
 import { deleteDiary } from '@api/diary/delete';
 import { patchDiary } from '@api/diary/patch';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
-import { set } from 'date-fns';
+import { tense } from '@stores/tense';
 
-const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) => {
-  const [diaryInput, setDiaryInput] = useState(id === NEW_DIARY ? '' : content);
-  const [isEditing, setIsEditing] = useState(false);
+const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiaryCardProps) => {
+  const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
+  const dateStatus = useRecoilValue(tense);
   const setSnackbar = useSetRecoilState(snackMessage);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setDiaryInput(id === NEW_DIARY ? '' : content);
+    setIsEditing(false);
+  }, [id, content]);
+
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
     onSuccess: (data) => {
@@ -28,12 +34,10 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
       setSnackbar('저장이 완료되었습니다.');
     },
     onError: (error) => {
-      setSnackbar(error.message);
+      setSnackbar(error.response.data.message);
     },
     onSettled: () => {
       setIsEditing(false);
-      setSnackbar('');
-      setDiaryInput('');
     },
   });
   const removeDiary = useMutation({
@@ -44,55 +48,58 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
       setSnackbar('삭제가 완료되었습니다.');
     },
     onError: (error) => {
-      setSnackbar(error.message);
+      setSnackbar(error.response.data.message);
     },
     onSettled: () => {
       setIsEditing(false);
-      setSnackbar('');
       setDiaryInput('');
     },
   });
   const editDiary = useMutation({
     mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
     onSuccess: (data) => {
-      setTimeStartWriting(data.createdTime);
+      setTimeStartWriting(data.createdDate);
       queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
       setSnackbar('수정이 완료되었습니다.');
     },
     onError: (error) => {
-      setSnackbar(error.message);
+      console.log('editDiary error', error);
+      setSnackbar(error.response.data.message);
     },
     onSettled: () => {
       console.log('editDiary settled');
       setIsEditing(false);
-      setSnackbar('');
-      setDiaryInput('');
     },
   });
 
-  const onRemove = () => {
+  const onClose = () => {
     if (id === NEW_DIARY) return;
-    // 편집 취소
     if (isEditing) {
       setIsEditing(false);
+      setDiaryInput(content);
+      setSnackbar('수정이 취소되었습니다.');
       return;
     }
-    // 삭제
     removeDiary.mutate(id);
   };
 
   const onSave = () => {
-    console.log('onSave', id, diaryInput);
-    console.log('timeStartWriting', timeStartWriting);
-    if (diaryInput === '') return;
+    if (diaryInput === '') {
+      setSnackbar('입력된 내용이 없습니다.');
+      if (id === NEW_DIARY) {
+        setTimeStartWriting('');
+        setIsEditing(false);
+      }
+      return;
+    }
+    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
       userId: 1, // TODO: userId 수정
       content: diaryInput,
-      createdDate: timeStartWriting,
-      modifiedDate: timeStartWriting,
+      createdDate: cretatedDate,
+      modifiedDate: cretatedDate,
     };
-    console.log('onSave', id, data);
     if (id === NEW_DIARY) {
       addNewDiary.mutate(data);
     } else {
@@ -114,10 +121,10 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
       <View style={styles.card}>
         <DiaryCardHeader
           isNew={id === NEW_DIARY}
-          createdTime={createdTime}
+          createdTime={content ? createdTime : ''}
           timeStartWriting={timeStartWriting}
           isEditing={isEditing}
-          onRemove={onRemove}
+          onClose={onClose}
           onSave={onSave}
         />
         {dateStatus === 'TODAY' ? (
@@ -133,7 +140,10 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
             placeholder={content}
           />
         ) : (
-          <DiaryContent isEmpty={createdTime === ''} content={content} />
+          <DiaryContent
+            isEmpty={createdTime === ''}
+            content={content || '작성된 일기가 없습니다'}
+          />
         )}
       </View>
     </Pressable>

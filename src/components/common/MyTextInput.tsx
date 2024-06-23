@@ -1,10 +1,10 @@
-import React, { forwardRef, Ref } from 'react';
+import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, Platform } from 'react-native';
 interface MyTextInputProps extends TextInputProps {
   textAlign?: 'left' | 'center' | 'right';
 }
 
-const MyTextInput = forwardRef(({ textAlign = 'left', style, ...rest }: MyTextInputProps) => {
+const MyTextInput = ({ textAlign = 'left', style, ...rest }: MyTextInputProps) => {
   return (
     <TextInput
       style={[{ textAlign }, styles.input, style]}
@@ -12,7 +12,7 @@ const MyTextInput = forwardRef(({ textAlign = 'left', style, ...rest }: MyTextIn
       {...rest}
     />
   );
-});
+};
 
 export default MyTextInput;
 
@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     borderWidth: 0,
-    outlineStyle: 'none',
     ...Platform.select({
       web: {
         height: '100%',
+        outlineStyle: 'none',
       },
     }),
   },
