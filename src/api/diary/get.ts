@@ -20,7 +20,6 @@ export const useDiaryList = (targetDate: string) => {
         id: item.diaryId,
         content: item.content,
         createdTime: item.createdDate,
-        // createdTime: format(new Date(item.createdDate), 'a hh:mm', { locale: ko }),
       }));
       const today = isToday(new Date(targetDate));
       today &&

@@ -28,10 +28,10 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
     onSuccess: (data) => {
-      setTimeStartWriting(data.createdDate);
       queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
       setSnackbar('저장이 완료되었습니다.');
+      setTimeStartWriting('');
     },
     onError: (error) => {
       setSnackbar(error.response.data.message);
@@ -64,11 +64,9 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       setSnackbar('수정이 완료되었습니다.');
     },
     onError: (error) => {
-      console.log('editDiary error', error);
       setSnackbar(error.response.data.message);
     },
     onSettled: () => {
-      console.log('editDiary settled');
       setIsEditing(false);
     },
   });
