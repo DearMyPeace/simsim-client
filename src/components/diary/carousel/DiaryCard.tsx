@@ -121,7 +121,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       <View style={styles.card}>
         <DiaryCardHeader
           isNew={id === NEW_DIARY}
-          createdTime={content ? createdTime : ''}
+          createdTime={id !== NEW_DIARY ? createdTime : ''}
           timeStartWriting={timeStartWriting}
           isEditing={isEditing}
           onClose={onClose}
