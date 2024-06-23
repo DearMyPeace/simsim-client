@@ -13,6 +13,8 @@ const uncompiled = [
   'react-native-swipe-gestures',
   'react-native-paper',
   'react-native-element-dropdown',
+  'react-native-chart-kit',
+  'react-native-gesture-handler',
 ];
 
 const babelLoaderConfiguration = {
@@ -56,7 +58,12 @@ module.exports = {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration],
   },
 
-  plugins: [new HtmlWebpackPlugin({ template: './public/index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+    }),
+  ],
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
