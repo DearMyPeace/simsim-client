@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Platform, Pressable, Keyboard, TextInput } from 'react-native';
 import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
@@ -9,69 +9,76 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postDiary } from '@api/diary/post';
 import { deleteDiary } from '@api/diary/delete';
 import { patchDiary } from '@api/diary/patch';
+import { useSetRecoilState } from 'recoil';
+import { snackMessage } from '@stores/snackMessage';
+import { set } from 'date-fns';
 
 const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState(id === NEW_DIARY ? '' : content);
   const [isEditing, setIsEditing] = useState(false);
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
-  const diaryInputRef = useRef<TextInput>(null);
+  const setSnackbar = useSetRecoilState(snackMessage);
   const queryClient = useQueryClient();
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
-    onSuccess: () => {
-      console.log('postDiary success');
-      // 스낵바 전역 설정
-      setTimeStartWriting('');
+    onSuccess: (data) => {
+      setTimeStartWriting(data.createdDate);
       queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      setSnackbar('저장이 완료되었습니다.');
     },
     onError: (error) => {
-      console.log('postDiary error', error);
-      // 스낵바 전역 설정
+      setSnackbar(error.message);
     },
     onSettled: () => {
-      console.log('postDiary settled');
       setIsEditing(false);
+      setSnackbar('');
+      setDiaryInput('');
     },
   });
   const removeDiary = useMutation({
     mutationFn: (id: number) => deleteDiary(id),
     onSuccess: () => {
-      console.log('deleteDiary success');
       queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
-      // 스낵바 전역 설정
+      setSnackbar('삭제가 완료되었습니다.');
     },
     onError: (error) => {
-      console.log('deleteDiary error', error);
-      // 스낵바 전역 설정
+      setSnackbar(error.message);
     },
     onSettled: () => {
-      console.log('deleteDiary settled');
+      setIsEditing(false);
+      setSnackbar('');
+      setDiaryInput('');
     },
   });
   const editDiary = useMutation({
     mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
-    onSuccess: () => {
-      console.log('editDiary success');
+    onSuccess: (data) => {
+      setTimeStartWriting(data.createdTime);
       queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
       queryClient.invalidateQueries({ queryKey: ['diaryList'] });
-      // 스낵바 전역 설정
+      setSnackbar('수정이 완료되었습니다.');
     },
     onError: (error) => {
-      console.log('editDiary error', error);
-      // 스낵바 전역 설정
+      setSnackbar(error.message);
     },
     onSettled: () => {
       console.log('editDiary settled');
       setIsEditing(false);
+      setSnackbar('');
+      setDiaryInput('');
     },
   });
 
   const onRemove = () => {
-    // isEditing
     if (id === NEW_DIARY) return;
-    console.log('onRemove', id);
+    // 편집 취소
+    if (isEditing) {
+      setIsEditing(false);
+      return;
+    }
+    // 삭제
     removeDiary.mutate(id);
   };
 
@@ -94,7 +101,6 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
   };
 
   const onKeyboardDismiss = () => {
-    diaryInputRef.current?.blur();
     setIsEditing(false);
     Keyboard.dismiss();
   };
@@ -116,7 +122,6 @@ const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) =>
         />
         {dateStatus === 'TODAY' ? (
           <DiaryInput
-            diaryInputRef={diaryInputRef}
             id={id}
             isNew={id === NEW_DIARY}
             diaryInput={diaryInput}

@@ -4,18 +4,12 @@ import MyCalendar from '@components/diary/calendar/MyCalendar';
 import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 import useCalendarHook from '@hooks/diary/calendarHook';
 import MySnackbar from '@components/common/MySnackbar';
+import { useRecoilState } from 'recoil';
+import { snackMessage } from '@stores/snackMessage';
 
 const DiaryScreen = () => {
-  const {
-    selectedDate,
-    onDayPress,
-    onMonthChange,
-    dateStatus,
-    snackbarText,
-    setSnackbarText,
-    markedDates,
-  } = useCalendarHook();
-
+  const { selectedDate, onDayPress, onMonthChange, dateStatus, markedDates } = useCalendarHook();
+  const [snackbarText, setSnackbarText] = useRecoilState(snackMessage);
   const onDissmissSnackbar = () => {
     setSnackbarText('');
   };

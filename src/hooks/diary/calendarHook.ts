@@ -3,6 +3,8 @@ import { format, isFuture, isPast, isSameDay } from 'date-fns';
 import { DateData } from 'react-native-calendars';
 import { DateStatus, IDate } from '@type/Diary';
 import { useDiaryCounts } from '@api/diary/get';
+import { useSetRecoilState } from 'recoil';
+import { snackMessage } from '@stores/snackMessage';
 
 const getToday = () => format(new Date(), 'yyyy-MM-dd');
 const getYear = () => format(new Date(), 'yyyy');
@@ -13,7 +15,7 @@ const useCalendarHook = () => {
   const [selectedMonth, setSelectedMonth] = useState<IDate>({ year: getYear(), month: getMonth() });
   const [selectedDate, setSelectedDate] = useState<string>(today);
   const [dateStatus, setDateStatus] = useState<DateStatus>('TODAY');
-  const [snackbarText, setSnackbarText] = useState('');
+  const setSnackbarText = useSetRecoilState(snackMessage);
   const { data, isPending, isError } = useDiaryCounts(selectedMonth);
 
   const onDayPress = (day: DateData) => {
@@ -48,8 +50,6 @@ const useCalendarHook = () => {
     setDateStatus,
     onDayPress,
     onMonthChange,
-    snackbarText,
-    setSnackbarText,
     markedDates: data || [],
     isPending,
     isError,

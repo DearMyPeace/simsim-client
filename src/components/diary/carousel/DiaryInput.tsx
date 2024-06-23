@@ -11,7 +11,6 @@ import MyTextInput from '@components/common/MyTextInput';
 import LengthCheckView from '@components/common/LengthCheckView';
 
 interface IDiaryInputProps {
-  diaryInputRef: RefObject<TextInput>;
   id: number;
   isNew: boolean;
   diaryInput: string;
@@ -26,7 +25,6 @@ interface IDiaryInputProps {
 const MAX_LENGTH = 200;
 
 const DiaryInput = ({
-  diaryInputRef,
   isNew,
   diaryInput,
   setDiaryInput,
@@ -56,7 +54,6 @@ const DiaryInput = ({
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
         <View style={[styles.content, isNew && { width: '100%', height: '100%' }]}>
           <MyTextInput
-            ref={diaryInputRef}
             multiline
             inputMode="text"
             value={diaryInput}

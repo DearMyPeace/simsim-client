@@ -4,12 +4,9 @@ interface MyTextInputProps extends TextInputProps {
   textAlign?: 'left' | 'center' | 'right';
 }
 
-const MyTextInput = forwardRef((props: MyTextInputProps, ref: Ref<TextInput>) => {
-  const { textAlign = 'left', style, ...rest } = props;
-
+const MyTextInput = forwardRef(({ textAlign = 'left', style, ...rest }: MyTextInputProps) => {
   return (
     <TextInput
-      ref={ref}
       style={[{ textAlign }, styles.input, style]}
       placeholderTextColor="#666666"
       {...rest}
