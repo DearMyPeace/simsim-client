@@ -3,6 +3,7 @@ import instance from '@api/axios';
 import { IDate, IDiaryCount, IDiaryListResponse, NEW_DIARY } from '@type/Diary';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { format, isFuture, isToday } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse[]> => {
   const response = await instance.get(`/diary/${targetDate}`);
@@ -18,7 +19,7 @@ export const useDiaryList = (targetDate: string) => {
       const diaryList = data.map((item) => ({
         id: item.diaryId,
         content: item.content,
-        createdTime: format(new Date(item.createdDate), 'HH:mm a'),
+        createdTime: format(new Date(item.createdDate), 'a hh:mm', { locale: ko }),
       }));
       const today = isToday(new Date(targetDate));
       today &&

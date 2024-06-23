@@ -65,7 +65,6 @@ const DiaryInput = ({
             autoComplete="off"
             maxLength={200}
             onFocus={onFocus}
-            // onBlur={onBlur}
             placeholder={placeholder}
             style={[isNew && styles.empty]}
           />

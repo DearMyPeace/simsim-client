@@ -4,6 +4,7 @@ import MyText from '@components/common/MyText';
 import { IconButton } from 'react-native-paper';
 import { DateStatus } from '@type/Diary';
 import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
@@ -24,7 +25,9 @@ const DiaryCardHeader = ({
 }: DiaryCardHeaderProps) => {
   return (
     <View style={styles.header}>
-      <MyText>{createdTime || timeStartWriting}</MyText>
+      <MyText>
+        {createdTime || (timeStartWriting && format(timeStartWriting, 'a hh:mm', { locale: ko }))}
+      </MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <IconButton icon="check" size={16} onPress={onSave} style={styles.icon} />
