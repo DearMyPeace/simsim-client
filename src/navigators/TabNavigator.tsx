@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Diary from '@navigators/DiaryStackNavigator';
-import MyPage from '@screens/mypage/MyPage';
+import Shop from '@navigators/ShopStackNavigator';
 import AiLetter from '@navigators/AiLetterStackNavigator';
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
@@ -12,6 +12,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      // initialRouteName="Shop"
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
@@ -53,8 +54,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
-        component={MyPage}
+        name="Shop"
+        component={Shop}
         options={{
           tabBarLabel: '조각상점',
           tabBarIcon: ShopIcon,

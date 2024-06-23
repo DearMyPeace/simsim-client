@@ -12,6 +12,7 @@ const uncompiled = [
   'react-native-calendars',
   'react-native-swipe-gestures',
   'react-native-paper',
+  'react-native-element-dropdown',
 ];
 
 const babelLoaderConfiguration = {
@@ -19,7 +20,7 @@ const babelLoaderConfiguration = {
   include: [
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
-    uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
+    ...uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
   ],
   use: {
     loader: 'babel-loader',
@@ -32,7 +33,10 @@ const babelLoaderConfiguration = {
 
 const imageLoaderConfiguration = {
   test: /\.(gif|jpe?g|png|svg|ttf)$/,
-  include: [uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`))],
+  include: [
+    path.resolve(appDirectory, 'src/assets'),
+    ...uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
+  ],
   use: {
     loader: 'url-loader',
     options: {
