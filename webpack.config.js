@@ -14,6 +14,7 @@ const uncompiled = [
   'react-native-paper',
   'react-native-element-dropdown',
   '@invertase/react-native-apple-authentication',
+  'react-native-encrypted-storage',
 ];
 
 const babelLoaderConfiguration = {

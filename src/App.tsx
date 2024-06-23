@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
 import SettingPage from '@screens/setting/SettingPage';
 import LoginScreen from '@screens/login/LoginScreen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 
 const App = () => {
   const Stack = createStackNavigator();
   const queryClient = new QueryClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await getToken();
+      if (token) {
+        setIsLoggedIn(true);
+      }
+    };
+
+    checkToken();
+  }, []);
+
+  const handleLogin = async () => {
+    const token = 'dummy-auth-token'; // 실제 로그인 API 호출을 통해 얻은 토큰
+    await saveToken(token);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = async () => {
+    await removeToken();
+    setIsLoggedIn(false);
+  };
 
   return (
     <RecoilRoot>
