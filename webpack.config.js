@@ -13,6 +13,7 @@ const uncompiled = [
   'react-native-swipe-gestures',
   'react-native-paper',
   'react-native-element-dropdown',
+  '@invertase/react-native-apple-authentication',
 ];
 
 const babelLoaderConfiguration = {
@@ -55,8 +56,12 @@ module.exports = {
   module: {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration],
   },
-
-  plugins: [new HtmlWebpackPlugin({ template: './public/index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^@invertase\/react-native-apple-authentication$/,
+    }),
+  ],
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
