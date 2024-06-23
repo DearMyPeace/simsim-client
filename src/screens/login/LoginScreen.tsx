@@ -4,6 +4,7 @@ import GoogleLogin from '@screens/login/GoogleLogin';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
+
 import logoL from '@assets/logo/left.png';
 import logoC from '@assets/logo/center.png';
 import logoR from '@assets/logo/right.png';
@@ -36,9 +37,9 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={logoL} style={styles.logoImage} />
+        <Image source={logoL} style={styles.logoImageLeft} />
         <Image source={logoC} style={styles.logoImageCenter} />
-        <Image source={logoR} style={styles.logoImage} />
+        <Image source={logoR} style={styles.logoImageRight} />
       </View>
       <MyText style={styles.title}>Dear my peace</MyText>
       <View style={styles.separatorWrapper}>
@@ -108,23 +109,27 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
   },
-  logoImage: {
-    width: 50,
-    height: 50,
+  logoImageLeft: {
+    width: 26,
+    height: 83,
+    marginTop: 20,
+    marginRight: 8,
   },
   logoImageCenter: {
-    width: 70,
-    height: 70,
-    marginHorizontal: -10,
+    width: 42,
+    height: 63,
+    marginRight: -45,
+  },
+  logoImageRight: {
+    width: 73,
+    height: 107,
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Kalam',
-    marginBottom: 20,
+    // fontFamily: 'Kalam',
+    fontFamily: 'GowunBatang-Bold',
+    marginBottom: 72,
   },
   separatorWrapper: {
     flexDirection: 'row',
