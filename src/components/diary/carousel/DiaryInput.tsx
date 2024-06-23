@@ -66,7 +66,6 @@ const DiaryInput = ({
             maxLength={200}
             onFocus={onFocus}
             placeholder={placeholder}
-            style={[isNew && styles.empty]}
           />
         </View>
       </ScrollView>
@@ -82,12 +81,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 10,
-  },
-  empty: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
