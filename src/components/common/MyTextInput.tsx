@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import { StyleSheet, TextInput, TextInputProps, Platform } from 'react-native';
+interface MyTextInputProps extends TextInputProps {
+  textAlign?: 'left' | 'center' | 'right';
+}
 
-const MyTextInput = ({ textAlign = 'left', style, ...props }: TextInputProps) => {
-  return <TextInput style={[{ textAlign }, styles.input, style]} {...props} />;
-};
+const MyTextInput = forwardRef((props: MyTextInputProps, ref: Ref<TextInput>) => {
+  const { textAlign = 'left', style, ...rest } = props;
+
+  return (
+    <TextInput
+      ref={ref}
+      style={[{ textAlign }, styles.input, style]}
+      placeholderTextColor="#666666"
+      {...rest}
+    />
+  );
+});
 
 export default MyTextInput;
 

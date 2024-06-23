@@ -1,15 +1,15 @@
-import React, { act, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryPagination from '@components/diary/carousel/DiaryPagination';
 import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
-import { IDiaryCarouselProps } from '@type/Diary';
+import { IDiaryCarouselProps, NEW_DIARY } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
 
 const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data, isPending, isError } = useDiaryHook(selectedDate);
+  const { data, isPending, isError, isSuccess } = useDiaryHook(selectedDate);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -36,11 +36,12 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
-        {activeIndex > 0 && <DiaryArrowIcons direction="left" onPress={onLeftPress} />}
-        {activeIndex < data.length - 1 && (
+        {isSuccess && activeIndex > 0 && <DiaryArrowIcons direction="left" onPress={onLeftPress} />}
+        {isSuccess && activeIndex < data.length - 1 && (
           <DiaryArrowIcons direction="right" onPress={onRightPress} />
         )}
         <DiaryCard
+          id={data[activeIndex]?.id || NEW_DIARY}
           createdTime={data[activeIndex]?.createdTime || ''}
           content={data[activeIndex]?.content || ''}
           dateStatus={dateStatus}

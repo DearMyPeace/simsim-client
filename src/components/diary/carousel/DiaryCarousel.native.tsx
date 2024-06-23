@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, FlatList, ListRenderItem, ViewToken } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryPagination from '@components/diary/carousel/DiaryPagination';
-import { IDiary, IDiaryCarouselProps } from '@type/Diary';
+import { IDiary, IDiaryCarouselProps, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
@@ -20,14 +20,17 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
 
   const renderDiaries: ListRenderItem<IDiary> = useCallback(
     ({ item }) => (
-      <DiaryCard createdTime={item.createdTime} content={item.content} dateStatus={dateStatus} />
+      <DiaryCard
+        id={item.id}
+        createdTime={item.createdTime}
+        content={item.content}
+        dateStatus={dateStatus}
+      />
     ),
     [data],
   );
 
   useEffect(() => {
-    console.log('selectedDate changed:', selectedDate);
-    console.log('flatListRef.current:', flatListRef.current);
     if (flatListRef.current) {
       flatListRef.current.scrollToIndex({ index: 0, animated: true });
       setActiveIndex(0);
@@ -45,7 +48,7 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
   if (data.length === 0) {
     return (
       <View style={[styles.container, { marginBottom: 28 }]}>
-        <DiaryCard createdTime="" content="" dateStatus={dateStatus} />
+        <DiaryCard id={NEW_DIARY} createdTime="" content="" dateStatus={dateStatus} />
         <DiaryPagination activeIndex={0} diaryList={data} />
       </View>
     );
@@ -68,7 +71,7 @@ const DiaryCarousel = ({ selectedDate, dateStatus }: IDiaryCarouselProps) => {
         decelerationRate="fast"
         data={data}
         renderItem={renderDiaries}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         keyboardShouldPersistTaps="always"

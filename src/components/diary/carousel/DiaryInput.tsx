@@ -1,30 +1,51 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import React, { RefObject } from 'react';
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  Platform,
+} from 'react-native';
 import MyTextInput from '@components/common/MyTextInput';
-import { DateStatus } from '@type/Diary';
 import LengthCheckView from '@components/common/LengthCheckView';
 
 interface IDiaryInputProps {
+  diaryInputRef: RefObject<TextInput>;
+  id: number;
   isNew: boolean;
-  content: string;
-  dateStatus: DateStatus;
+  diaryInput: string;
+  setDiaryInput: (diaryInput: string) => void;
+  timeStartWriting: string;
+  setTimeStartWriting: (timeStartWriting: string) => void;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
+  placeholder: string;
 }
 
-// TODO: content랑 diaryContent 구분
 const MAX_LENGTH = 200;
-const DiaryInput = ({ isNew, content, dateStatus, isEditing, setIsEditing }: IDiaryInputProps) => {
-  const [diaryContent, setDiaryContent] = useState(isNew ? '' : content);
 
+const DiaryInput = ({
+  diaryInputRef,
+  isNew,
+  diaryInput,
+  setDiaryInput,
+  timeStartWriting,
+  setTimeStartWriting,
+  isEditing,
+  setIsEditing,
+  placeholder,
+}: IDiaryInputProps) => {
   const onChangeText = (text: string) => {
     if (text.length > 200) return;
-    setDiaryContent(text);
+    if (text.length === 1 && !timeStartWriting) {
+      setTimeStartWriting(new Date().toISOString());
+    }
+    setDiaryInput(text);
   };
 
   const onFocus = () => {
     setIsEditing(true);
-    console.log('focus');
   };
 
   return (
@@ -35,20 +56,22 @@ const DiaryInput = ({ isNew, content, dateStatus, isEditing, setIsEditing }: IDi
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="always">
         <View style={[styles.content, isNew && { width: '100%', height: '100%' }]}>
           <MyTextInput
+            ref={diaryInputRef}
             multiline
             inputMode="text"
-            value={diaryContent}
+            value={diaryInput}
             onChangeText={onChangeText}
             autoCorrect={false}
             autoComplete="off"
             maxLength={200}
             onFocus={onFocus}
-            placeholder={content}
+            // onBlur={onBlur}
+            placeholder={placeholder}
             style={[isNew && styles.empty]}
           />
         </View>
       </ScrollView>
-      {isEditing && <LengthCheckView data={content} maxLength={MAX_LENGTH} />}
+      {isEditing && <LengthCheckView data={diaryInput} maxLength={MAX_LENGTH} />}
     </KeyboardAvoidingView>
   );
 };
@@ -59,7 +82,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 10,
+    padding: 10,
   },
   empty: {
     flex: 1,

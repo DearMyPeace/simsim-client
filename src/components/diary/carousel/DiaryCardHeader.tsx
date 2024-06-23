@@ -2,23 +2,34 @@ import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { IconButton } from 'react-native-paper';
+import { DateStatus } from '@type/Diary';
+import { format } from 'date-fns';
 
 interface DiaryCardHeaderProps {
+  isNew: boolean;
   createdTime: string;
+  timeStartWriting: string;
   isEditing: boolean;
   onSave: () => void;
   onRemove: () => void;
 }
 
-const DiaryCardHeader = ({ createdTime, isEditing, onSave, onRemove }: DiaryCardHeaderProps) => {
+const DiaryCardHeader = ({
+  isNew,
+  createdTime,
+  timeStartWriting,
+  isEditing,
+  onSave,
+  onRemove,
+}: DiaryCardHeaderProps) => {
   return (
     <View style={styles.header}>
-      <MyText>{createdTime}</MyText>
+      <MyText>{createdTime || timeStartWriting}</MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <IconButton icon="check" size={16} onPress={onSave} style={styles.icon} />
         )}
-        <IconButton icon="close" size={16} onPress={onRemove} style={styles.icon} />
+        {!isNew && <IconButton icon="close" size={16} onPress={onRemove} style={styles.icon} />}
       </View>
     </View>
   );
@@ -32,6 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    minHeight: 32,
   },
   icons: {
     flexDirection: 'row',

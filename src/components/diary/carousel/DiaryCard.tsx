@@ -1,35 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Platform, Pressable, Keyboard } from 'react-native';
-import { IDiaryCardProps } from '@type/Diary';
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet, Platform, Pressable, Keyboard, TextInput } from 'react-native';
+import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import DiaryInput from '@components/diary/carousel/DiaryInput';
 import DiaryContent from '@components/diary/carousel/DiaryContent';
 import DiaryCardHeader from '@components/diary/carousel/DiaryCardHeader';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postDiary } from '@api/diary/post';
+import { deleteDiary } from '@api/diary/delete';
+import { patchDiary } from '@api/diary/patch';
 
-const DiaryCard = ({ createdTime, content, dateStatus }: IDiaryCardProps) => {
-  const [diaryInput, setDiaryInput] = useState(content);
+const DiaryCard = ({ id, createdTime, content, dateStatus }: IDiaryCardProps) => {
+  const [diaryInput, setDiaryInput] = useState(id === NEW_DIARY ? '' : content);
   const [isEditing, setIsEditing] = useState(false);
+  const [timeStartWriting, setTimeStartWriting] = useState<string>('');
+  const diaryInputRef = useRef<TextInput>(null);
+  const queryClient = useQueryClient();
+  const addNewDiary = useMutation({
+    mutationFn: (data: IDiaryPostRequest) => postDiary(data),
+    onSuccess: () => {
+      console.log('postDiary success');
+      // 스낵바 전역 설정
+      setTimeStartWriting('');
+      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+    },
+    onError: (error) => {
+      console.log('postDiary error', error);
+      // 스낵바 전역 설정
+    },
+    onSettled: () => {
+      console.log('postDiary settled');
+      setIsEditing(false);
+    },
+  });
+  const removeDiary = useMutation({
+    mutationFn: (id: number) => deleteDiary(id),
+    onSuccess: () => {
+      console.log('deleteDiary success');
+      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      // 스낵바 전역 설정
+    },
+    onError: (error) => {
+      console.log('deleteDiary error', error);
+      // 스낵바 전역 설정
+    },
+    onSettled: () => {
+      console.log('deleteDiary settled');
+    },
+  });
+  const editDiary = useMutation({
+    mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
+    onSuccess: () => {
+      console.log('editDiary success');
+      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      // 스낵바 전역 설정
+    },
+    onError: (error) => {
+      console.log('editDiary error', error);
+      // 스낵바 전역 설정
+    },
+    onSettled: () => {
+      console.log('editDiary settled');
+      setIsEditing(false);
+    },
+  });
 
-  // 편집 버튼 없이 텍스트 박스 클릭 시 편집
-  // 편집 하는 중에는 웹에서 저장 버튼 띄워주기
   const onRemove = () => {
-    console.log('삭제');
+    // isEditing
+    if (id === NEW_DIARY) return;
+    console.log('onRemove', id);
+    removeDiary.mutate(id);
   };
 
   const onSave = () => {
-    console.log('저장');
-  };
-
-  useEffect(() => {
-    setDiaryInput(content);
-  }, [content, dateStatus]);
-
-  const onChangeText = (text: string) => {
-    if (text.length > 200) return;
-    setDiaryInput(text);
+    console.log('onSave', id, diaryInput);
+    console.log('timeStartWriting', timeStartWriting);
+    if (diaryInput === '') return;
+    const data = {
+      userId: 1, // TODO: userId 수정
+      content: diaryInput,
+      createdDate: timeStartWriting,
+      modifiedDate: timeStartWriting,
+    };
+    console.log('onSave', id, data);
+    if (id === NEW_DIARY) {
+      addNewDiary.mutate(data);
+    } else {
+      editDiary.mutate({ id, data });
+    }
   };
 
   const onKeyboardDismiss = () => {
+    diaryInputRef.current?.blur();
+    setIsEditing(false);
     Keyboard.dismiss();
   };
 
@@ -40,21 +106,26 @@ const DiaryCard = ({ createdTime, content, dateStatus }: IDiaryCardProps) => {
       disabled={Platform.OS === 'web'}
     >
       <View style={styles.card}>
-        {createdTime !== '' && (
-          <DiaryCardHeader
-            createdTime={createdTime}
-            isEditing={isEditing}
-            onRemove={onRemove}
-            onSave={onSave}
-          />
-        )}
+        <DiaryCardHeader
+          isNew={id === NEW_DIARY}
+          createdTime={createdTime}
+          timeStartWriting={timeStartWriting}
+          isEditing={isEditing}
+          onRemove={onRemove}
+          onSave={onSave}
+        />
         {dateStatus === 'TODAY' ? (
           <DiaryInput
-            isNew={createdTime === ''}
-            content={diaryInput}
-            dateStatus={dateStatus}
+            diaryInputRef={diaryInputRef}
+            id={id}
+            isNew={id === NEW_DIARY}
+            diaryInput={diaryInput}
+            setDiaryInput={setDiaryInput}
+            timeStartWriting={timeStartWriting}
+            setTimeStartWriting={setTimeStartWriting}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
+            placeholder={content}
           />
         ) : (
           <DiaryContent isEmpty={createdTime === ''} content={content} />
