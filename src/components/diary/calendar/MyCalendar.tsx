@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
-import { format } from 'date-fns';
 import setLocaleConfig from '@utils/localeConfig';
+import { IDiaryCount, IMarkedDates } from '@type/Diary';
+import { dotColors } from '@utils/colors';
 
 setLocaleConfig();
+interface IMyCalendarProps {
+  selectedDate: string;
+  markedDates: IDiaryCount[];
+  onDayPress: (date: DateData) => void;
+  onMonthChange: (date: DateData) => void;
+}
 
-const MyCalendar = () => {
-  const today = format(new Date(), 'yyyy-MM-dd');
-  const [selectedDate, setSelectedDate] = useState(today);
-
-  useEffect(() => {
-    console.log('날짜 선택', selectedDate);
-  }, [selectedDate]);
-
-  const onDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
-    console.log('click', day.dateString);
-  };
+const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IMyCalendarProps) => {
+  const markedDatesList: IMarkedDates = markedDates.reduce((acc, date) => {
+    acc[date.markedDate] = {
+      selected: date.markedDate === selectedDate,
+      marked: date.markedDate !== selectedDate,
+      dotColor: dotColors[date.diaryCount],
+    };
+    return acc;
+  }, {} as IMarkedDates);
 
   return (
     <View style={styles.container}>
@@ -38,12 +42,7 @@ const MyCalendar = () => {
           selectedDayTextColor: '#FFFFFF',
           todayTextColor: '#C48E24',
           'stylesheet.calendar.header': {
-            headerContainer: {
-              position: 'absolute',
-              flexDirection: 'row',
-              left: 10,
-              gap: 20,
-            },
+            headerContainer: { position: 'absolute', flexDirection: 'row', left: 10, gap: 20 },
             header: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
@@ -59,8 +58,10 @@ const MyCalendar = () => {
         enableSwipeMonths
         firstDay={1}
         onDayPress={onDayPress}
+        onMonthChange={onMonthChange}
         markedDates={{
           [selectedDate]: { selected: true },
+          ...markedDatesList,
         }}
         renderArrow={(direction: Direction) => <CalendarArrow direction={direction} />}
       />
@@ -72,7 +73,6 @@ export default MyCalendar;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
     paddingTop: 10,
     paddingBottom: 16,
   },
@@ -82,5 +82,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 14,
     padding: 10,
+    ...Platform.select({
+      web: {
+        marginHorizontal: 28,
+      },
+    }),
   },
 });

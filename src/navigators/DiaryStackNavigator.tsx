@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import DiaryPage from '@screens/diary/DiaryPage';
+import DiaryScreen from '@screens/diary/DiaryScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +32,7 @@ const DiaryStackNavigator = () => (
         },
       }}
       name="Details"
-      component={DiaryPage}
+      component={DiaryScreen}
     />
   </Stack.Navigator>
 );

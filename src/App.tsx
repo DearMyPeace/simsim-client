@@ -6,12 +6,20 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import TabNavigator from '@navigators/TabNavigator';
 import SettingPage from '@screens/setting/SettingPage';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        staleTime: 1000 * 60 * 5,
+        placeholderData: keepPreviousData,
+      },
+    },
+  });
 
   return (
     <RecoilRoot>
@@ -37,6 +45,8 @@ const App = () => {
                     headerStyle: { backgroundColor: 'white' },
                     headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
                     headerShadowVisible: false,
+                    headerBackTitleVisible: false,
+                    headerTintColor: 'black',
                   }}
                 />
               </Stack.Navigator>
