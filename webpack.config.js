@@ -15,6 +15,9 @@ const uncompiled = [
   'react-native-element-dropdown',
   '@invertase/react-native-apple-authentication',
   'react-native-encrypted-storage',
+  'react-native-chart-kit',
+  'react-native-gesture-handler',
+  'react-native-reanimated',
 ];
 
 const babelLoaderConfiguration = {
@@ -28,7 +31,7 @@ const babelLoaderConfiguration = {
     loader: 'babel-loader',
     options: {
       cacheDirectory: true,
-      plugins: ['react-native-web'],
+      plugins: ['react-native-web', 'react-native-reanimated/plugin'],
     },
   },
 };
@@ -59,8 +62,11 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+    }),
     new webpack.IgnorePlugin({
-      resourceRegExp: /^@invertase\/react-native-apple-authentication$/,
+      resourceRegExp: /^@invertase\/react-native-apple-authentication$/, /react-native-reanimated/,
     }),
   ],
   resolve: {
