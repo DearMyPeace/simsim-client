@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const appDirectory = path.resolve(__dirname, './');
 
@@ -18,6 +19,7 @@ const uncompiled = [
   'react-native-chart-kit',
   'react-native-gesture-handler',
   'react-native-reanimated',
+  'react-native-encrypted-storage',
 ];
 
 const babelLoaderConfiguration = {
@@ -71,6 +73,10 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /react-native-reanimated/,
     }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /react-native-encrypted-storage/,
+    }),
+    new Dotenv(),
   ],
   resolve: {
     alias: {
