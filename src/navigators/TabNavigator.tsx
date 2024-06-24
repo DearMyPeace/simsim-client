@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Diary from '@navigators/DiaryStackNavigator';
 import Shop from '@navigators/ShopStackNavigator';
 import AiLetter from '@navigators/AiLetterStackNavigator';
+import Piece from '@navigators/PieceStackNavigator';
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
 import { AiLetterIcon, CalendarIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
@@ -12,7 +13,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      // initialRouteName="Shop"
+      // initialRouteName="Piece"
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
@@ -24,9 +25,9 @@ const TabNavigator = () => {
         headerTitle: '',
         headerStyle: {
           backgroundColor: 'transparent',
-          height: 50,
         },
         headerLeftContainerStyle: { paddingLeft: 16 },
+        headerRightContainerStyle: { paddingRight: 16 },
       }}
     >
       <Tab.Screen
@@ -46,8 +47,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Peace"
-        component={Diary}
+        name="Piece"
+        component={Piece}
         options={{
           tabBarLabel: '조각',
           tabBarIcon: PieceIcon,

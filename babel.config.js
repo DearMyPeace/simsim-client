@@ -38,7 +38,11 @@ module.exports = {
     '@babel/preset-react',
     '@babel/preset-typescript',
   ],
-  plugins: isWeb
-    ? [['react-native-web', { commonjs: true }], moduleResolver]
-    : [['@babel/plugin-transform-private-methods', { loose: true }], moduleResolver],
+  plugins: [
+    isWeb
+      ? ['react-native-web', { commonjs: true }]
+      : ['@babel/plugin-transform-private-methods', { loose: true }],
+    moduleResolver,
+    'react-native-reanimated/plugin',
+  ],
 };

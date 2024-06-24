@@ -13,6 +13,9 @@ const uncompiled = [
   'react-native-swipe-gestures',
   'react-native-paper',
   'react-native-element-dropdown',
+  'react-native-chart-kit',
+  'react-native-gesture-handler',
+  'react-native-reanimated',
 ];
 
 const babelLoaderConfiguration = {
@@ -26,7 +29,7 @@ const babelLoaderConfiguration = {
     loader: 'babel-loader',
     options: {
       cacheDirectory: true,
-      plugins: ['react-native-web'],
+      plugins: ['react-native-web', 'react-native-reanimated/plugin'],
     },
   },
 };
@@ -55,8 +58,15 @@ module.exports = {
   module: {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration],
   },
-
-  plugins: [new HtmlWebpackPlugin({ template: './public/index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /react-native-reanimated/,
+    }),
+  ],
   resolve: {
     alias: {
       'react-native$': 'react-native-web',

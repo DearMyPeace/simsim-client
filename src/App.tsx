@@ -1,7 +1,6 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
 import SettingPage from '@screens/setting/SettingPage';
@@ -9,7 +8,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
-  const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -25,7 +23,7 @@ const App = () => {
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
             <NavigationContainer>
               <Stack.Navigator
                 screenOptions={{
