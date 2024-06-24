@@ -13,6 +13,8 @@ const uncompiled = [
   'react-native-swipe-gestures',
   'react-native-paper',
   'react-native-element-dropdown',
+  '@invertase/react-native-apple-authentication',
+  'react-native-encrypted-storage',
   'react-native-chart-kit',
   'react-native-gesture-handler',
   'react-native-reanimated',
@@ -64,7 +66,7 @@ module.exports = {
       __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
     }),
     new webpack.IgnorePlugin({
-      resourceRegExp: /react-native-reanimated/,
+      resourceRegExp: /^@invertase\/react-native-apple-authentication$/, /react-native-reanimated/,
     }),
   ],
   resolve: {
