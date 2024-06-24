@@ -66,7 +66,10 @@ module.exports = {
       __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
     }),
     new webpack.IgnorePlugin({
-      resourceRegExp: /^@invertase\/react-native-apple-authentication$/, /react-native-reanimated/,
+      resourceRegExp: /^@invertase\/react-native-apple-authentication$/,
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /react-native-reanimated/,
     }),
   ],
   resolve: {
