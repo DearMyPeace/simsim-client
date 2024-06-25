@@ -6,18 +6,27 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
+import { useMutation } from '@tanstack/react-query';
+import { postUserToken } from '@api/login/post';
 
-const GoogleLogin = () => {
+const GoogleLogin = ({ handleLoginPress }) => {
   const [authToken, setAuthToken] = useRecoilState(authTokenState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
+  const sendUserToken = useMutation({
+    mutationFn: (data) => postUserToken(data),
+    onSuccess: (data) => {},
+    onError: (error) => {
+      console.error(error.response.data.message);
+    },
+  });
+
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
+      sendUserToken.mutate(tokenResponse);
       const userInfo = await getUserInfo(tokenResponse.access_token);
-      console.log(userInfo);
       setAuthToken(tokenResponse.access_token);
       await saveToken(tokenResponse.access_token); // 토큰 저장
       setUserInfo(userInfo);
@@ -64,21 +73,12 @@ const GoogleLogin = () => {
 
   return (
     <View>
-      {userInfo ? (
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogout}>
-          <View style={styles.iconAndText}>
-            <Icon name="google" size={20} color="#000" style={styles.icon} />
-            <MyText style={styles.loginButtonText}>Logout from Google</MyText>
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
-          <View style={styles.iconAndText}>
-            <Icon name="google" size={20} color="#000" style={styles.icon} />
-            <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
-          </View>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(login)}>
+        <View style={styles.iconAndText}>
+          <Icon name="google" size={20} color="#000" style={styles.icon} />
+          <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
