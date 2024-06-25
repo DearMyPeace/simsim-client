@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, Platform, Modal, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Image, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
+import terms from '@stores/terms';
 
 import logoL from '@assets/logo/left.png';
 import logoC from '@assets/logo/center.png';
 import logoR from '@assets/logo/right.png';
+import { ScrollView } from 'react-native-gesture-handler';
 
 let AppleLogin;
 let GoogleLogin;
@@ -22,6 +24,8 @@ if (Platform.OS === 'web') {
 const LoginScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(300)).current;
 
   const handleCheckboxPress = () => {
     setIsModalVisible(true);
@@ -35,6 +39,44 @@ const LoginScreen = () => {
   const handleCancel = () => {
     setIsChecked(false);
     setIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    if (isModalVisible) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 300,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [isModalVisible, fadeAnim, slideAnim]);
+
+  const handleLoginPress = (loginFunc) => {
+    if (!isChecked) {
+      setIsModalVisible(true);
+    } else {
+      loginFunc();
+    }
   };
 
   return (
@@ -51,12 +93,17 @@ const LoginScreen = () => {
         <View style={styles.separator} />
       </View>
       <View style={styles.loginOptions}>
-        <GoogleLogin />
-        <AppleLogin />
+        <GoogleLogin handleLoginPress={handleLoginPress} />
+        <AppleLogin handleLoginPress={handleLoginPress} />
       </View>
       <View style={styles.termsWrapper}>
         {Platform.OS === 'web' ? (
-          <WebCheckBox value={isChecked} onChange={handleCheckboxPress} style={styles.checkbox} />
+          <WebCheckBox
+            value={isChecked}
+            color="#444"
+            onChange={handleCheckboxPress}
+            style={styles.checkbox}
+          />
         ) : (
           <CheckBox
             style={styles.checkbox}
@@ -66,7 +113,6 @@ const LoginScreen = () => {
             onFillColor="black"
             onTintColor="black"
             boxType="square"
-            onValueChange={handleCheckboxPress}
           />
         )}
         <TouchableOpacity onPress={handleCheckboxPress} style={styles.termsWrapper}>
@@ -79,24 +125,26 @@ const LoginScreen = () => {
       <Modal
         visible={isModalVisible}
         transparent={true}
-        animationType="slide"
+        animationType="none"
         onRequestClose={handleCancel}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>
-              이용약관 및 개인정보처리방침 내용을 여기에 작성합니다.
-            </Text>
+        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
+          <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]}>
+            <View>
+              <ScrollView style={styles.modalTerms}>
+                <MyText style={styles.modalText}>{terms}</MyText>
+              </ScrollView>
+            </View>
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.button} onPress={handleAgree}>
-                <Text style={styles.buttonText}>동의</Text>
+              <TouchableOpacity style={styles.agreeButton} onPress={handleAgree}>
+                <MyText style={styles.buttonText}>동의</MyText>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleCancel}>
-                <Text style={styles.buttonText}>취소</Text>
+              <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+                <MyText style={styles.buttonText}>취소</MyText>
               </TouchableOpacity>
             </View>
-          </View>
-        </View>
+          </Animated.View>
+        </Animated.View>
       </Modal>
     </View>
   );
@@ -117,11 +165,12 @@ const styles = StyleSheet.create({
     width: 26,
     height: 83,
     marginTop: 20,
-    marginRight: 8,
+    marginRight: 6,
   },
   logoImageCenter: {
     width: 42,
     height: 63,
+    marginTop: 10,
     marginRight: -45,
   },
   logoImageRight: {
@@ -130,7 +179,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    // fontFamily: 'Kalam',
     fontFamily: 'GowunBatang-Bold',
     marginBottom: 72,
   },
@@ -185,6 +233,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+  modalTerms: {
+    maxHeight: 300,
+    marginBottom: 20,
+  },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
@@ -192,12 +244,19 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row',
   },
-  button: {
+  agreeButton: {
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#007BFF',
-    borderRadius: 5,
+    backgroundColor: '#444',
+    borderRadius: 20,
+  },
+  cancelButton: {
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ccc',
+    borderRadius: 20,
   },
   buttonText: {
     color: '#fff',
