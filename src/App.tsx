@@ -3,7 +3,7 @@ import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
-import SettingPage from '@screens/setting/SettingPage';
+import SettingScreen from '@screens/setting/SettingScreen';
 import LoginScreen from '@screens/login/LoginScreen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -22,7 +22,7 @@ const App = () => {
       },
     },
   });
-  
+
   useEffect(() => {
     const checkToken = async () => {
       const token = await getToken();
@@ -44,7 +44,7 @@ const App = () => {
     await removeToken();
     setIsLoggedIn(false);
   };
-  
+
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
@@ -52,11 +52,12 @@ const App = () => {
           <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
             <NavigationContainer>
               <Stack.Navigator
+                initialRouteName="Settings"
                 screenOptions={{
                   ...TransitionPresets.SlideFromRightIOS,
                 }}
               >
-                {isLoggedIn ? (
+                {!isLoggedIn ? (
                   <>
                     <Stack.Screen
                       name="Tabs"
@@ -64,17 +65,17 @@ const App = () => {
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                  name="Settings"
-                  component={SettingPage}
-                  options={{
-                    title: '설정',
-                    headerStyle: { backgroundColor: 'white' },
-                    headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
-                    headerShadowVisible: false,
-                    headerBackTitleVisible: false,
-                    headerTintColor: 'black',
-                  }}
-                />
+                      name="Settings"
+                      component={SettingScreen}
+                      options={{
+                        title: '설정',
+                        headerStyle: { backgroundColor: 'white' },
+                        headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false,
+                        headerTintColor: 'black',
+                      }}
+                    />
                   </>
                 ) : (
                   <Stack.Screen
