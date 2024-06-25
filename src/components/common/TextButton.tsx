@@ -1,17 +1,12 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Button, ButtonProps } from 'react-native-paper';
 
-interface ITextButtonProps extends ButtonProps {
-  label: string;
-  children: ReactNode;
-}
-
-const TextButton = ({ label, children, ...rest }: ITextButtonProps) => {
+const TextButton = ({ children, ...rest }: ButtonProps) => {
   return (
     <Button
       mode="text"
       textColor="black"
-      labelStyle={{ fontFamily: 'GowunBatang-Regular' }}
+      labelStyle={{ fontFamily: 'GowunBatang-Regular', fontWeight: 400 }}
       {...rest}
     >
       {children}
