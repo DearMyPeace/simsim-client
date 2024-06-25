@@ -84,4 +84,17 @@ module.exports = {
     },
     extensions: ['.web.js', '.js', '.web.ts', '.ts', '.web.tsx', '.tsx'],
   },
+  devServer: {
+    static: {
+      directory: path.resolve(appDirectory, 'public'),
+    },
+    historyApiFallback: true,
+    hot: true,
+    host: '0.0.0.0',
+    port: 8080,
+    headers: {
+      // 'Cross-Origin-Opener-Policy': 'same-origin',
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
+  },
 };
