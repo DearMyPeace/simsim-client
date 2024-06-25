@@ -8,6 +8,8 @@ import LoginScreen from '@screens/login/LoginScreen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
+import { fontLarge } from '@utils/Sizing';
+import { BackIcon } from '@components/common/TabIcons';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -52,7 +54,6 @@ const App = () => {
           <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
             <NavigationContainer>
               <Stack.Navigator
-                initialRouteName="Settings"
                 screenOptions={{
                   ...TransitionPresets.SlideFromRightIOS,
                 }}
@@ -70,10 +71,15 @@ const App = () => {
                       options={{
                         title: '설정',
                         headerStyle: { backgroundColor: 'white' },
-                        headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
+                        headerTitleStyle: {
+                          fontFamily: 'GowunBatang-Regular',
+                          fontSize: fontLarge,
+                        },
                         headerShadowVisible: false,
                         headerBackTitleVisible: false,
                         headerTintColor: 'black',
+                        headerTitleAlign: 'left',
+                        headerBackImage: BackIcon,
                       }}
                     />
                   </>
