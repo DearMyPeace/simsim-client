@@ -20,6 +20,7 @@ const uncompiled = [
   'react-native-gesture-handler',
   'react-native-reanimated',
   'react-native-encrypted-storage',
+  'react-native-markdown-display',
 ];
 
 const babelLoaderConfiguration = {
