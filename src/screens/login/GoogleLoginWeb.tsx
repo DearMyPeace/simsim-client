@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { authTokenState, userInfoState, isLoggedInState } from '@stores/login';
 import { useGoogleLogin } from '@react-oauth/google';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';
 import { postUserToken } from '@api/login/post';
+import googleLogo from '@assets/logo/google.png';
 
 const GoogleLogin = ({ handleLoginPress }) => {
   const [authToken, setAuthToken] = useRecoilState(authTokenState);
@@ -27,7 +28,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
     onSuccess: async (tokenResponse) => {
       sendUserToken.mutate(tokenResponse);
       const userInfo = await getUserInfo(tokenResponse.access_token);
-      setAuthToken(tokenResponse.access_token);
+      console.log(userInfo);
       await saveToken(tokenResponse.access_token); // 토큰 저장
       setUserInfo(userInfo);
       setIsLoggedIn(true);
@@ -75,7 +76,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
     <View>
       <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(login)}>
         <View style={styles.iconAndText}>
-          <Icon name="google" size={20} color="#000" style={styles.icon} />
+          <Image source={googleLogo} style={styles.icon} />
           <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
         </View>
       </TouchableOpacity>
@@ -109,6 +110,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    width: 20,
+    height: 20,
   },
   loginButtonText: {
     fontSize: 14,

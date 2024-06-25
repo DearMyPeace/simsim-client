@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    width: 20,
+    height: 20,
   },
   loginButtonText: {
     fontSize: 14,
