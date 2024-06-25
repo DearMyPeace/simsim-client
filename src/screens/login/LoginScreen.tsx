@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Kalam-Regular',
+    fontFamily: 'Kalam-Bold',
     marginBottom: 72,
   },
   separatorWrapper: {

@@ -108,6 +108,21 @@
   src: url(./fonts/GowunBatang-Bold.ttf);
 }
 
+@font-face {
+  font-family: 'Kalam-Light';
+  src: url(./fonts/Kalam-Light.ttf);
+}
+
+@font-face {
+  font-family: 'Kalam-Bold';
+  src: url(./fonts/Kalam-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'Kalam-Regular';
+  src: url(./fonts/Kalam-Regular.ttf);
+}
+
 html,
 body {
   width: 100%;
