@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
 import MainNavigator from '@navigators/MainNavigator';
+import SplashScreen from '@screens/common/SplashScreen'; // 스플래시 화면 추가
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -17,15 +19,26 @@ const App = () => {
     },
   });
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <RecoilRoot>
       <GoogleOAuthProviderWrapper>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
             <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
-              <NavigationContainer>
-                <MainNavigator />
-              </NavigationContainer>
+              {isLoading ? (
+                <SplashScreen onFinish={() => setIsLoading(false)} />
+              ) : (
+                <NavigationContainer>
+                  <MainNavigator />
+                </NavigationContainer>
+              )}
             </SafeAreaView>
           </SafeAreaProvider>
         </QueryClientProvider>
