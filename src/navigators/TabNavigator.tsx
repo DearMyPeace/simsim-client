@@ -7,6 +7,7 @@ import Piece from '@navigators/PieceStackNavigator';
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
 import { AiLetterIcon, CalendarIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
+import { appColor3 } from '@utils/colors';
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -17,7 +18,7 @@ const TabNavigator = () => {
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: appColor3,
         tabBarInactiveTintColor: 'gray',
         headerLeft: PieceChip,
         headerRight: SettingButton,
