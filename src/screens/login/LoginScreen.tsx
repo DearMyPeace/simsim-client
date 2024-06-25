@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Platform, Modal, Text, TouchableOpacity } from 'react-native';
-import GoogleLogin from '@screens/login/GoogleLogin';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
@@ -10,10 +9,14 @@ import logoC from '@assets/logo/center.png';
 import logoR from '@assets/logo/right.png';
 
 let AppleLogin;
-if (Platform.OS === 'ios') {
-  AppleLogin = require('@screens/login/AppleLogin').default;
-} else {
+let GoogleLogin;
+
+if (Platform.OS === 'web') {
   AppleLogin = require('@screens/login/AppleLoginWeb').default;
+  GoogleLogin = require('@screens/login/GoogleLoginWeb').default;
+} else {
+  AppleLogin = require('@screens/login/AppleLogin').default;
+  GoogleLogin = require('@screens/login/GoogleLogin').default;
 }
 
 const LoginScreen = () => {

@@ -1,33 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 GoogleSignin.configure({
-  webClientId: 'key.apps.googleusercontent.com',
-  iosClientId: 'key.apps.googleusercontent.com',
+  webClientId: process.env.GOOGLE_CLIENT_ID,
 });
 
 const GoogleLogin = () => {
+  const [userInfo, setUserInfo] = useState(null);
+
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      const token = userInfo.idToken;
+      await saveToken(token);
+      setUserInfo(userInfo);
       console.log(userInfo);
-      // userInfo.idToken을 백엔드로 전송하여 인증
     } catch (error) {
-      console.error(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Signin in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Play services not available or outdated');
+      } else {
+        console.error(error);
+      }
     }
   };
 
+  const handleLogout = async () => {
+    await removeToken();
+    setUserInfo(null);
+    await GoogleSignin.signOut();
+  };
+
+  const checkUser = async () => {
+    const token = await getToken();
+    if (token) {
+      // Fetch user info using the token if necessary
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
   return (
-    <TouchableOpacity style={styles.loginButton} onPress={signInWithGoogle}>
-      <View style={styles.iconAndText}>
-        <Icon name="google" size={20} color="#000" style={styles.icon} />
-        <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
-      </View>
-    </TouchableOpacity>
+    <View>
+      {userInfo ? (
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogout}>
+          <View style={styles.iconAndText}>
+            <Icon name="google" size={20} color="#000" style={styles.icon} />
+            <MyText style={styles.loginButtonText}>Logout from Google</MyText>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.loginButton} onPress={signInWithGoogle}>
+          <View style={styles.iconAndText}>
+            <Icon name="google" size={20} color="#000" style={styles.icon} />
+            <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
+          </View>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
