@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, StyleProp, TextStyle } from 'react-native';
-import { Picker, PickerItemProps, PickerProps } from '@react-native-picker/picker';
+import { Picker, PickerProps } from '@react-native-picker/picker';
 import { fontLarge, fontMedium } from '@utils/Sizing';
-
-interface IPickerItemProps extends PickerItemProps {
-  id: string;
-}
+import { IPickerItemProps } from '@type/Setting';
 
 interface IBasicPickerProps extends PickerProps {
   selectedValue: PickerProps['selectedValue'];
