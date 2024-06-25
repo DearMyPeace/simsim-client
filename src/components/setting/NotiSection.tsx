@@ -5,16 +5,16 @@ import { fontLarge } from '@utils/Sizing';
 import MySwitch from '@components/common/MySwitch';
 
 interface INotiSectionProps {
-  diaryNotiStatus: boolean;
+  diaryNotiEnabled: boolean;
   onToggleDiarySwitch: () => void;
-  letterNotiStatus: boolean;
+  letterNotiEnabled: boolean;
   onToggleLetterSwitch: () => void;
 }
 
 const NotiSection = ({
-  diaryNotiStatus,
+  diaryNotiEnabled,
   onToggleDiarySwitch,
-  letterNotiStatus,
+  letterNotiEnabled,
   onToggleLetterSwitch,
 }: INotiSectionProps) => {
   return (
@@ -24,14 +24,14 @@ const NotiSection = ({
       </MyText>
       <View style={styles.row}>
         <MyText size={fontLarge}>심심기록 알림</MyText>
-        <MySwitch value={diaryNotiStatus} onValueChange={onToggleDiarySwitch} />
+        <MySwitch value={diaryNotiEnabled} onValueChange={onToggleDiarySwitch} />
       </View>
       <View style={styles.row}>
         <View style={{ flexDirection: 'column' }}>
           <MyText size={fontLarge}>조각편지 알림</MyText>
-          <MyText>* 설정시 매일 오후 12시에 알람이 울립니다</MyText>
+          <MyText>* 설정시 매일 오후 12시에 알림이 울립니다</MyText>
         </View>
-        <MySwitch value={letterNotiStatus} onValueChange={onToggleLetterSwitch} />
+        <MySwitch value={letterNotiEnabled} onValueChange={onToggleLetterSwitch} />
       </View>
       <View style={styles.border} />
     </View>

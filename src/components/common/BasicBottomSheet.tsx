@@ -4,17 +4,29 @@ import { View, StyleSheet, Modal, Pressable, Platform } from 'react-native';
 interface IBasicBottomSheetProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  onClose?: () => void;
   children: React.ReactNode;
 }
-const BasicBottomSheet = ({ visible, setVisible, children }: IBasicBottomSheetProps) => {
-  const onClose = () => {
+const BasicBottomSheet = ({
+  visible,
+  setVisible,
+  onClose = () => {},
+  children,
+}: IBasicBottomSheetProps) => {
+  const onOverlayPress = () => {
     setVisible(false);
+    onClose();
   };
 
   return (
-    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onOverlayPress}
+    >
       <View style={styles.modalContainer}>
-        <Pressable style={styles.overlay} onPress={onClose} />
+        <Pressable style={styles.overlay} onPress={onOverlayPress} />
         <View style={styles.modalContent}>{children}</View>
       </View>
     </Modal>

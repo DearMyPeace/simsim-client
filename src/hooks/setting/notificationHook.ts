@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 
 const useNotification = () => {
-  const [diaryNotiStatus, setDiaryNotiStatus] = useState(false);
-  const [letterNotiStatus, setLetterNotiStatus] = useState(false);
+  const [diaryNotiEnabled, setDiaryNotiEnabled] = useState(false);
+  const [letterNotiEnabled, setLetterNotiEnabled] = useState(false);
+  const [timePickerVisible, setTimePickerVisible] = useState(false);
+
   const onToggleDiarySwitch = () => {
-    setDiaryNotiStatus((previousState) => !previousState);
+    setDiaryNotiEnabled((previousState) => !previousState);
+    if (diaryNotiEnabled) {
+      setTimePickerVisible(false);
+    } else {
+      setTimePickerVisible(true);
+    }
   };
 
   const onToggleLetterSwitch = () => {
-    setLetterNotiStatus((previousState) => !previousState);
+    setLetterNotiEnabled((previousState) => !previousState);
   };
 
   return {
-    diaryNotiStatus,
-    letterNotiStatus,
+    diaryNotiEnabled,
+    letterNotiEnabled,
+    timePickerVisible,
+    setDiaryNotiEnabled,
+    setLetterNotiEnabled,
+    setTimePickerVisible,
     onToggleDiarySwitch,
     onToggleLetterSwitch,
   };
