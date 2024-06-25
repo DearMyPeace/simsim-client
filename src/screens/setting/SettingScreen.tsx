@@ -6,20 +6,20 @@ import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
 import BottomSheetPicker from '@components/common/BottomSheetPicker';
 import DeleteAccountModal from '@components/setting/DeleteAccountModal';
-
-// todo: api 요청으로 받아오기
-const aiPersona = '공감형';
-const aiPersonalityItems = [
-  { id: 'FeelingAi', label: '공감형', value: '공감형' },
-  { id: 'ThinkingAi', label: '사고형', value: '사고형' },
-];
+import useAiPickerHook from '@hooks/setting/aiPickerHook';
 
 const SettingScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedAi, setSelectedAi] = useState<string>(aiPersona);
-  const [aiSelectVisible, setAiSelectVisible] = useState(false);
   const [diaryNotiStatus, setDiaryNotiStatus] = useState(false);
   const [letterNotiStatus, setLetterNotiStatus] = useState(false);
+  const {
+    selectedAi,
+    aiPickerVisible,
+    setAiPickerVisible,
+    aiPickerOpen,
+    onSelectAi,
+    aiPersonaList,
+  } = useAiPickerHook();
 
   const onToggleDiarySwitch = () => {
     setDiaryNotiStatus((previousState) => !previousState);
@@ -27,15 +27,6 @@ const SettingScreen = () => {
 
   const onToggleLetterSwitch = () => {
     setLetterNotiStatus((previousState) => !previousState);
-  };
-
-  function aiPickerOpen() {
-    setAiSelectVisible(true);
-  }
-
-  const onSelectAi = (itemValue: ItemValue) => {
-    setSelectedAi(itemValue as string);
-    setAiSelectVisible(false);
   };
 
   const onFeedback = async () => {
@@ -77,18 +68,18 @@ const SettingScreen = () => {
           />
         )}
         <View style={styles.basicPadding}>
-          <SettingSection label="편지 작성자" buttonText={aiPersona} onPress={aiPickerOpen} />
+          <SettingSection label="편지 작성자" buttonText={selectedAi} onPress={aiPickerOpen} />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
           <SettingSection label="로그아웃" buttonText="나가기" onPress={onLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />
         </View>
       </ScrollView>
       <BottomSheetPicker
-        visible={aiSelectVisible}
-        setVisible={setAiSelectVisible}
+        visible={aiPickerVisible}
+        setVisible={setAiPickerVisible}
         selectedValue={selectedAi}
         onValueChange={onSelectAi}
-        items={aiPersonalityItems}
+        items={aiPersonaList}
       />
       <DeleteAccountModal visible={modalVisible} setIsVisible={setModalVisible} />
       <View style={styles.footer}>
