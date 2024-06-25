@@ -40,11 +40,13 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
   }, [selectedDate]);
 
   if (isPending) {
-    return <CenterViewText text="심심 기록을 가져오는 중입니다." />;
+    return <CenterViewText text="심심기록을 가져오는 중입니다" />;
   }
 
   if (isError) {
-    return <CenterViewText text="에러가 발생했습니다" />;
+    return (
+      <CenterViewText text="심심기록을 가져올 수 없습니다" textStyle={{ textAlign: 'center' }} />
+    );
   }
 
   if (data.length === 0) {
