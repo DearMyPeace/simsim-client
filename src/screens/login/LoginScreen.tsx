@@ -4,11 +4,12 @@ import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
 import terms from '@stores/terms';
+import { ScrollView } from 'react-native-gesture-handler';
+import Markdown from 'react-native-markdown-display';
 
 import logoL from '@assets/logo/left.png';
 import logoC from '@assets/logo/center.png';
 import logoR from '@assets/logo/right.png';
-import { ScrollView } from 'react-native-gesture-handler';
 
 let AppleLogin;
 let GoogleLogin;
@@ -26,6 +27,7 @@ const LoginScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(300)).current;
+  const loginFuncRef = useRef(null);
 
   const handleCheckboxPress = () => {
     setIsModalVisible(true);
@@ -34,6 +36,9 @@ const LoginScreen = () => {
   const handleAgree = () => {
     setIsChecked(true);
     setIsModalVisible(false);
+    if (loginFuncRef.current) {
+      loginFuncRef.current();
+    }
   };
 
   const handleCancel = () => {
@@ -73,6 +78,7 @@ const LoginScreen = () => {
 
   const handleLoginPress = (loginFunc) => {
     if (!isChecked) {
+      loginFuncRef.current = loginFunc;
       setIsModalVisible(true);
     } else {
       loginFunc();
@@ -132,7 +138,7 @@ const LoginScreen = () => {
           <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]}>
             <View>
               <ScrollView style={styles.modalTerms}>
-                <MyText style={styles.modalText}>{terms}</MyText>
+                <Markdown style={styles.markdown}>{terms}</Markdown>
               </ScrollView>
             </View>
             <View style={styles.modalButtons}>
@@ -179,7 +185,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'GowunBatang-Bold',
+    fontFamily: 'Kalam-Regular',
     marginBottom: 72,
   },
   separatorWrapper: {
@@ -266,6 +272,20 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 5,
+  },
+  markdown: {
+    body: {
+      fontSize: 14,
+      fontFamily: 'GowunBatang-Regular',
+    },
+    heading2: {
+      fontSize: 24,
+      fontFamily: 'GowunBatang-Bold',
+      marginTop: 10,
+    },
+    heading3: {
+      marginTop: 10,
+    },
   },
 });
 
