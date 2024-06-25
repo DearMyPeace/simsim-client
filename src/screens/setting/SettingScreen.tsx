@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MyText from '@components/common/MyText';
 import { SafeAreaView, StyleSheet, ScrollView, View, Platform, Linking, Alert } from 'react-native';
-import { ItemValue } from '@react-native-picker/picker/typings/Picker';
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
 import BottomSheetPicker from '@components/common/BottomSheetPicker';
 import DeleteAccountModal from '@components/setting/DeleteAccountModal';
 import useAiPickerHook from '@hooks/setting/aiPickerHook';
+import useNotification from '@hooks/setting/notificationHook';
+import useSetting from '@hooks/setting/settingHook';
 
 const SettingScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [diaryNotiStatus, setDiaryNotiStatus] = useState(false);
-  const [letterNotiStatus, setLetterNotiStatus] = useState(false);
+  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, onLogout } =
+    useSetting();
+  const { diaryNotiStatus, letterNotiStatus, onToggleDiarySwitch, onToggleLetterSwitch } =
+    useNotification();
   const {
     selectedAi,
     aiPickerVisible,
@@ -20,41 +22,6 @@ const SettingScreen = () => {
     onSelectAi,
     aiPersonaList,
   } = useAiPickerHook();
-
-  const onToggleDiarySwitch = () => {
-    setDiaryNotiStatus((previousState) => !previousState);
-  };
-
-  const onToggleLetterSwitch = () => {
-    setLetterNotiStatus((previousState) => !previousState);
-  };
-
-  const onFeedback = async () => {
-    const url = 'https://forms.gle/nUCrj6JLNCnU8Dez6'; // env에 추가하기
-    try {
-      console.log('Checking if URL can be opened:', url);
-      const supported = await Linking.canOpenURL(url);
-      console.log('Supported:', supported);
-
-      if (supported) {
-        console.log('Opening URL:', url);
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(`해당 링크로 이동할 수 없습니다 (${url})`);
-      }
-    } catch (error: any) {
-      console.error('An error occurred', error);
-      Alert.alert('오류가 발생했습니다', error.message);
-    }
-  };
-
-  const onDeleteAccount = () => {
-    setModalVisible(false);
-  };
-
-  const onLogout = () => {
-    console.log('logout');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,7 +48,7 @@ const SettingScreen = () => {
         onValueChange={onSelectAi}
         items={aiPersonaList}
       />
-      <DeleteAccountModal visible={modalVisible} setIsVisible={setModalVisible} />
+      <DeleteAccountModal visible={deleteModalVisible} setIsVisible={setDeleteModalVisible} />
       <View style={styles.footer}>
         <MyText size={11}>심심조각 초판</MyText>
       </View>
