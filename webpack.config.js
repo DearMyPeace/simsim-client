@@ -18,6 +18,7 @@ const uncompiled = [
   'react-native-chart-kit',
   'react-native-gesture-handler',
   'react-native-reanimated',
+  'react-native-date-picker',
 ];
 
 const babelLoaderConfiguration = {
@@ -70,6 +71,9 @@ module.exports = {
     }),
     new webpack.IgnorePlugin({
       resourceRegExp: /react-native-reanimated/,
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^expo-constants$/,
     }),
   ],
   resolve: {
