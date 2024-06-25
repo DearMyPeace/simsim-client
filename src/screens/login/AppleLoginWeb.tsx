@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome'; // 아이콘 추가
+import { fontBasic } from '@utils/Sizing';
 
 const AppleLoginWeb = () => {
   const AppleSignIn = async () => {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   loginButtonText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
 });

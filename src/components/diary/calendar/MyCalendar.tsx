@@ -5,6 +5,7 @@ import { Calendar, DateData } from 'react-native-calendars';
 import setLocaleConfig from '@utils/localeConfig';
 import { IDiaryCount, IMarkedDates } from '@type/Diary';
 import { dotColors } from '@utils/colors';
+import { fontLarge } from '@utils/Sizing';
 
 setLocaleConfig();
 interface IMyCalendarProps {
@@ -34,7 +35,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
           textDayHeaderFontFamily: 'GowunBatang-Regular',
           textDayFontSize: 15,
           textDayHeaderFontSize: 15,
-          textMonthFontSize: 20,
+          textMonthFontSize: fontLarge,
           dayTextColor: '#666666',
           arrowColor: '#666666',
           monthTextColor: '#333333',

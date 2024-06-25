@@ -4,6 +4,7 @@ import GoogleLogin from '@screens/login/GoogleLogin';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
+import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
 
 import logoL from '@assets/logo/left.png';
 import logoC from '@assets/logo/center.png';
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     height: 107,
   },
   title: {
-    fontSize: 20,
+    fontSize: fontLarge,
     // fontFamily: 'Kalam',
     fontFamily: 'GowunBatang-Bold',
     marginBottom: 72,
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   content: {
-    fontSize: 14,
+    fontSize: fontBasic,
     paddingHorizontal: 10,
   },
   loginOptions: {
@@ -159,14 +160,14 @@ const styles = StyleSheet.create({
   },
   termsText: {
     fontFamily: 'GowunBatang-Regular',
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
     textDecorationLine: 'underline',
     marginLeft: 3.5,
   },
   termsTextNoLine: {
     fontFamily: 'GowunBatang-Regular',
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
   modalContainer: {
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalText: {
-    fontSize: 16,
+    fontSize: fontMedium,
     marginBottom: 20,
   },
   modalButtons: {
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: fontMedium,
   },
   checkbox: {
     width: 20,

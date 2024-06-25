@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
+import { fontBasic } from '@utils/Sizing';
 import MyText from '@components/common/MyText';
 
 interface AiLetterEntryContentProps {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
   contentText: {
     color: 'black',
-    fontSize: 14,
+    fontSize: fontBasic,
   },
 });
 

@@ -3,6 +3,7 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { fontBasic } from '@utils/Sizing';
 
 GoogleSignin.configure({
   webClientId: 'key.apps.googleusercontent.com',
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   loginButtonText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
 });
