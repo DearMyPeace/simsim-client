@@ -17,7 +17,7 @@ import NotUsingDay from '@components/ai/NotUsingDay';
 import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
 import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
 import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
-import { fetchAiLetters, fetchNextAiLetter } from '@api/ai/api';
+import { fetchAiLetters, fetchNextAiLetter } from '@api/ai/get';
 import MockTestAiLetter from '@screens/ai/test/MockTestAiLetter';
 
 const AiLetter: React.FC = () => {
