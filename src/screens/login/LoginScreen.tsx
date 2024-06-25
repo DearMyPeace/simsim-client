@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Image, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
 import terms from '@stores/terms';
 import { ScrollView } from 'react-native-gesture-handler';
 import Markdown from 'react-native-markdown-display';
-
-import logoL from '@assets/logo/left.png';
-import logoC from '@assets/logo/center.png';
-import logoR from '@assets/logo/right.png';
+import Logo from '@screens/common/Logo'; // 추가
 
 let AppleLogin;
 let GoogleLogin;
@@ -87,11 +84,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image source={logoL} style={styles.logoImageLeft} />
-        <Image source={logoC} style={styles.logoImageCenter} />
-        <Image source={logoR} style={styles.logoImageRight} />
-      </View>
+      <Logo />
       <MyText style={styles.title}>Dear my peace</MyText>
       <View style={styles.separatorWrapper}>
         <View style={styles.separator} />
@@ -163,25 +156,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     padding: 16,
-  },
-  logoContainer: {
-    flexDirection: 'row',
-  },
-  logoImageLeft: {
-    width: 26,
-    height: 83,
-    marginTop: 20,
-    marginRight: 6,
-  },
-  logoImageCenter: {
-    width: 42,
-    height: 63,
-    marginTop: 10,
-    marginRight: -45,
-  },
-  logoImageRight: {
-    width: 73,
-    height: 107,
   },
   title: {
     fontSize: 20,
