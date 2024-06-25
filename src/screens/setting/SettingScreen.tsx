@@ -1,6 +1,6 @@
 import React from 'react';
 import MyText from '@components/common/MyText';
-import { SafeAreaView, StyleSheet, ScrollView, View, Platform, Linking, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
 import BottomSheetPicker from '@components/common/BottomSheetPicker';
