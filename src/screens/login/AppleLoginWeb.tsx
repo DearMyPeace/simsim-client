@@ -3,19 +3,22 @@ import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome'; // 아이콘 추가
 
-const AppleLoginWeb = () => {
+const AppleLoginWeb = ({ handleLoginPress }) => {
   const AppleSignIn = async () => {
     // Apple Sign-In 웹용 로직 추가 가능
+    console.log('Apple Sign-In 웹용 로직 추가 가능');
     Alert.alert('애플 로그인은 iOS에서만 지원됩니다.');
   };
 
   return (
-    <TouchableOpacity style={styles.loginButton} onPress={AppleSignIn}>
-      <View style={styles.iconAndText}>
-        <Icon name="apple" size={20} color="#000" style={styles.icon} />
-        <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
-      </View>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
+        <View style={styles.iconAndText}>
+          <Icon name="apple" size={20} color="#000" style={styles.icon} />
+          <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 

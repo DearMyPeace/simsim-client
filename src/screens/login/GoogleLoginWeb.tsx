@@ -17,7 +17,10 @@ const GoogleLogin = ({ handleLoginPress }) => {
 
   const sendUserToken = useMutation({
     mutationFn: (data) => postUserToken(data),
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      // TODO: back end에서 받은 data를 이용해 로그인 처리
+      console.log(data);
+    },
     onError: (error) => {
       console.error(error.response.data.message);
     },
@@ -29,7 +32,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
       sendUserToken.mutate(tokenResponse);
       const userInfo = await getUserInfo(tokenResponse.access_token);
       console.log(userInfo);
-      await saveToken(tokenResponse.access_token); // 토큰 저장
+      await saveToken(tokenResponse.access_token);
       setUserInfo(userInfo);
       setIsLoggedIn(true);
     },
