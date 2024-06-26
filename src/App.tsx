@@ -58,7 +58,7 @@ const App = () => {
                   ...TransitionPresets.SlideFromRightIOS,
                 }}
               >
-                {!isLoggedIn ? (
+                {isLoggedIn ? (
                   <>
                     <Stack.Screen
                       name="Tabs"
