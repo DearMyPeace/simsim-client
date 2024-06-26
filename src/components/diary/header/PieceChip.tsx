@@ -5,8 +5,25 @@ import { StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { pieces } from '@stores/pieces';
 
+// TODO: Logout Test Code
+import { useRecoilState } from 'recoil';
+import { authTokenState, userInfoState, isLoggedInState } from '@stores/login';
+import { removeToken } from '@components/login/AuthService';
+
 const PieceChip = () => {
   const count = useRecoilValue(pieces);
+
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
+  // TODO: Logout Test Code
+  const handleLogout = async () => {
+    setAuthToken(null);
+    await removeToken();
+    setUserInfo(null);
+    setIsLoggedIn(false);
+  };
 
   return (
     <Chip
@@ -14,7 +31,7 @@ const PieceChip = () => {
       textStyle={styles.text}
       mode="outlined"
       icon="information"
-      onPress={() => console.log('Pressed')}
+      onPress={handleLogout}
     >
       {count}
     </Chip>

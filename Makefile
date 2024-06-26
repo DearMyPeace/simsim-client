@@ -14,6 +14,9 @@ ios:
 web:
 	npm run start-react
 
+web-build:
+	npm run build
+
 npm:
 	sudo npm install
 

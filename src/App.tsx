@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import TabNavigator from '@navigators/TabNavigator';
-import SettingScreen from '@screens/setting/SettingScreen';
-import LoginScreen from '@screens/login/LoginScreen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { saveToken, getToken, removeToken } from '@components/login/AuthService';
-import { fontLarge } from '@utils/Sizing';
-import { BackIcon } from '@components/common/TabIcons';
+import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
+import MainNavigator from '@navigators/MainNavigator';
+import SplashScreen from '@screens/common/SplashScreen';
 
 const App = () => {
-  const Stack = createStackNavigator();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
-
+  const [isLoading, setIsLoading] = useState(true);
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -26,75 +20,29 @@ const App = () => {
   });
 
   useEffect(() => {
-    const checkToken = async () => {
-      const token = await getToken();
-      if (token) {
-        setIsLoggedIn(true);
-      }
-    };
-
-    checkToken();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
-
-  const handleLogin = async () => {
-    const token = 'dummy-auth-token'; // 실제 로그인 API 호출을 통해 얻은 토큰
-    await saveToken(token);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = async () => {
-    await removeToken();
-    setIsLoggedIn(false);
-  };
 
   return (
     <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
-            <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  ...TransitionPresets.SlideFromRightIOS,
-                }}
-              >
-                {isLoggedIn ? (
-                  <>
-                    <Stack.Screen
-                      name="Tabs"
-                      component={TabNavigator}
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="Settings"
-                      component={SettingScreen}
-                      options={{
-                        title: '설정',
-                        headerStyle: { backgroundColor: 'white' },
-                        headerTitleStyle: {
-                          fontFamily: 'GowunBatang-Regular',
-                          fontSize: fontLarge,
-                        },
-                        headerShadowVisible: false,
-                        headerBackTitleVisible: false,
-                        headerTintColor: 'black',
-                        headerTitleAlign: 'left',
-                        headerBackImage: BackIcon,
-                      }}
-                    />
-                  </>
-                ) : (
-                  <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                )}
-              </Stack.Navigator>
-            </NavigationContainer>
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </QueryClientProvider>
+      <GoogleOAuthProviderWrapper>
+        <QueryClientProvider client={queryClient}>
+          <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
+              {isLoading ? (
+                <SplashScreen onFinish={() => setIsLoading(false)} />
+              ) : (
+                <NavigationContainer>
+                  <MainNavigator />
+                </NavigationContainer>
+              )}
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </QueryClientProvider>
+      </GoogleOAuthProviderWrapper>
     </RecoilRoot>
   );
 };
