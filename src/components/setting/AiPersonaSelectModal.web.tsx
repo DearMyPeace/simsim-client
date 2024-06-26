@@ -4,9 +4,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import MyModal from '@components/common/MyModal';
 import { IAiPersonaData } from '@type/AiPersona';
 import { RadioButton } from 'react-native-paper';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { fontLarge } from '@utils/Sizing';
+import useAiPersonaChange from '@hooks/setting/aiPatchHook';
 
 interface IAiPersonaSelectProps {
   visible: boolean;
@@ -15,11 +14,11 @@ interface IAiPersonaSelectProps {
 }
 
 const AiPersonaSelectModal = ({ visible, setIsVisible, aiPersonaList }: IAiPersonaSelectProps) => {
-  const [userAiPersona, setUserAiPersona] = useRecoilState(userAiPersonaStatus);
+  const { userAiPersona, changeAiPersona, selectedValue, setSelectedValue } = useAiPersonaChange();
 
-  // todo: api 요청
   const onSelectAi = (aiPersona: string) => {
-    setUserAiPersona(aiPersona);
+    setSelectedValue(aiPersona);
+    changeAiPersona.mutate(selectedValue);
     setIsVisible(false);
   };
 
