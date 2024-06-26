@@ -15,7 +15,14 @@ const MyModal = ({ visible, setIsVisible, children, containerStyle, ...rest }: I
   return (
     <Modal visible={visible} onRequestClose={onClose} {...rest}>
       <Pressable style={styles.overlay} onPress={onClose}>
-        <Pressable style={[styles.container, containerStyle]} onPress={() => {}}>
+        <Pressable
+          style={({ hovered }) => [
+            styles.container,
+            containerStyle,
+            hovered && { cursor: 'default' },
+          ]}
+          onPress={() => {}}
+        >
           {children}
         </Pressable>
       </Pressable>
