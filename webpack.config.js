@@ -21,6 +21,7 @@ const uncompiled = [
   'react-native-reanimated',
   'react-native-encrypted-storage',
   'react-native-markdown-display',
+  'react-apple-signin-auth',
 ];
 
 const babelLoaderConfiguration = {
