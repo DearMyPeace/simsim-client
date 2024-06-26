@@ -27,7 +27,7 @@ export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) 
         diaryList.length < 3 &&
         diaryList.push({
           id: NEW_DIARY,
-          content: '오늘의 심심 기록을 남겨보세요',
+          content: '오늘의 심심기록을 남겨보세요',
           createdTime: '',
         });
       return diaryList;
