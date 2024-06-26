@@ -5,9 +5,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
-import SettingScreen from "@screens/setting/SettingScreen.tsx";
-import { fontLarge } from "@utils/Sizing.ts";
-import { BackIcon } from "@components/common/TabIcons.tsx";
+import SettingScreen from '@screens/setting/SettingScreen';
+import { CloseIcon } from '@components/common/TabIcons';
 
 const Stack = createStackNavigator();
 
@@ -32,25 +31,22 @@ const MainNavigator = () => {
         ...TransitionPresets.SlideFromRightIOS,
       }}
     >
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <>
           <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
-            options={{
-              title: '설정',
+            options={({ navigation }) => ({
+              title: '',
               headerStyle: { backgroundColor: 'white' },
-              headerTitleStyle: {
-                fontFamily: 'GowunBatang-Regular',
-                fontSize: fontLarge,
-              },
               headerShadowVisible: false,
               headerBackTitleVisible: false,
               headerTintColor: 'black',
               headerTitleAlign: 'left',
-              headerBackImage: BackIcon,
-            }}
+              headerLeft: () => null,
+              headerRight: () => <CloseIcon onPress={navigation.goBack} />,
+            })}
           />
         </>
       ) : (
