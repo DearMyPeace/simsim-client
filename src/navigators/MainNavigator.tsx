@@ -5,9 +5,9 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
-import SettingScreen from "@screens/setting/SettingScreen.tsx";
-import { fontLarge } from "@utils/Sizing.ts";
-import { BackIcon } from "@components/common/TabIcons.tsx";
+import SettingScreen from '@screens/setting/SettingScreen';
+import { fontLarge } from '@utils/Sizing';
+import { BackIcon } from '@components/common/TabIcons';
 
 const Stack = createStackNavigator();
 
@@ -30,11 +30,24 @@ const MainNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
+        cardStyle: { backgroundColor: 'transparent' },
+        cardStyleInterpolator: ({ current }) => ({
+          cardStyle: {
+            opacity: current.progress,
+            backgroundColor: 'transparent',
+          },
+        }),
       }}
     >
       {isLoggedIn ? (
         <>
-          <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Tabs"
+            component={TabNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
@@ -54,7 +67,13 @@ const MainNavigator = () => {
           />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       )}
     </Stack.Navigator>
   );

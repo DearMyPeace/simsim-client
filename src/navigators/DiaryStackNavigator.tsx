@@ -10,6 +10,12 @@ const DiaryStackNavigator = () => (
     screenOptions={{
       ...TransitionPresets.SlideFromRightIOS,
       headerShown: false,
+      cardStyleInterpolator: ({ current }) => ({
+        cardStyle: {
+          opacity: current.progress,
+          backgroundColor: 'transparent',
+        },
+      }),
     }}
   >
     <Stack.Screen

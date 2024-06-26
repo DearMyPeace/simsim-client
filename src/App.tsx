@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -19,23 +20,22 @@ const App = () => {
     },
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <RecoilRoot>
       <GoogleOAuthProviderWrapper>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
+            <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
               {isLoading ? (
                 <SplashScreen onFinish={() => setIsLoading(false)} />
               ) : (
-                <NavigationContainer>
+                <NavigationContainer
+                  theme={{
+                    colors: {
+                      background: 'transparent',
+                    },
+                  }}
+                >
                   <MainNavigator />
                 </NavigationContainer>
               )}
@@ -46,5 +46,13 @@ const App = () => {
     </RecoilRoot>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    paddingTop: 0,
+    backgroundColor: 'transparent',
+  },
+});
 
 export default App;

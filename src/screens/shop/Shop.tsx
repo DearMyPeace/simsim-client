@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'transparent',
     alignItems: 'flex-end',
   },
   navItem: {
