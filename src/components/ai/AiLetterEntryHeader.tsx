@@ -3,6 +3,7 @@ import { View, StyleSheet, Pressable, Animated } from 'react-native';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import MyText from '@components/common/MyText';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { fontBasic, fontMedium } from '@utils/Sizing';
 
 interface AiLetterEntryHeaderProps {
   section: IAiLetterEntry;
@@ -70,12 +71,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   date: {
-    fontSize: 16,
+    fontSize: fontMedium,
     fontFamily: 'GowunBatang-Bold',
     color: 'black',
   },
   summary: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: 'gray',
     flex: 1,
     marginLeft: 20,

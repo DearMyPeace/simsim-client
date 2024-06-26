@@ -4,8 +4,9 @@ import { PieChart } from 'react-native-chart-kit';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MyText from '@components/common/MyText';
 import PieceEntries from '@api/mock/PieceEntries';
-import { appColor1, appColor2, appColor3, appColor4, appColor5 } from '@utils/color';
+import { appColor1, appColor2, appColor3, appColor4, appColor5 } from '@utils/colors';
 import stainedglass from '@assets/images/stainedglass.jpg';
+import { fontBasic } from '@utils/Sizing';
 
 const chartConfig = {
   backgroundColor: '#ffffff',
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   reportText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#555',
   },
 });

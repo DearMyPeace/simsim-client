@@ -5,6 +5,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import PurchaseHistoryEntries from '@api/mock/PurchaseHistoryEntries';
 import MyText from '@components/common/MyText';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat('ko-KR').format(number);
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   dropdownText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     padding: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
   },
   selectedText: {
-    fontSize: 14,
+    fontSize: fontBasic,
   },
   emptyContainer: {
     flex: 1,
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     marginTop: 10,
-    fontSize: 20,
+    fontSize: fontLarge,
     color: 'gray',
   },
   list: {
@@ -202,32 +203,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateText: {
-    fontSize: 20,
+    fontSize: fontLarge,
     fontFamily: 'GowunBatang-bold',
     marginBottom: 5,
   },
   summaryText: {
-    fontSize: 20,
+    fontSize: fontLarge,
     fontFamily: 'GowunBatang-Regular',
     marginBottom: 5,
   },
   useText: {
-    fontSize: 16,
+    fontSize: fontMedium,
     fontFamily: 'GowunBatang-bold',
     color: 'black',
     marginBottom: 5,
   },
   contentText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#555',
     marginBottom: 5,
   },
   timeText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#888',
   },
   outerText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#555',
   },
 });

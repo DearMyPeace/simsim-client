@@ -4,6 +4,7 @@ import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
+import { fontBasic } from '@utils/Sizing';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
   const AppleSignIn = async () => {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   loginButtonText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
 });

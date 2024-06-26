@@ -4,6 +4,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { fontBasic } from '@utils/Sizing';
 
 GoogleSignin.configure({
   webClientId: process.env.GOOGLE_CLIENT_ID,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   loginButtonText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
 });

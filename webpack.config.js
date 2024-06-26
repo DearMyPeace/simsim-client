@@ -19,6 +19,7 @@ const uncompiled = [
   'react-native-chart-kit',
   'react-native-gesture-handler',
   'react-native-reanimated',
+  'react-native-date-picker',
   'react-native-encrypted-storage',
   'react-native-markdown-display',
   'react-apple-signin-auth',
@@ -49,10 +50,15 @@ const imageLoaderConfiguration = {
   use: {
     loader: 'url-loader',
     options: {
-      name: '[name].[ext]',
+      name: 'assets/[name].[hash].[ext]',
       esModule: false,
     },
   },
+};
+
+const cssLoaderConfiguration = {
+  test: /\.css$/,
+  use: ['style-loader', 'css-loader'],
 };
 
 module.exports = {
@@ -62,7 +68,7 @@ module.exports = {
     path: path.resolve(appDirectory, 'dist'),
   },
   module: {
-    rules: [babelLoaderConfiguration, imageLoaderConfiguration],
+    rules: [babelLoaderConfiguration, imageLoaderConfiguration, cssLoaderConfiguration],
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),
@@ -79,6 +85,9 @@ module.exports = {
       resourceRegExp: /react-native-encrypted-storage/,
     }),
     new Dotenv(),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^expo-constants$/,
+    }),
   ],
   resolve: {
     alias: {

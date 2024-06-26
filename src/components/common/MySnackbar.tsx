@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Animated, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import MyText from './MyText';
 
@@ -7,11 +7,17 @@ interface IMySnackbarProps {
   visible: boolean;
   text: string;
   onDissmiss: () => void;
+  style?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
 }
 
-const MySnackbar = ({ visible, text, onDissmiss }: IMySnackbarProps) => {
+const MySnackbar = ({ visible, text, onDissmiss, style }: IMySnackbarProps) => {
   return (
-    <Snackbar visible={visible} onDismiss={onDissmiss} style={styles.wrapper} duration={2500}>
+    <Snackbar
+      visible={visible}
+      onDismiss={onDissmiss}
+      style={[styles.wrapper, style]}
+      duration={2500}
+    >
       <MyText style={styles.text}>{text}</MyText>
     </Snackbar>
   );

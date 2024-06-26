@@ -3,9 +3,11 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isLoggedInState } from '@stores/login';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
-import SettingPage from '@screens/setting/SettingPage';
 import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
+import SettingScreen from "@screens/setting/SettingScreen.tsx";
+import { fontLarge } from "@utils/Sizing.ts";
+import { BackIcon } from "@components/common/TabIcons.tsx";
 
 const Stack = createStackNavigator();
 
@@ -35,14 +37,19 @@ const MainNavigator = () => {
           <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Screen
             name="Settings"
-            component={SettingPage}
+            component={SettingScreen}
             options={{
               title: '설정',
               headerStyle: { backgroundColor: 'white' },
-              headerTitleStyle: { fontFamily: 'GowunBatang-Regular' },
+              headerTitleStyle: {
+                fontFamily: 'GowunBatang-Regular',
+                fontSize: fontLarge,
+              },
               headerShadowVisible: false,
               headerBackTitleVisible: false,
               headerTintColor: 'black',
+              headerTitleAlign: 'left',
+              headerBackImage: BackIcon,
             }}
           />
         </>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, Platform } from 'react-native';
+import { fontBasic } from '@utils/Sizing';
+
 interface MyTextInputProps extends TextInputProps {
   textAlign?: 'left' | 'center' | 'right';
 }
@@ -19,7 +21,7 @@ export default MyTextInput;
 const styles = StyleSheet.create({
   input: {
     fontFamily: 'GowunBatang-Regular',
-    fontSize: 14,
+    fontSize: fontBasic,
     color: 'black',
     borderWidth: 0,
     ...Platform.select({

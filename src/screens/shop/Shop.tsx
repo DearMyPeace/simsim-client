@@ -5,6 +5,7 @@ import PurchaseHistory from '@screens/shop/PurchaseHistory';
 import PsychologicalConsulting from '@screens/shop/PsychologicalConsulting';
 import ArtworkShop from '@screens/shop/ArtworkShop';
 import MyText from '@components/common/MyText';
+import { fontBasic } from '@utils/Sizing';
 
 export default function Shop() {
   const [selectedTab, setSelectedTab] = useState('조각충전');
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   navText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
   selectedText: {

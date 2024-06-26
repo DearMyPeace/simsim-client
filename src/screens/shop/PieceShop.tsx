@@ -7,6 +7,7 @@ import p500 from '@assets/images/p500.png';
 import p200 from '@assets/images/p200.png';
 import p100 from '@assets/images/p100.png';
 import p5 from '@assets/images/p5.png';
+import { fontBasic, fontLarge } from '@utils/Sizing';
 
 const PieceShop: React.FC = () => {
   const [, setPieceCount] = useRecoilState(pieces);
@@ -83,13 +84,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   header: {
-    fontSize: 20,
+    fontSize: fontLarge,
     fontFamily: 'GowunBatang-Bold',
     marginTop: 10,
     marginBottom: 5,
   },
   subHeader: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#555',
     marginBottom: 10,
   },
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     borderColor: '#C48E24',
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
   scrollView: {

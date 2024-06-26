@@ -8,6 +8,7 @@ import Markdown from 'react-native-markdown-display';
 import Logo from '@screens/common/Logo';
 import terms from '@stores/terms';
 import policy from '@stores/policy';
+import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
 
 let AppleLogin;
 let GoogleLogin;
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 20,
+    fontSize: fontLarge,
     fontFamily: 'Kalam-Bold',
     marginBottom: 72,
   },
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   content: {
-    fontSize: 14,
+    fontSize: fontBasic,
     paddingHorizontal: 10,
   },
   loginOptions: {
@@ -197,14 +198,14 @@ const styles = StyleSheet.create({
   },
   termsText: {
     fontFamily: 'GowunBatang-Regular',
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
     textDecorationLine: 'underline',
     marginLeft: 3.5,
   },
   termsTextNoLine: {
     fontFamily: 'GowunBatang-Regular',
-    fontSize: 14,
+    fontSize: fontBasic,
     color: '#000',
   },
   modalContainer: {
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalText: {
-    fontSize: 16,
+    fontSize: fontMedium,
     marginBottom: 20,
   },
   modalButtons: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: fontMedium,
   },
   checkbox: {
     width: 20,
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
   markdown: {
     body: {
-      fontSize: 14,
+      fontSize: fontBasic,
       fontFamily: 'GowunBatang-Regular',
     },
     heading2: {
