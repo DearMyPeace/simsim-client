@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
-import DiaryPagination from '@components/diary/carousel/DiaryPagination';
 import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
 import { IDiaryCarouselProps, NEW_DIARY } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
@@ -51,7 +50,6 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
           setIsEditing={setIsEditing}
         />
       </View>
-      <DiaryPagination activeIndex={activeIndex} diaryList={data} />
     </View>
   );
 };
