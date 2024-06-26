@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const appDirectory = path.resolve(__dirname, './');
 
@@ -18,6 +19,9 @@ const uncompiled = [
   'react-native-chart-kit',
   'react-native-gesture-handler',
   'react-native-reanimated',
+  'react-native-encrypted-storage',
+  'react-native-markdown-display',
+  'react-apple-signin-auth',
 ];
 
 const babelLoaderConfiguration = {
@@ -71,11 +75,28 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /react-native-reanimated/,
     }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /react-native-encrypted-storage/,
+    }),
+    new Dotenv(),
   ],
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
     },
     extensions: ['.web.js', '.js', '.web.ts', '.ts', '.web.tsx', '.tsx'],
+  },
+  devServer: {
+    static: {
+      directory: path.resolve(appDirectory, 'public'),
+    },
+    historyApiFallback: true,
+    hot: true,
+    host: '0.0.0.0',
+    port: 8080,
+    headers: {
+      // 'Cross-Origin-Opener-Policy': 'same-origin',
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
   },
 };

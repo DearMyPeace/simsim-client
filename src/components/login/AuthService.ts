@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-// import EncryptedStorage from 'react-native-encrypted-storage';
 
 const TOKEN_KEY = 'authToken';
 
@@ -12,6 +11,7 @@ const saveToken = async (token) => {
     }
   } else {
     try {
+      const EncryptedStorage = (await import('react-native-encrypted-storage')).default;
       await EncryptedStorage.setItem(TOKEN_KEY, token);
     } catch (e) {
       console.error('Failed to save token in encrypted storage', e);
@@ -30,6 +30,7 @@ const getToken = async () => {
     }
   } else {
     try {
+      const EncryptedStorage = (await import('react-native-encrypted-storage')).default;
       const token = await EncryptedStorage.getItem(TOKEN_KEY);
       return token;
     } catch (e) {
@@ -48,6 +49,7 @@ const removeToken = async () => {
     }
   } else {
     try {
+      const EncryptedStorage = (await import('react-native-encrypted-storage')).default;
       await EncryptedStorage.removeItem(TOKEN_KEY);
     } catch (e) {
       console.error('Failed to remove token from encrypted storage', e);

@@ -1,46 +1,97 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, Platform, Modal, Text, TouchableOpacity } from 'react-native';
-import GoogleLogin from '@screens/login/GoogleLogin';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
-
-import logoL from '@assets/logo/left.png';
-import logoC from '@assets/logo/center.png';
-import logoR from '@assets/logo/right.png';
+import { ScrollView } from 'react-native-gesture-handler';
+import Markdown from 'react-native-markdown-display';
+import Logo from '@screens/common/Logo';
+import terms from '@stores/terms';
+import policy from '@stores/policy';
 
 let AppleLogin;
-if (Platform.OS === 'ios') {
-  AppleLogin = require('@screens/login/AppleLogin').default;
-} else {
+let GoogleLogin;
+
+if (Platform.OS === 'web') {
   AppleLogin = require('@screens/login/AppleLoginWeb').default;
+  GoogleLogin = require('@screens/login/GoogleLoginWeb').default;
+} else {
+  AppleLogin = require('@screens/login/AppleLogin').default;
+  GoogleLogin = require('@screens/login/GoogleLogin').default;
 }
 
 const LoginScreen = () => {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(300)).current;
+  const loginFuncRef = useRef(null);
 
   const handleCheckboxPress = () => {
     setIsModalVisible(true);
   };
 
   const handleAgree = () => {
-    setIsChecked(true);
-    setIsModalVisible(false);
+    if (!isPolicyChecked) {
+      setIsPolicyChecked(true);
+    } else {
+      setIsTermsChecked(true);
+      setIsModalVisible(false);
+      if (loginFuncRef.current) {
+        loginFuncRef.current();
+      }
+    }
   };
 
   const handleCancel = () => {
-    setIsChecked(false);
+    setIsPolicyChecked(false);
+    setIsTermsChecked(false);
     setIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    if (isModalVisible) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 300,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [isModalVisible, fadeAnim, slideAnim]);
+
+  const handleLoginPress = (loginFunc) => {
+    if (!isPolicyChecked || !isTermsChecked) {
+      loginFuncRef.current = loginFunc;
+      setIsModalVisible(true);
+    } else {
+      loginFunc();
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image source={logoL} style={styles.logoImageLeft} />
-        <Image source={logoC} style={styles.logoImageCenter} />
-        <Image source={logoR} style={styles.logoImageRight} />
-      </View>
+      <Logo />
       <MyText style={styles.title}>Dear my peace</MyText>
       <View style={styles.separatorWrapper}>
         <View style={styles.separator} />
@@ -48,22 +99,26 @@ const LoginScreen = () => {
         <View style={styles.separator} />
       </View>
       <View style={styles.loginOptions}>
-        <GoogleLogin />
-        <AppleLogin />
+        <GoogleLogin handleLoginPress={handleLoginPress} />
+        <AppleLogin handleLoginPress={handleLoginPress} />
       </View>
       <View style={styles.termsWrapper}>
         {Platform.OS === 'web' ? (
-          <WebCheckBox value={isChecked} onChange={handleCheckboxPress} style={styles.checkbox} />
+          <WebCheckBox
+            value={isPolicyChecked && isTermsChecked}
+            color="#444"
+            onChange={handleCheckboxPress}
+            style={styles.checkbox}
+          />
         ) : (
           <CheckBox
             style={styles.checkbox}
             disabled={true}
-            value={isChecked}
+            value={isPolicyChecked && isTermsChecked}
             onCheckColor="#FFFFFF"
             onFillColor="black"
             onTintColor="black"
             boxType="square"
-            onValueChange={handleCheckboxPress}
           />
         )}
         <TouchableOpacity onPress={handleCheckboxPress} style={styles.termsWrapper}>
@@ -76,24 +131,26 @@ const LoginScreen = () => {
       <Modal
         visible={isModalVisible}
         transparent={true}
-        animationType="slide"
+        animationType="none"
         onRequestClose={handleCancel}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>
-              이용약관 및 개인정보처리방침 내용을 여기에 작성합니다.
-            </Text>
+        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
+          <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]}>
+            <View>
+              <ScrollView style={styles.modalTerms}>
+                <Markdown style={styles.markdown}>{isPolicyChecked ? terms : policy}</Markdown>
+              </ScrollView>
+            </View>
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.button} onPress={handleAgree}>
-                <Text style={styles.buttonText}>동의</Text>
+              <TouchableOpacity style={styles.agreeButton} onPress={handleAgree}>
+                <MyText style={styles.buttonText}>동의</MyText>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleCancel}>
-                <Text style={styles.buttonText}>취소</Text>
+              <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+                <MyText style={styles.buttonText}>취소</MyText>
               </TouchableOpacity>
             </View>
-          </View>
-        </View>
+          </Animated.View>
+        </Animated.View>
       </Modal>
     </View>
   );
@@ -107,28 +164,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     padding: 16,
   },
-  logoContainer: {
-    flexDirection: 'row',
-  },
-  logoImageLeft: {
-    width: 26,
-    height: 83,
-    marginTop: 20,
-    marginRight: 8,
-  },
-  logoImageCenter: {
-    width: 42,
-    height: 63,
-    marginRight: -45,
-  },
-  logoImageRight: {
-    width: 73,
-    height: 107,
-  },
   title: {
     fontSize: 20,
-    // fontFamily: 'Kalam',
-    fontFamily: 'GowunBatang-Bold',
+    fontFamily: 'Kalam-Bold',
     marginBottom: 72,
   },
   separatorWrapper: {
@@ -182,6 +220,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+  modalTerms: {
+    maxHeight: 300,
+    marginBottom: 20,
+  },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
@@ -189,12 +231,19 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row',
   },
-  button: {
+  agreeButton: {
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#007BFF',
-    borderRadius: 5,
+    backgroundColor: '#444',
+    borderRadius: 20,
+  },
+  cancelButton: {
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ccc',
+    borderRadius: 20,
   },
   buttonText: {
     color: '#fff',
@@ -204,6 +253,20 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 5,
+  },
+  markdown: {
+    body: {
+      fontSize: 14,
+      fontFamily: 'GowunBatang-Regular',
+    },
+    heading2: {
+      fontSize: 24,
+      fontFamily: 'GowunBatang-Bold',
+      marginTop: 10,
+    },
+    heading3: {
+      marginTop: 10,
+    },
   },
 });
 
