@@ -5,7 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
 import MainNavigator from '@navigators/MainNavigator';
-import SplashScreen from '@screens/common/SplashScreen'; // 스플래시 화면 추가
+import SplashScreen from '@screens/common/SplashScreen';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
