@@ -1,31 +1,51 @@
 import React, { useState } from 'react';
 import { ItemValue } from '@react-native-picker/picker/typings/Picker';
+import { useQuery } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
+import { userAiPersonaStatus } from '@stores/userAiPersona';
+import { snackMessage } from '@stores/snackMessage';
 
 // todo: api 요청으로 받아오기
-const aiPersona = '공감형';
-const aiPersonaList = [
+const mockAiPersona = [
   { id: 'FeelingAi', label: '공감형', value: '공감형' },
   { id: 'ThinkingAi', label: '사고형', value: '사고형' },
 ];
+
+const fetchAiPersonaList = () => {
+  return mockAiPersona;
+};
+
 const useAiPickerHook = () => {
-  const [selectedAi, setSelectedAi] = useState<string>(aiPersona);
-  const [aiPickerVisible, setAiPickerVisible] = useState(false);
+  const setUserSelectedAi = useSetRecoilState(userAiPersonaStatus);
+  const [aiPickerVisible, setAiPickerVisible] = useState<boolean>(false);
+  const setSnackbar = useSetRecoilState(snackMessage);
+  const { data, isError, isPending } = useQuery({
+    queryKey: ['aiPersona'],
+    queryFn: fetchAiPersonaList,
+    enabled: aiPickerVisible,
+  });
 
-  function aiPickerOpen() {
+  const aiPickerOpen = () => {
+    if (isError) {
+      setAiPickerVisible(false);
+      setSnackbar('목록을 불러오는 중 오류가 발생했습니다');
+      return;
+    }
     setAiPickerVisible(true);
-  }
+  };
 
-  const onSelectAi = (itemValue: ItemValue) => {
-    setSelectedAi(itemValue as string);
+  const onSelectAi = (aiPersona: ItemValue) => {
+    setUserSelectedAi(aiPersona as string);
     setAiPickerVisible(false);
   };
   return {
-    selectedAi,
     aiPickerVisible,
     setAiPickerVisible,
     aiPickerOpen,
     onSelectAi,
-    aiPersonaList,
+    aiPersonaList: data || [],
+    isError,
+    isPending,
   };
 };
 
