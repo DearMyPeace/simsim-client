@@ -70,6 +70,18 @@
       "sha1": "86e07c3d974eb09099e6e5a9b3b8310303cf0feb"
     },
     {
+      "path": "src/assets/fonts/Kalam-Bold.ttf",
+      "sha1": "f26d7a15c244acc238950d3ef6e4733e8b3acc36"
+    },
+    {
+      "path": "src/assets/fonts/Kalam-Light.ttf",
+      "sha1": "15f2a1bfe1709984d8e30274fae2c5aa4986fdac"
+    },
+    {
+      "path": "src/assets/fonts/Kalam-Regular.ttf",
+      "sha1": "4dd809bd7c5d2c6ae83f5e35cc93119df3e05307"
+    },
+    {
       "path": "src/assets/fonts/MaterialCommunityIcons.ttf",
       "sha1": "4c2a838b00dbb5e8bb1b368fce0de534e8eb241c"
     },
