@@ -47,12 +47,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    ...Platform.select({
-      web: {
-        height: '30%',
-        justifyContent: 'center',
-      },
-    }),
   },
 });
 
