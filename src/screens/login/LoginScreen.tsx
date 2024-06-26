@@ -3,10 +3,11 @@ import { View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'r
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
-import terms from '@stores/terms';
 import { ScrollView } from 'react-native-gesture-handler';
 import Markdown from 'react-native-markdown-display';
-import Logo from '@screens/common/Logo'; // 추가
+import Logo from '@screens/common/Logo';
+import terms from '@stores/terms';
+import policy from '@stores/policy';
 
 let AppleLogin;
 let GoogleLogin;
@@ -20,7 +21,8 @@ if (Platform.OS === 'web') {
 }
 
 const LoginScreen = () => {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(300)).current;
@@ -31,15 +33,20 @@ const LoginScreen = () => {
   };
 
   const handleAgree = () => {
-    setIsChecked(true);
-    setIsModalVisible(false);
-    if (loginFuncRef.current) {
-      loginFuncRef.current();
+    if (!isPolicyChecked) {
+      setIsPolicyChecked(true);
+    } else {
+      setIsTermsChecked(true);
+      setIsModalVisible(false);
+      if (loginFuncRef.current) {
+        loginFuncRef.current();
+      }
     }
   };
 
   const handleCancel = () => {
-    setIsChecked(false);
+    setIsPolicyChecked(false);
+    setIsTermsChecked(false);
     setIsModalVisible(false);
   };
 
@@ -74,7 +81,7 @@ const LoginScreen = () => {
   }, [isModalVisible, fadeAnim, slideAnim]);
 
   const handleLoginPress = (loginFunc) => {
-    if (!isChecked) {
+    if (!isPolicyChecked || !isTermsChecked) {
       loginFuncRef.current = loginFunc;
       setIsModalVisible(true);
     } else {
@@ -98,7 +105,7 @@ const LoginScreen = () => {
       <View style={styles.termsWrapper}>
         {Platform.OS === 'web' ? (
           <WebCheckBox
-            value={isChecked}
+            value={isPolicyChecked && isTermsChecked}
             color="#444"
             onChange={handleCheckboxPress}
             style={styles.checkbox}
@@ -107,7 +114,7 @@ const LoginScreen = () => {
           <CheckBox
             style={styles.checkbox}
             disabled={true}
-            value={isChecked}
+            value={isPolicyChecked && isTermsChecked}
             onCheckColor="#FFFFFF"
             onFillColor="black"
             onTintColor="black"
@@ -131,7 +138,7 @@ const LoginScreen = () => {
           <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]}>
             <View>
               <ScrollView style={styles.modalTerms}>
-                <Markdown style={styles.markdown}>{terms}</Markdown>
+                <Markdown style={styles.markdown}>{isPolicyChecked ? terms : policy}</Markdown>
               </ScrollView>
             </View>
             <View style={styles.modalButtons}>
