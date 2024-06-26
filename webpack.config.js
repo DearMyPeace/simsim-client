@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, './');
 
@@ -50,8 +51,11 @@ const imageLoaderConfiguration = {
   use: {
     loader: 'url-loader',
     options: {
-      name: 'assets/[name].[hash].[ext]',
+      name: '[name].[hash].[ext]',
       esModule: false,
+      limit: 100,
+      fallback: 'file-loader',
+      publicPath: '/',
     },
   },
 };
@@ -66,6 +70,7 @@ module.exports = {
   output: {
     filename: 'bundle.web.js',
     path: path.resolve(appDirectory, 'dist'),
+    publicPath: '/',
   },
   module: {
     rules: [babelLoaderConfiguration, imageLoaderConfiguration, cssLoaderConfiguration],
@@ -88,6 +93,14 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /^expo-constants$/,
     }),
+    new CopyWebpackPlugin({
+        patterns: [
+        {
+            from: path.resolve(appDirectory, 'public/favicon'),
+            to: path.resolve(appDirectory, 'dist/favicon'),
+            },
+        ],
+        }),
   ],
   resolve: {
     alias: {
