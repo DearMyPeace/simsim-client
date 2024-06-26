@@ -17,7 +17,7 @@ import { ko } from 'date-fns/locale';
 import MySnackbar from '@components/common/MySnackbar';
 
 const SettingScreen = () => {
-  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, onLogout } =
+  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, handleLogout } =
     useSetting();
   const {
     diaryNotiEnabled,
@@ -58,7 +58,7 @@ const SettingScreen = () => {
         <View style={styles.basicPadding}>
           <SettingSection label="편지 작성자" buttonText={selectedAi} onPress={aiPickerOpen} />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
-          <SettingSection label="로그아웃" buttonText="나가기" onPress={onLogout} />
+          <SettingSection label="로그아웃" buttonText="나가기" onPress={handleLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />
         </View>
       </ScrollView>
@@ -68,14 +68,14 @@ const SettingScreen = () => {
         onClose={onTimePickerClose}
       >
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <DatePicker
-          mode="time"
-          locale="ko-KR"
-          date={notiTime}
-          minuteInterval={10}
-          onDateChange={setNotiTime}
-          dividerColor="black"
-        />
+          <DatePicker
+            mode="time"
+            locale="ko-KR"
+            date={notiTime}
+            minuteInterval={10}
+            onDateChange={setNotiTime}
+            dividerColor="black"
+          />
         </View>
       </BasicBottomSheet>
       <BottomSheetPicker
