@@ -10,7 +10,7 @@ import useNotification from '@hooks/setting/notificationHook';
 import useSetting from '@hooks/setting/settingHook';
 import DatePicker from 'react-native-date-picker';
 import BasicBottomSheet from '@components/common/BasicBottomSheet';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -67,6 +67,7 @@ const SettingScreen = () => {
         setVisible={setTimePickerVisible}
         onClose={onTimePickerClose}
       >
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <DatePicker
           mode="time"
           locale="ko-KR"
@@ -75,6 +76,7 @@ const SettingScreen = () => {
           onDateChange={setNotiTime}
           dividerColor="black"
         />
+        </View>
       </BasicBottomSheet>
       <BottomSheetPicker
         visible={aiPickerVisible}
