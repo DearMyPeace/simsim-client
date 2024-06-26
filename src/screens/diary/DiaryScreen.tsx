@@ -6,11 +6,7 @@ import useCalendarHook from '@hooks/diary/calendarHook';
 import MySnackbar from '@components/common/MySnackbar';
 
 const DiaryScreen = () => {
-  const { selectedDate, onDayPress, onMonthChange, markedDates, snackbarText, setSnackbarText } =
-    useCalendarHook();
-  const onDissmissSnackbar = () => {
-    setSnackbarText('');
-  };
+  const { selectedDate, onDayPress, onMonthChange, markedDates, snackbarText } = useCalendarHook();
 
   return (
     <>
@@ -23,11 +19,7 @@ const DiaryScreen = () => {
         />
         <DiaryCarousel selectedDate={selectedDate} />
       </View>
-      <MySnackbar
-        visible={snackbarText !== ''}
-        text={snackbarText}
-        onDissmiss={onDissmissSnackbar}
-      />
+      <MySnackbar visible={snackbarText !== ''} />
     </>
   );
 };
