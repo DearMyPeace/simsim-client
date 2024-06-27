@@ -15,6 +15,11 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       // initialRouteName="Piece"
+      theme={{
+        colors: {
+          background: 'transparent',
+        },
+      }}
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useMutation } from '@tanstack/react-query';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
@@ -7,11 +8,26 @@ import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
+  const appleSignInRef = useRef(null);
+
   const AppleSignIn = async () => {
-    // Apple Sign-In 웹용 로직 추가 가능
     console.log('Apple Sign-In 웹용 로직 추가 가능');
     Alert.alert('애플 로그인은 iOS에서만 지원됩니다.');
+    if (appleSignInRef.current) {
+      appleSignInRef.current();
+    }
   };
+
+  const sendUserToken = useMutation({
+    mutationFn: (data) => postUserToken(data),
+    onSuccess: (data) => {
+      // TODO: back end에서 받은 data를 이용해 로그인 처리
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error.response.data.message);
+    },
+  });
 
   return (
     <View>
@@ -22,11 +38,11 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
         </View>
       </TouchableOpacity>
 
-      {/* Apple Signin component with auth options */}
       <AppleSignin
         authOptions={{
-          clientId: 'com.example.client-identifier', // 동일한 clientId 사용
-          redirectURI: 'https://example.com/auth/callback', // 동일한 redirectURI 사용
+          // TODO: web 배포 후 다시 만져줘야함.
+          clientId: 'site.peace.my.dear', // 동일한 clientId 사용
+          redirectURI: 'http://dear-my-peace.site', // 동일한 redirectURI 사용
           scope: 'email name',
           state: 'state',
           nonce: sha256('nonce'), // nonce를 sha256으로 변환
@@ -34,20 +50,22 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
         }}
         onSuccess={(response) => {
           console.log(response);
-          // 성공 시 처리할 로직 추가
+          sendUserToken.mutate(response);
         }}
         onError={(error) => {
           console.error(error);
-          // 실패 시 처리할 로직 추가
         }}
-        render={(props) => (
-          <TouchableOpacity style={styles.hiddenLoginButton} onPress={props.onClick}>
-            <View style={styles.iconAndText}>
-              <Icon name="apple" size={20} color="#000" style={styles.icon} />
-              <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
-            </View>
-          </TouchableOpacity>
-        )}
+        render={(props) => {
+          appleSignInRef.current = props.onClick; // 버튼 클릭 함수 참조 저장
+          return (
+            <TouchableOpacity style={styles.hiddenLoginButton} onPress={props.onClick}>
+              <View style={styles.iconAndText}>
+                <Icon name="apple" size={20} color="#000" style={styles.icon} />
+                <MyText style={styles.loginButtonText}>Apple로 계속</MyText>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
       />
     </View>
   );
@@ -74,7 +92,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
   },
   hiddenLoginButton: {
-    // display: 'none',
+    display: 'none',
   },
   iconAndText: {
     flexDirection: 'row',

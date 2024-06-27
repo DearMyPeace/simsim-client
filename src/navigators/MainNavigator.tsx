@@ -29,11 +29,24 @@ const MainNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
+        cardStyle: { backgroundColor: 'transparent' },
+        cardStyleInterpolator: ({ current }) => ({
+          cardStyle: {
+            opacity: current.progress,
+            backgroundColor: 'transparent',
+          },
+        }),
       }}
     >
       {!isLoggedIn ? (
         <>
-          <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Tabs"
+            component={TabNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
@@ -50,7 +63,13 @@ const MainNavigator = () => {
           />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       )}
     </Stack.Navigator>
   );

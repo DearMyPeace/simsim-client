@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
+import { Image, View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
 import { ScrollView } from 'react-native-gesture-handler';
 import Markdown from 'react-native-markdown-display';
-import Logo from '@screens/common/Logo';
+import logo from '@assets/logo/logo.png';
 import terms from '@stores/terms';
 import policy from '@stores/policy';
 import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
@@ -26,6 +26,7 @@ const LoginScreen = () => {
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const modalFadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(300)).current;
   const loginFuncRef = useRef(null);
 
@@ -52,9 +53,17 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
+  useEffect(() => {
     if (isModalVisible) {
       Animated.parallel([
-        Animated.timing(fadeAnim, {
+        Animated.timing(modalFadeAnim, {
           toValue: 1,
           duration: 300,
           useNativeDriver: true,
@@ -67,7 +76,7 @@ const LoginScreen = () => {
       ]).start();
     } else {
       Animated.parallel([
-        Animated.timing(fadeAnim, {
+        Animated.timing(modalFadeAnim, {
           toValue: 0,
           duration: 300,
           useNativeDriver: true,
@@ -79,7 +88,7 @@ const LoginScreen = () => {
         }),
       ]).start();
     }
-  }, [isModalVisible, fadeAnim, slideAnim]);
+  }, [isModalVisible, modalFadeAnim, slideAnim]);
 
   const handleLoginPress = (loginFunc) => {
     if (!isPolicyChecked || !isTermsChecked) {
@@ -92,50 +101,47 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Logo />
-      <MyText style={styles.title}>Dear my peace</MyText>
-      <View style={styles.separatorWrapper}>
-        <View style={styles.separator} />
-        <MyText style={styles.content}> 이메일로 로그인 | 가입 </MyText>
-        <View style={styles.separator} />
-      </View>
-      <View style={styles.loginOptions}>
-        <GoogleLogin handleLoginPress={handleLoginPress} />
-        <AppleLogin handleLoginPress={handleLoginPress} />
-      </View>
-      <View style={styles.termsWrapper}>
-        {Platform.OS === 'web' ? (
-          <WebCheckBox
-            value={isPolicyChecked && isTermsChecked}
-            color="#444"
-            onChange={handleCheckboxPress}
-            style={styles.checkbox}
-          />
-        ) : (
-          <CheckBox
-            style={styles.checkbox}
-            disabled={true}
-            value={isPolicyChecked && isTermsChecked}
-            onCheckColor="#FFFFFF"
-            onFillColor="black"
-            onTintColor="black"
-            boxType="square"
-          />
-        )}
-        <TouchableOpacity onPress={handleCheckboxPress} style={styles.termsWrapper}>
-          <MyText style={styles.termsText}>이용약관</MyText>
-          <MyText style={styles.termsTextNoLine}> 및 </MyText>
-          <MyText style={styles.termsText}>개인정보처리방침</MyText>
-          <MyText style={styles.termsTextNoLine}> 동의</MyText>
-        </TouchableOpacity>
-      </View>
+      <Image source={logo} style={{ width: 120, height: 120 }} />
+      <Animated.View style={{ opacity: fadeAnim, width: '100%', alignItems: 'center' }}>
+        <MyText style={styles.title}>Dear my peace</MyText>
+        <View style={styles.loginOptions}>
+          <GoogleLogin handleLoginPress={handleLoginPress} />
+          <AppleLogin handleLoginPress={handleLoginPress} />
+        </View>
+        <View style={styles.termsWrapper}>
+          {Platform.OS === 'web' ? (
+            <WebCheckBox
+              value={isPolicyChecked && isTermsChecked}
+              color="#444"
+              onChange={handleCheckboxPress}
+              style={styles.checkbox}
+            />
+          ) : (
+            <CheckBox
+              style={styles.checkbox}
+              disabled={true}
+              value={isPolicyChecked && isTermsChecked}
+              onCheckColor="#FFFFFF"
+              onFillColor="black"
+              onTintColor="black"
+              boxType="square"
+            />
+          )}
+          <TouchableOpacity onPress={handleCheckboxPress} style={styles.termsWrapper}>
+            <MyText style={styles.termsText}>이용약관</MyText>
+            <MyText style={styles.termsTextNoLine}> 및 </MyText>
+            <MyText style={styles.termsText}>개인정보처리방침</MyText>
+            <MyText style={styles.termsTextNoLine}> 동의</MyText>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
       <Modal
         visible={isModalVisible}
         transparent={true}
         animationType="none"
         onRequestClose={handleCancel}
       >
-        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
+        <Animated.View style={[styles.modalContainer, { opacity: modalFadeAnim }]}>
           <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]}>
             <View>
               <ScrollView style={styles.modalTerms}>
@@ -162,25 +168,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'transparent',
     padding: 16,
   },
   title: {
     fontSize: fontLarge,
     fontFamily: 'Kalam-Bold',
     marginBottom: 72,
-  },
-  separatorWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 20,
-    width: '100%',
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#000',
   },
   content: {
     fontSize: fontBasic,
