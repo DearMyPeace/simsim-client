@@ -35,22 +35,41 @@ const MockTestAiLetter: React.FC = () => {
   }, []);
 
   const loadMoreData = () => {
-    const firstEntryId = aiLetterEntries[0]?.id;
-    const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
+    // id가 있는 첫 번째 data를 찾습니다.
+    const firstEntryWithId = aiLetterEntries.find((entry) => !entry.isPlaceholder);
+    const firstEntryId = firstEntryWithId?.id;
 
-    if (firstEntryIndex > 0) {
-      const additionalEntries = AiLetterEntries.slice(
-        Math.max(firstEntryIndex - 5, 0),
-        firstEntryIndex,
-      );
-      const newEntries = [...additionalEntries, ...aiLetterEntries];
+    if (firstEntryId) {
+      const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
 
-      const firstNewEntryDate = new Date(newEntries[0].date);
-      const updatedStartDate = new Date(Math.min(startDate.getTime(), firstNewEntryDate.getTime()));
-      const updatedEndDate = new Date();
-      setAiLetterEntries(
-        fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
-      );
+      console.log('firstEntryId', firstEntryId);
+      console.log('firstEntryIndex', firstEntryIndex);
+      console.log('entries', aiLetterEntries);
+
+      if (firstEntryIndex > 0) {
+        // 추가로 가져올 항목의 범위를 계산합니다.
+        const start = Math.max(firstEntryIndex - 5, 0);
+        const additionalEntries = AiLetterEntries.slice(start, firstEntryIndex);
+
+        // 새로운 항목을 기존 항목 앞에 추가합니다.
+        const newEntries = [...additionalEntries, ...aiLetterEntries];
+
+        // 새로운 항목들의 날짜 범위를 계산합니다.
+        const firstNewEntryDate = new Date(newEntries[0].date);
+        const updatedStartDate = new Date(
+          Math.min(startDate.getTime(), firstNewEntryDate.getTime()),
+        );
+        const updatedEndDate = new Date();
+
+        console.log('updatedStartDate', updatedStartDate);
+        console.log('updatedEndDate', updatedEndDate);
+        console.log('newEntries', newEntries);
+
+        // 날짜 범위에 맞춰서 데이터 채우기
+        setAiLetterEntries(
+          fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
+        );
+      }
     }
   };
 
@@ -110,12 +129,6 @@ const MockTestAiLetter: React.FC = () => {
     );
   };
 
-  const getItemLayout = (data, index) => ({
-    length: 50, // 항목의 고정된 높이 (필요에 따라 조정)
-    offset: 50 * index,
-    index,
-  });
-
   const onScrollToIndexFailed = (info) => {
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
     wait.then(() => {
@@ -130,7 +143,6 @@ const MockTestAiLetter: React.FC = () => {
         data={aiLetterEntries}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        getItemLayout={getItemLayout}
         onScrollToIndexFailed={onScrollToIndexFailed}
         refreshControl={
           Platform.OS === 'web' ? null : (
