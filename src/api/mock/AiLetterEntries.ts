@@ -80,6 +80,12 @@ const AiLetterEntries = [
     summary: 'Challenging day at workChallenging day at workChallenging day at work',
     content: 'Work was tough today, but I managed to get through it.',
   },
+  {
+    id: '17',
+    date: '2024-06-26',
+    summary: 'Challenging day at workChallenging day at workChallenging day at work',
+    content: 'Work was tough today, but I managed to get through it.',
+  },
 ];
 
 export default AiLetterEntries;
