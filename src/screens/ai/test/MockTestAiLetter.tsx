@@ -81,7 +81,7 @@ const MockTestAiLetter: React.FC = () => {
       }
     }
 
-    if (consecutiveNotUsingDayCount > 3) {
+    if (consecutiveNotUsingDayCount > 1) {
       return null;
     }
 
