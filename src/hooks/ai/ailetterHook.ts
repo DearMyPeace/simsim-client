@@ -49,11 +49,11 @@ export const useAiLetterData = (userId: number, todayDateStr: string) => {
 
   const loadMoreData = useCallback(async () => {
     try {
-      const firstEntryId = aiLetterEntries[0]?.id;
-      const firstEntryIndex = data?.findIndex((entry) => entry.id === firstEntryId);
+      const firstEntryWithId = aiLetterEntries.find((entry) => !entry.isPlaceholder);
+      const firstEntryId = firstEntryWithId?.id;
 
-      if (firstEntryIndex > 0) {
-        const additionalEntries = await fetchNextAiLetter(firstEntryIndex - 5, 5);
+      if (firstEntryId) {
+        const additionalEntries = await fetchNextAiLetter(firstEntryId, 5);
         const newEntries = [...additionalEntries, ...aiLetterEntries];
 
         const firstNewEntryDate = new Date(newEntries[0].date);
