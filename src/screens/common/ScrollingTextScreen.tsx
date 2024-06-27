@@ -1,31 +1,56 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Animated, Text, Easing } from 'react-native';
 
+const shuffleArray = (array) => {
+  let shuffledArray = array.slice();
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
+
 const ScrollingText = ({ words }) => {
+  const [shuffledWords, setShuffledWords] = useState(shuffleArray(words));
   const scrollAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
+  const startAnimation = () => {
+    scrollAnim.setValue(0);
     Animated.loop(
-      Animated.timing(scrollAnim, {
-        toValue: words.length,
-        duration: words.length * 1000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      }),
-    ).start();
-  }, [scrollAnim, words.length]);
+      Animated.sequence([
+        Animated.timing(scrollAnim, {
+          toValue: shuffledWords.length,
+          duration: shuffledWords.length * 500,
+          useNativeDriver: true,
+          easing: Easing.linear,
+        }),
+        Animated.timing(scrollAnim, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start(() => {
+      setShuffledWords(shuffleArray(words));
+      startAnimation();
+    });
+  };
+
+  useEffect(() => {
+    startAnimation();
+  }, []);
 
   const translateY = scrollAnim.interpolate({
-    inputRange: words.map((_, i) => i),
-    outputRange: words.map((_, i) => -i * 20), // 텍스트 높이에 따라 조정
+    inputRange: shuffledWords.map((_, i) => i),
+    outputRange: shuffledWords.map((_, i) => -i * 35),
   });
 
   return (
     <View style={styles.scrollContainer}>
       <Animated.View style={{ transform: [{ translateY }] }}>
-        {words.map((word, index) => (
+        {shuffledWords.map((word, index) => (
           <Text key={index} style={styles.scrollText}>
-            {word}에게 조각편지 받는다.
+            {word}
           </Text>
         ))}
       </Animated.View>
@@ -35,14 +60,14 @@ const ScrollingText = ({ words }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    height: 20, // 텍스트 높이와 일치하게 설정
+    height: 35,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },
   scrollText: {
-    fontSize: 16,
-    fontFamily: 'GowunBatang-Regular',
+    fontSize: 35,
+    fontFamily: 'GowunBatang-Bold',
     textAlign: 'center',
   },
 });

@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import { authTokenState, userInfoState, isLoggedInState } from '@stores/login';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';

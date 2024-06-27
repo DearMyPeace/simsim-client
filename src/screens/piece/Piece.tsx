@@ -27,7 +27,7 @@ const chartConfig = {
 const Piece = () => {
   const [chartData, setChartData] = useState([]);
   const [layoutWidth, setLayoutWidth] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 뷰의 인덱스
+  const [currentIndex, setCurrentIndex] = useState(0);
   const pan = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
