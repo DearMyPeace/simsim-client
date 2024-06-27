@@ -20,7 +20,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
     acc[date.markedDate] = {
       selected: date.markedDate === selectedDate,
       marked: date.markedDate !== selectedDate,
-      dotColor: dotColors[date.diaryCount],
+      dotColor: dotColors[date.diaryCount] || dotColors[3],
     };
     return acc;
   }, {} as IMarkedDates);

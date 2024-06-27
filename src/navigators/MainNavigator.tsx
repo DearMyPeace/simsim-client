@@ -6,8 +6,7 @@ import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
 import SettingScreen from '@screens/setting/SettingScreen';
-import { fontLarge } from '@utils/Sizing';
-import { BackIcon } from '@components/common/TabIcons';
+import { CloseIcon } from '@components/common/TabIcons';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +38,7 @@ const MainNavigator = () => {
         }),
       }}
     >
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <>
           <Stack.Screen
             name="Tabs"
@@ -51,19 +50,16 @@ const MainNavigator = () => {
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
-            options={{
-              title: '설정',
+            options={({ navigation }) => ({
+              title: '',
               headerStyle: { backgroundColor: 'white' },
-              headerTitleStyle: {
-                fontFamily: 'GowunBatang-Regular',
-                fontSize: fontLarge,
-              },
               headerShadowVisible: false,
               headerBackTitleVisible: false,
               headerTintColor: 'black',
               headerTitleAlign: 'left',
-              headerBackImage: BackIcon,
-            }}
+              headerLeft: () => null,
+              headerRight: () => <CloseIcon onPress={navigation.goBack} />,
+            })}
           />
         </>
       ) : (

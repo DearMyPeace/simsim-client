@@ -40,8 +40,9 @@ const TabNavigator = () => {
         name="Diary"
         component={Diary}
         options={{
-          tabBarLabel: '달력',
+          tabBarLabel: '기록',
           tabBarIcon: CalendarIcon,
+          tabBarHideOnKeyboard: true,
         }}
       />
       <Tab.Screen
@@ -64,7 +65,7 @@ const TabNavigator = () => {
         name="Shop"
         component={Shop}
         options={{
-          tabBarLabel: '조각상점',
+          tabBarLabel: '상점',
           tabBarIcon: ShopIcon,
         }}
       />
