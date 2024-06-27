@@ -30,6 +30,10 @@ const MockTestAiLetter: React.FC = () => {
   const endDate = new Date();
 
   useEffect(() => {
+    console.log('aiLetterEntries:', aiLetterEntries);
+  }, [aiLetterEntries]);
+
+  useEffect(() => {
     const entries = getMockAiLetterEntries(startDate, endDate);
     setAiLetterEntries(entries);
   }, []);
@@ -41,10 +45,6 @@ const MockTestAiLetter: React.FC = () => {
 
     if (firstEntryId) {
       const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
-
-      console.log('firstEntryId', firstEntryId);
-      console.log('firstEntryIndex', firstEntryIndex);
-      console.log('entries', aiLetterEntries);
 
       if (firstEntryIndex > 0) {
         // 추가로 가져올 항목의 범위를 계산합니다.
@@ -61,13 +61,9 @@ const MockTestAiLetter: React.FC = () => {
         );
         const updatedEndDate = new Date();
 
-        console.log('updatedStartDate', updatedStartDate);
-        console.log('updatedEndDate', updatedEndDate);
-        console.log('newEntries', newEntries);
-
         // 날짜 범위에 맞춰서 데이터 채우기
         setAiLetterEntries(
-          fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
+          fillDatesWithData(generateDateRange(updatedStartDate, endDate), newEntries),
         );
       }
     }
