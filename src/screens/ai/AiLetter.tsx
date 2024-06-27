@@ -74,12 +74,6 @@ const AiLetter: React.FC = () => {
     );
   };
 
-  const getItemLayout = (_, index) => ({
-    length: 50,
-    offset: 50 * index,
-    index,
-  });
-
   const onScrollToIndexFailed = (info) => {
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
     wait.then(() => {
@@ -106,7 +100,6 @@ const AiLetter: React.FC = () => {
         data={aiLetterEntries}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        getItemLayout={getItemLayout}
         onScrollToIndexFailed={onScrollToIndexFailed}
         refreshControl={
           Platform.OS === 'web' ? null : (
