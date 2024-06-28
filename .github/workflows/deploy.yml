@@ -39,4 +39,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan $TARGET_HOST >> ~/.ssh/known_hosts
 
-          scp -r build/* $TARGET_USER@$TARGET_HOST:$TARGET_PATH
+          scp -r dist $TARGET_USER@$TARGET_HOST:$TARGET_PATH
