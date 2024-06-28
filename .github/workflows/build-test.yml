@@ -24,5 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: make .env
+        run: echo "${{ secrets.ENV }}" > .env
+
       - name: Build the app
         run: npm run build
