@@ -24,10 +24,8 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
     mutationFn: (data) => postUserAppleToken(data),
     onSuccess: async (data) => {
       try {
-        // 서버로부터 받은 응답 데이터를 활용해 로그인 처리
         console.log(data);
-        await saveToken(data.access_token); // 응답에서 access_token을 추출하여 로컬 스토리지에 저장
-        // 추가로 필요한 로그인 후 로직을 여기에 작성합니다.
+        await saveToken(data.access_token);
       } catch (error) {
         console.error('Error saving token:', error);
       }
@@ -62,7 +60,6 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
         onSuccess={async (response) => {
           console.log('Apple login response:', response);
           try {
-            // 서버에 전송할 데이터 생성
             const data = {
               authorization: response.authorization,
               user: response.user,
