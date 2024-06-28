@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IAiPersonaData } from '@type/AiPersona';
 import BasicBottomSheet from '@components/common/BasicBottomSheet';
 import BasicPicker from '@components/common/BasicPicker';
 import { ItemValue } from '@react-native-picker/picker/typings/Picker';
 import useAiPersonaChange from '@hooks/setting/aiPatchHook';
+import { IPickerItemProps } from '@type/Setting';
 
 interface IAiPersonaSelectProps {
   visible: boolean;
@@ -12,23 +13,35 @@ interface IAiPersonaSelectProps {
 }
 
 const AiPersonaSelectModal = ({ visible, setIsVisible, aiPersonaList }: IAiPersonaSelectProps) => {
-  const { changeAiPersona, selectedValue, setSelectedValue } = useAiPersonaChange();
+  const { changeAiPersona, selectedPersonaCode, setSelectedPersonaCode } = useAiPersonaChange();
+  const [aiPickerItems, setAiPickerItems] = useState<IPickerItemProps[]>([]);
+
+  useEffect(() => {
+    setAiPickerItems(
+      aiPersonaList.map((persona) => ({
+        id: persona.personaId,
+        label: persona.personaName,
+        value: persona.personaCode,
+      })),
+    );
+  }, [aiPersonaList]);
 
   const onClose = () => {
-    changeAiPersona.mutate(selectedValue);
+    console.log(selectedPersonaCode);
+    changeAiPersona.mutate(selectedPersonaCode);
     setIsVisible(false);
   };
 
-  const onValueChange = (item: ItemValue) => {
-    setSelectedValue(item as string);
+  const onValueChange = (personaCode: ItemValue) => {
+    setSelectedPersonaCode(personaCode as string);
   };
 
   return (
     <BasicBottomSheet visible={visible} setVisible={setIsVisible} onClose={onClose}>
       <BasicPicker
-        selectedValue={selectedValue}
+        selectedValue={selectedPersonaCode}
         onValueChange={onValueChange}
-        items={aiPersonaList}
+        items={aiPickerItems}
       />
     </BasicBottomSheet>
   );
