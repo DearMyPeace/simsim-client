@@ -141,12 +141,19 @@ body {
   margin: auto;
   display: flex;
   flex-direction: column;
+  background-image: url('./background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* 태블릿 뷰 */
 @media (min-width: 768px) {
   #root {
     max-width: 430px;
-    max-height: 932px;
+    max-height: 885px;
+    background-size: cover;
+    background-size: 1328px 885px;
+    background-position: -561px 0;
   }
 }

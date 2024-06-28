@@ -1,11 +1,11 @@
 import React from 'react';
-import { Modal, ModalProps, Pressable, PressableProps, StyleSheet } from 'react-native';
+import { Modal, ModalProps, Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 interface IMyModalProps extends ModalProps {
   visible: boolean;
   setIsVisible: (visible: boolean) => void;
   children: React.ReactNode;
-  containerStyle?: PressableProps;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const MyModal = ({ visible, setIsVisible, children, containerStyle, ...rest }: IMyModalProps) => {
@@ -15,7 +15,14 @@ const MyModal = ({ visible, setIsVisible, children, containerStyle, ...rest }: I
   return (
     <Modal visible={visible} onRequestClose={onClose} {...rest}>
       <Pressable style={styles.overlay} onPress={onClose}>
-        <Pressable style={[styles.container, containerStyle]} onPress={() => {}}>
+        <Pressable
+          style={({ hovered }) => [
+            styles.container,
+            containerStyle,
+            hovered && { cursor: 'default' },
+          ]}
+          onPress={() => {}}
+        >
           {children}
         </Pressable>
       </Pressable>

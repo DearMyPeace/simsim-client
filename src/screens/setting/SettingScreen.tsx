@@ -3,18 +3,19 @@ import MyText from '@components/common/MyText';
 import { SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
-import BottomSheetPicker from '@components/common/BottomSheetPicker';
 import DeleteAccountModal from '@components/setting/DeleteAccountModal';
 import useAiPickerHook from '@hooks/setting/aiPickerHook';
 import useNotification from '@hooks/setting/notificationHook';
 import useSetting from '@hooks/setting/settingHook';
 import DatePicker from 'react-native-date-picker';
 import BasicBottomSheet from '@components/common/BasicBottomSheet';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import MySnackbar from '@components/common/MySnackbar';
+import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
+import { userAiPersonaStatus } from '@stores/userAiPersona';
 
 const SettingScreen = () => {
   const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, handleLogout } =
@@ -28,14 +29,8 @@ const SettingScreen = () => {
     onToggleDiarySwitch,
     onToggleLetterSwitch,
   } = useNotification();
-  const {
-    selectedAi,
-    aiPickerVisible,
-    setAiPickerVisible,
-    aiPickerOpen,
-    onSelectAi,
-    aiPersonaList,
-  } = useAiPickerHook();
+  const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPickerHook();
+  const userSelectedAi = useRecoilValue(userAiPersonaStatus);
   const [notiTime, setNotiTime] = React.useState(new Date());
   const onTimePickerClose = () => {
     setDiaryNotiEnabled(true);
@@ -56,7 +51,7 @@ const SettingScreen = () => {
           />
         )}
         <View style={styles.basicPadding}>
-          <SettingSection label="편지 작성자" buttonText={selectedAi} onPress={aiPickerOpen} />
+          <SettingSection label="편지 작성자" buttonText={userSelectedAi} onPress={aiPickerOpen} />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
           <SettingSection label="로그아웃" buttonText="나가기" onPress={handleLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />
@@ -78,23 +73,16 @@ const SettingScreen = () => {
           />
         </View>
       </BasicBottomSheet>
-      <BottomSheetPicker
+      <AiPersonaSelectModal
         visible={aiPickerVisible}
-        setVisible={setAiPickerVisible}
-        selectedValue={selectedAi}
-        onValueChange={onSelectAi}
-        items={aiPersonaList}
+        setIsVisible={setAiPickerVisible}
+        aiPersonaList={aiPersonaList}
       />
       <DeleteAccountModal visible={deleteModalVisible} setIsVisible={setDeleteModalVisible} />
-      <MySnackbar
-        visible={snackbarText !== ''}
-        text={snackbarText}
-        onDissmiss={() => setSnackbarText('')}
-        style={{ marginBottom: 45, flex: 1 }}
-      />
       <View style={styles.footer}>
         <MyText size={11}>심심조각 초판</MyText>
       </View>
+      <MySnackbar visible={snackbarText !== ''} style={{ marginBottom: 45, flex: 1 }} />
     </SafeAreaView>
   );
 };

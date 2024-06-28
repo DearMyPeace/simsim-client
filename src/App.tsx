@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
 import MainNavigator from '@navigators/MainNavigator';
 import SplashScreen from '@screens/common/SplashScreen';
+import { lightTheme } from '@utils/lightTheme';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,25 +22,31 @@ const App = () => {
     },
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const theme = {
+    ...DefaultTheme,
+    colors: lightTheme.colors,
+  };
 
   return (
     <RecoilRoot>
       <GoogleOAuthProviderWrapper>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1, paddingTop: 0 }} edges={['bottom', 'left', 'right']}>
+            <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
               {isLoading ? (
                 <SplashScreen onFinish={() => setIsLoading(false)} />
               ) : (
-                <NavigationContainer>
-                  <MainNavigator />
-                </NavigationContainer>
+                <PaperProvider theme={theme}>
+                  <NavigationContainer
+                    theme={{
+                      colors: {
+                        background: 'transparent',
+                      },
+                    }}
+                  >
+                    <MainNavigator />
+                  </NavigationContainer>
+                </PaperProvider>
               )}
             </SafeAreaView>
           </SafeAreaProvider>
@@ -46,5 +55,13 @@ const App = () => {
     </RecoilRoot>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    paddingTop: 0,
+    backgroundColor: 'transparent',
+  },
+});
 
 export default App;

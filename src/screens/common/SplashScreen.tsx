@@ -1,49 +1,98 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Text } from 'react-native';
-import Logo from '@screens/common/Logo';
-import ScrollingText from '@screens/common/ScrollingTextScreen';
+import React, { useEffect, useState, useRef } from 'react';
+import { Image, View, StyleSheet, Animated } from 'react-native';
+import MyText from '@components/common/MyText';
+import logo from '@assets/logo/logo.png';
+import SequentialText from '@screens/common/Sequential';
 
 const SplashScreen = ({ onFinish }) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [stopText, setStopText] = useState(false);
+  const translateYAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-
-    const timer = setTimeout(() => {
-      onFinish();
+    const textTimer = setTimeout(() => {
+      setStopText(true);
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
     }, 3000);
 
-    return () => clearTimeout(timer);
-  }, [fadeAnim, onFinish]);
+    const translateTimer = setTimeout(() => {
+      Animated.timing(translateYAnim, {
+        toValue: -122,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start(() => {
+        onFinish();
+      });
+    }, 3000);
 
-  const words = ['사랑', '친구', '가족', '동료', '이웃'];
+    return () => {
+      clearTimeout(textTimer);
+      clearTimeout(translateTimer);
+    };
+  }, [translateYAnim, fadeAnim, onFinish]);
+
+  const words = [
+    '오은영 선생님',
+    '감정형 (F)',
+    '사고형 (T)',
+    '뽀로로',
+    '펭수',
+    '이성 친구',
+    '동성 친구',
+    '옆집 친구',
+  ];
 
   return (
     <View style={styles.container}>
-      <ScrollingText words={words} />
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <Logo />
+      <Animated.View style={[styles.scrollingTextContainer, { opacity: fadeAnim }]}>
+        <MyText style={styles.fixedText}>나는</MyText>
+        <View style={{ flexDirection: 'row' }}>
+          <SequentialText words={words} stop={stopText} />
+          <MyText style={styles.fixedText}>에게</MyText>
+        </View>
+        <MyText style={styles.fixedText}>{'조각편지 받는다.'}</MyText>
       </Animated.View>
-      <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>Dear my peace</Animated.Text>
+      <View style={styles.centerContainer}>
+        <Animated.View style={{ transform: [{ translateY: translateYAnim }] }}>
+          <Image source={logo} style={{ width: 120, height: 120 }} />
+        </Animated.View>
+      </View>
+      <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>심심조각</Animated.Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollingTextContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  fixedText: {
+    fontSize: 30,
+    alignContent: 'center',
+  },
   container: {
+    flex: 1,
+  },
+  centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
   },
   title: {
+    position: 'absolute',
+    bottom: 20,
     fontSize: 20,
-    fontFamily: 'Kalam-Bold',
-    marginTop: 20,
+    width: '100%',
+    textAlign: 'center',
+    fontFamily: 'GowunBatang-Regular',
   },
 });
 

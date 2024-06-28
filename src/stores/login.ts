@@ -12,5 +12,5 @@ export const userInfoState = atom({
 
 export const isLoggedInState = atom({
   key: 'isLoggedInState',
-  default: false,
+  default: true,
 });
