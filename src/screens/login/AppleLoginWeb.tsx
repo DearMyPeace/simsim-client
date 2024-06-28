@@ -6,7 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
-import { postUserToken } from '@api/login/post';
+import { postUserAppleToken } from '@api/login/post';
+import { saveToken } from '@components/login/AuthService';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
   const appleSignInRef = useRef(null);
@@ -20,18 +21,25 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
   };
 
   const sendUserToken = useMutation({
-    mutationFn: (data) => postUserToken(data),
-    onSuccess: (data) => {
-      // TODO: back end에서 받은 data를 이용해 로그인 처리
-      console.log(data);
+    mutationFn: (data) => postUserAppleToken(data),
+    onSuccess: async (data) => {
+      try {
+        // 서버로부터 받은 응답 데이터를 활용해 로그인 처리
+        console.log(data);
+        await saveToken(data.access_token); // 응답에서 access_token을 추출하여 로컬 스토리지에 저장
+        // 추가로 필요한 로그인 후 로직을 여기에 작성합니다.
+      } catch (error) {
+        console.error('Error saving token:', error);
+      }
     },
     onError: (error) => {
-      console.error(error.response.data.message);
+      console.error('Error during token exchange:', error);
+      Alert.alert('로그인 오류', '애플 로그인 중 오류가 발생했습니다.');
     },
   });
 
   const _clientId: string = process.env.APPLE_CLIENT_ID ?? '';
-  const _redirectURI: string = process.env.APPLE_REDIRECT_URIS ?? '';
+  const _redirectURI: string = process.env.APPLE_REDIRECT_URI ?? '';
 
   return (
     <View>
@@ -44,23 +52,33 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
 
       <AppleSignin
         authOptions={{
-          // TODO: web 배포 후 다시 만져줘야함.
           clientId: _clientId,
           redirectURI: _redirectURI,
           scope: 'email name',
           state: 'state',
-          nonce: sha256('nonce'), // nonce를 sha256으로 변환
+          nonce: sha256('nonce'),
           usePopup: true,
         }}
-        onSuccess={(response) => {
-          console.log(response);
-          sendUserToken.mutate(response);
+        onSuccess={async (response) => {
+          console.log('Apple login response:', response);
+          try {
+            // 서버에 전송할 데이터 생성
+            const data = {
+              authorization: response.authorization,
+              user: response.user,
+            };
+            sendUserToken.mutate(data);
+          } catch (error) {
+            console.error('Error during Apple login processing:', error);
+            Alert.alert('로그인 오류', '로그인 처리 중 오류가 발생했습니다.');
+          }
         }}
         onError={(error) => {
-          console.error(error);
+          console.error('Apple login error:', error);
+          Alert.alert('로그인 오류', '애플 로그인 중 오류가 발생했습니다.');
         }}
         render={(props) => {
-          appleSignInRef.current = props.onClick; // 버튼 클릭 함수 참조 저장
+          appleSignInRef.current = props.onClick;
           return (
             <TouchableOpacity style={styles.hiddenLoginButton} onPress={props.onClick}>
               <View style={styles.iconAndText}>
