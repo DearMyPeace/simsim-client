@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-nati
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
 import DeleteAccountModal from '@components/setting/DeleteAccountModal';
-import useAiPickerHook from '@hooks/setting/aiPickerHook';
+import useAiPersonaGet from '@hooks/setting/aiPersonaGetHook';
 import useNotification from '@hooks/setting/notificationHook';
 import useSetting from '@hooks/setting/settingHook';
 import DatePicker from 'react-native-date-picker';
@@ -29,7 +29,7 @@ const SettingScreen = () => {
     onToggleDiarySwitch,
     onToggleLetterSwitch,
   } = useNotification();
-  const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPickerHook();
+  const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPersonaGet();
   const userSelectedAi = useRecoilValue(userAiPersonaStatus);
   const [notiTime, setNotiTime] = React.useState(new Date());
   const onTimePickerClose = () => {

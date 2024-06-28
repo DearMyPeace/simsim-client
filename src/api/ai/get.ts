@@ -26,3 +26,8 @@ export const fetchNextAiLetter = async (offset, count) => {
   });
   return response.data;
 };
+
+export const fetchAiPersonaList = async () => {
+  const response = await instance.get('/persona');
+  return response.data;
+};

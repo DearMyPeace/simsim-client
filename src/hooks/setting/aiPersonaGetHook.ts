@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { snackMessage } from '@stores/snackMessage';
+import { fetchAiPersonaList } from '@api/ai/get';
 
 // todo: api 요청으로 받아오기
 const mockAiPersona = [
@@ -11,11 +12,7 @@ const mockAiPersona = [
   { id: 'ThinkingAi', label: '사고형', value: '사고형' },
 ];
 
-const fetchAiPersonaList = () => {
-  return mockAiPersona;
-};
-
-const useAiPickerHook = () => {
+const useAiPersonaGet = () => {
   const setUserSelectedAi = useSetRecoilState(userAiPersonaStatus);
   const [aiPickerVisible, setAiPickerVisible] = useState<boolean>(false);
   const setSnackbar = useSetRecoilState(snackMessage);
@@ -49,4 +46,4 @@ const useAiPickerHook = () => {
   };
 };
 
-export default useAiPickerHook;
+export default useAiPersonaGet;
