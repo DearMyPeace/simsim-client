@@ -1,6 +1,15 @@
-// api response 따라 타입 수정 필요
 export interface IAiPersonaData {
-  id: string;
-  label: string;
-  value: string;
+  personaId: number;
+  personaCode: string;
+  personaName: string;
+}
+
+export interface IAiPersonaPatchRequest {
+  personaCode: string;
+  userId: string;
+}
+
+export interface IUserAIPersona {
+  personaCode: string;
+  personaName: string;
 }

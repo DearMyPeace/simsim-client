@@ -51,7 +51,11 @@ const SettingScreen = () => {
           />
         )}
         <View style={styles.basicPadding}>
-          <SettingSection label="편지 작성자" buttonText={userSelectedAi} onPress={aiPickerOpen} />
+          <SettingSection
+            label="편지 작성자"
+            buttonText={userSelectedAi.personaName}
+            onPress={aiPickerOpen}
+          />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
           <SettingSection label="로그아웃" buttonText="나가기" onPress={handleLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />

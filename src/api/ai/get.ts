@@ -1,5 +1,6 @@
 // src/api/ai/api.ts
 import instance from '@api/axios';
+import { IAiPersonaData } from '@type/AiPersona';
 
 export const fetchAiLetters = async (userId, total) => {
   const response = await instance.get(`/aiLetters`, {
@@ -27,7 +28,7 @@ export const fetchNextAiLetter = async (offset, count) => {
   return response.data;
 };
 
-export const fetchAiPersonaList = async () => {
+export const fetchAiPersonaList = async (): Promise<IAiPersonaData[]> => {
   const response = await instance.get('/persona');
   return response.data;
 };
