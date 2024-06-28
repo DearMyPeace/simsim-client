@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
+import { postUserToken } from '@api/login/post';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
   const appleSignInRef = useRef(null);
@@ -29,6 +30,9 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
     },
   });
 
+  const _clientId: string = process.env.APPLE_CLIENT_ID ?? '';
+  const _redirectURI: string = process.env.APPLE_REDIRECT_URIS ?? '';
+
   return (
     <View>
       <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
@@ -41,8 +45,8 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
       <AppleSignin
         authOptions={{
           // TODO: web 배포 후 다시 만져줘야함.
-          clientId: 'site.peace.my.dear', // 동일한 clientId 사용
-          redirectURI: 'http://dear-my-peace.site', // 동일한 redirectURI 사용
+          clientId: _clientId,
+          redirectURI: _redirectURI,
           scope: 'email name',
           state: 'state',
           nonce: sha256('nonce'), // nonce를 sha256으로 변환
