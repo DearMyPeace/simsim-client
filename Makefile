@@ -38,6 +38,9 @@ clean:
 	rm -rf ./ios/Podfile.lock
 	rm -rf ./ios/build
 
+clean-android:
+	cd android && ./gradlew clean
+
 fclean: clean
 
 re: fclean all
