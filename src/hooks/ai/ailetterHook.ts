@@ -18,7 +18,10 @@ export const useAiLetterData = (userId: number, todayDateStr: string) => {
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ['aiLetters', userId, todayDateStr],
     queryFn: () => postAiLetters({ userId, targetDate: todayDateStr }),
-    onSuccess: (data) => {
+  });
+
+  useEffect(() => {
+    if (data) {
       if (data.length > 0) {
         startDate.current = new Date(data[0].date);
         endDate.current = new Date(data[data.length - 1].date);
@@ -40,8 +43,8 @@ export const useAiLetterData = (userId: number, todayDateStr: string) => {
           }
         }, 0);
       }
-    },
-  });
+    }
+  }, [data, todayDateStr]);
 
   useEffect(() => {
     refetch();
@@ -70,7 +73,7 @@ export const useAiLetterData = (userId: number, todayDateStr: string) => {
     } finally {
       setLoading(false);
     }
-  }, [aiLetterEntries, data]);
+  }, [aiLetterEntries]);
 
   const handleLoadMore = useCallback(() => {
     if (!loading) {
