@@ -16,9 +16,10 @@ const GoogleLogin = ({ handleLoginPress }) => {
 
   const sendUserToken = useMutation({
     mutationFn: (data) => postUserToken(data),
-    onSuccess: (data) => {
+    onSuccess: async (data: { accessToken: string }) => {
       // TODO: back end에서 받은 data를 이용해 로그인 처리
-      console.log(data);
+      await saveToken(data.accessToken);
+      setIsLoggedIn(true);
     },
     onError: (error) => {
       console.error(error.response.data.message);
@@ -29,11 +30,11 @@ const GoogleLogin = ({ handleLoginPress }) => {
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
       sendUserToken.mutate(tokenResponse);
-      const userInfo = await getUserInfo(tokenResponse.access_token);
-      console.log(userInfo);
-      await saveToken(tokenResponse.access_token);
-      setUserInfo(userInfo);
-      setIsLoggedIn(true);
+      // const userInfo = await getUserInfo(tokenResponse.access_token);
+      // console.log(userInfo);
+      // await saveToken(tokenResponse.access_token);
+      // setUserInfo(userInfo);
+      // setIsLoggedIn(true);
     },
     onError: (error) => {
       console.error('Login failed:', error);

@@ -8,13 +8,14 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    if (config.url !== '/auth/google') {
+    if (config.url === '/auth/google') {
       return config;
     }
     // 로그인 후 토큰 헤더에 추가
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('authToken');
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = accessToken;
+      config.withCredentials = true; // todo: 배포 시 삭제
     }
     return config;
   },
@@ -28,7 +29,11 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
+    // auth/google 제외한 요청 401 에러 시 토큰 재발급
     // TODO: access token 만료 시 토큰 재발급 로직 추가
+    if (error.response.status === 401 && error.config.url !== '/auth/google') {
+      console.log('토큰 만료');
+    }
     return Promise.reject(error);
   },
 );

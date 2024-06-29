@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isLoggedInState } from '@stores/login';
+import { isLoggedInState, userInfoState } from '@stores/login';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
@@ -18,6 +18,7 @@ const MainNavigator = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
   const setUserAiPersona = useSetRecoilState(userAiPersonaStatus);
   const setUserId = useSetRecoilState(userStatus);
+  const setUserInfo = useSetRecoilState(userInfoState);
   const { data } = useUserInfo(isLoggedIn);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const MainNavigator = () => {
   if (data) {
     setUserAiPersona({ personaCode: data.personaCode, personaName: data.personaName });
     setUserId(data.userId); // userId 임시 저장
+    setUserInfo(data); // todo: 필요한 정보만 저장하기
   }
 
   return (
