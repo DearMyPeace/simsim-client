@@ -25,11 +25,12 @@ export default DiaryArrowIcons;
 const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
+    zIndex: 1,
   },
   leftIcon: {
-    left: 5,
+    left: 0,
   },
   rightIcon: {
-    right: 5,
+    right: 0,
   },
 });
