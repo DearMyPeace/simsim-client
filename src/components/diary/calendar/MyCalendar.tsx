@@ -21,6 +21,8 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
       selected: date.markedDate === selectedDate,
       marked: date.markedDate !== selectedDate,
       dotColor: dotColors[date.diaryCount] || dotColors[3],
+      disableTouchEvent: false,
+      disabled: false,
     };
     return acc;
   }, {} as IMarkedDates);
@@ -28,6 +30,8 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
   return (
     <View style={styles.container}>
       <Calendar
+        disabledByDefault
+        disableAllTouchEventsForDisabledDays
         style={styles.calendar}
         theme={{
           textDayFontFamily: 'GowunBatang-Regular',
@@ -74,19 +78,12 @@ export default MyCalendar;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
     paddingBottom: 16,
   },
   calendar: {
     borderWidth: 1,
     borderColor: '#EBEBEB',
     borderRadius: 12,
-    marginHorizontal: 14,
     padding: 10,
-    ...Platform.select({
-      web: {
-        marginHorizontal: 28,
-      },
-    }),
   },
 });
