@@ -7,12 +7,18 @@ import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
 import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
+import { userAiPersonaStatus } from '@stores/userAiPersona';
+import { userStatus } from '@stores/user';
+import { useUserInfo } from '@api/user/get';
 
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const isLoggedIn = useRecoilValue(isLoggedInState);
+  const setUserAiPersona = useSetRecoilState(userAiPersonaStatus);
+  const setUserId = useSetRecoilState(userStatus);
+  const { data } = useUserInfo(isLoggedIn);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -21,9 +27,13 @@ const MainNavigator = () => {
         setIsLoggedIn(true);
       }
     };
-
     checkToken();
   }, [setIsLoggedIn]);
+
+  if (data) {
+    setUserAiPersona({ personaCode: data.personaCode, personaName: data.personaName });
+    setUserId(data.userId); // userId 임시 저장
+  }
 
   return (
     <Stack.Navigator
@@ -38,7 +48,7 @@ const MainNavigator = () => {
         }),
       }}
     >
-      {!isLoggedIn ? (
+      {isLoggedIn ? (
         <>
           <Stack.Screen
             name="Tabs"
