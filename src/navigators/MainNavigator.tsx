@@ -38,7 +38,7 @@ const MainNavigator = () => {
         }),
       }}
     >
-      {!isLoggedIn ? (
+      {isLoggedIn ? (
         <>
           <Stack.Screen
             name="Tabs"
