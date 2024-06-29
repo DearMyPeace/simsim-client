@@ -3,6 +3,7 @@ import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import { StyleSheet, View } from 'react-native';
 import MyModal from '@components/common/MyModal';
+import useLogout from '@hooks/login/logoutHook';
 
 interface IDeleteAccountModalProps {
   visible: boolean;
@@ -10,9 +11,10 @@ interface IDeleteAccountModalProps {
 }
 
 const DeleteAccountModal = ({ visible, setIsVisible }: IDeleteAccountModalProps) => {
-  // todo: delete account api 요청
+  const { deleteAccountMutation } = useLogout();
+
   const onDeleteAccount = () => {
-    console.log('delete account');
+    deleteAccountMutation.mutate();
     setIsVisible(false);
   };
 

@@ -2,17 +2,15 @@ import { useSetRecoilState } from 'recoil';
 import { authTokenState, isLoggedInState, userInfoState } from '@stores/login.ts';
 import { removeToken } from '@components/login/AuthService.ts';
 import { useMutation } from '@tanstack/react-query';
-import instance from '@api/axios';
-
-const logoutRequest = async () => {
-  const response = await instance.delete('/auth/logout');
-  return response;
-};
+import { logoutRequest, deleteAccountRequest } from '@api/auth/delete';
+import { snackMessage } from '@stores/snackMessage';
 
 const useLogout = () => {
   const setAuthToken = useSetRecoilState(authTokenState);
   const setUserInfo = useSetRecoilState(userInfoState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+  const setSnackbar = useSetRecoilState(snackMessage);
+
   const logoutMutation = useMutation({
     mutationFn: logoutRequest,
     onSuccess: () => {
@@ -25,15 +23,26 @@ const useLogout = () => {
       handleLogout();
     },
   });
+  const deleteAccountMutation = useMutation({
+    mutationFn: deleteAccountRequest,
+    onSuccess: () => {
+      setSnackbar('회원 탈퇴가 완료되었습니다');
+      console.log('Delete Account Success');
+      handleLogout();
+    },
+    onError: (e) => {
+      setSnackbar('회원 탈퇴 중 오류가 발생했습니다');
+      console.log(e, 'Delete Account Error');
+    },
+  });
 
-  // TODO: Logout Test Code
   const handleLogout = async () => {
     setAuthToken(null);
     await removeToken();
     setUserInfo(null);
     setIsLoggedIn(false);
   };
-  return { logoutMutation };
+  return { logoutMutation, deleteAccountMutation };
 };
 
 export default useLogout;

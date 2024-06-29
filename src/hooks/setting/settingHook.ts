@@ -20,12 +20,16 @@ const useSetting = () => {
     setDeleteModalVisible(true);
   };
 
+  const onLogout = () => {
+    logoutMutation.mutate();
+  };
+
   return {
     deleteModalVisible,
     setDeleteModalVisible,
     onFeedback,
+    onLogout,
     onDeleteAccount,
-    logoutMutation,
   };
 };
 
