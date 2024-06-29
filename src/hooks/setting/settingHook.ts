@@ -4,7 +4,7 @@ import { Alert, Linking } from 'react-native';
 
 const useSetting = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const { handleLogout } = useLogout();
+  const { logoutMutation } = useLogout();
 
   const onFeedback = async () => {
     const url = 'https://forms.gle/nUCrj6JLNCnU8Dez6'; // env에 추가하기
@@ -25,7 +25,7 @@ const useSetting = () => {
     setDeleteModalVisible,
     onFeedback,
     onDeleteAccount,
-    handleLogout,
+    logoutMutation,
   };
 };
 
