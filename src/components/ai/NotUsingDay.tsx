@@ -7,7 +7,8 @@ interface NotUsingDayProps {
 
 const NotUsingDay: React.FC<NotUsingDayProps> = ({ date }) => {
   const dayOfWeek = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-  const color = dayOfWeek === 'Sunday' ? '#FF1F00' : 'gray';
+  // const color = dayOfWeek === 'Sunday' ? '#FF1F00' : 'gray';
+  const color = 'gray';
   return <Entypo name="dot-single" color={color} size={26} />;
 };
 
