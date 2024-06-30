@@ -6,7 +6,7 @@ import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';
-import { postUserToken } from '@api/login/post';
+import { postUserGoogleToken } from '@api/login/post';
 import googleLogo from '@assets/logo/google.png';
 
 const GoogleLogin = ({ handleLoginPress }) => {
@@ -15,7 +15,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   const sendUserToken = useMutation({
-    mutationFn: (data) => postUserToken(data),
+    mutationFn: (data) => postUserGoogleToken(data),
     onSuccess: (data) => {
       // TODO: back end에서 받은 data를 이용해 로그인 처리
       console.log(data);
