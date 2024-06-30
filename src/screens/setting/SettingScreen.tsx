@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-nati
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
 import DeleteAccountModal from '@components/setting/DeleteAccountModal';
-import useAiPickerHook from '@hooks/setting/aiPickerHook';
+import useAiPersonaGet from '@hooks/setting/aiPersonaGetHook';
 import useNotification from '@hooks/setting/notificationHook';
 import useSetting from '@hooks/setting/settingHook';
 import DatePicker from 'react-native-date-picker';
@@ -18,7 +18,7 @@ import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
 
 const SettingScreen = () => {
-  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, handleLogout } =
+  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onLogout, onDeleteAccount } =
     useSetting();
   const {
     diaryNotiEnabled,
@@ -29,7 +29,7 @@ const SettingScreen = () => {
     onToggleDiarySwitch,
     onToggleLetterSwitch,
   } = useNotification();
-  const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPickerHook();
+  const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPersonaGet();
   const userSelectedAi = useRecoilValue(userAiPersonaStatus);
   const [notiTime, setNotiTime] = React.useState(new Date());
   const onTimePickerClose = () => {
@@ -51,9 +51,13 @@ const SettingScreen = () => {
           />
         )}
         <View style={styles.basicPadding}>
-          <SettingSection label="편지 작성자" buttonText={userSelectedAi} onPress={aiPickerOpen} />
+          <SettingSection
+            label="편지 작성자"
+            buttonText={userSelectedAi.personaName}
+            onPress={aiPickerOpen}
+          />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
-          <SettingSection label="로그아웃" buttonText="나가기" onPress={handleLogout} />
+          <SettingSection label="로그아웃" buttonText="나가기" onPress={onLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />
         </View>
       </ScrollView>

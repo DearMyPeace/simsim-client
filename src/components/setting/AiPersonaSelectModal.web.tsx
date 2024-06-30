@@ -14,11 +14,11 @@ interface IAiPersonaSelectProps {
 }
 
 const AiPersonaSelectModal = ({ visible, setIsVisible, aiPersonaList }: IAiPersonaSelectProps) => {
-  const { userAiPersona, changeAiPersona, selectedValue, setSelectedValue } = useAiPersonaChange();
+  const { userAiPersona, changeAiPersona } = useAiPersonaChange();
 
-  const onSelectAi = (aiPersona: string) => {
-    setSelectedValue(aiPersona);
-    changeAiPersona.mutate(selectedValue);
+  const onSelectAi = (personaCode: string) => {
+    if (personaCode === userAiPersona.personaCode) return;
+    changeAiPersona.mutate(personaCode);
     setIsVisible(false);
   };
 
@@ -32,12 +32,12 @@ const AiPersonaSelectModal = ({ visible, setIsVisible, aiPersonaList }: IAiPerso
     >
       <ScrollView>
         <View style={styles.modalContent}>
-          <RadioButton.Group onValueChange={onSelectAi} value={userAiPersona}>
+          <RadioButton.Group onValueChange={onSelectAi} value={userAiPersona.personaCode}>
             {aiPersonaList.map((persona) => (
-              <View style={styles.row}>
-                <RadioButton value={persona.value} />
+              <View key={persona.personaId} style={styles.row}>
+                <RadioButton value={persona.personaCode} />
                 <MyText size={fontLarge} style={styles.padding}>
-                  {persona.value}
+                  {persona.personaName}
                 </MyText>
               </View>
             ))}

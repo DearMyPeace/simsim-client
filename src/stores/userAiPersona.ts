@@ -1,6 +1,10 @@
+import { IUserAIPersona } from '@type/AiPersona';
 import { atom } from 'recoil';
 
-export const userAiPersonaStatus = atom<string>({
+export const userAiPersonaStatus = atom<IUserAIPersona>({
   key: 'userAiPersonaStatus',
-  default: '공감형',
+  default: {
+    personaCode: '',
+    personaName: '',
+  },
 });
