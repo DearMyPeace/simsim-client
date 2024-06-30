@@ -80,6 +80,19 @@ const AiLetterEntries = [
     summary: 'Challenging day at workChallenging day at workChallenging day at work',
     content: 'Work was tough today, but I managed to get through it.',
   },
+  {
+    id: '17',
+    date: '2024-06-26',
+    summary: 'Challenging day at workChallenging day at workChallenging day at work',
+    content: 'Work was tough today, but I managed to get through it.',
+  },
+  {
+    id: '18',
+    date: '2024-06-27',
+    summary: '한글로만쓰는편지',
+    content:
+      '한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지한글로만쓰는편지',
+  },
 ];
 
 export default AiLetterEntries;

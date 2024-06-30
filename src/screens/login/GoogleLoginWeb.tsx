@@ -6,7 +6,7 @@ import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';
-import { postUserToken } from '@api/login/post';
+import { postUserGoogleToken } from '@api/login/post';
 import googleLogo from '@assets/logo/google.png';
 
 const GoogleLogin = ({ handleLoginPress }) => {
