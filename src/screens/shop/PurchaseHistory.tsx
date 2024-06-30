@@ -5,7 +5,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import PurchaseHistoryEntries from '@api/mock/PurchaseHistoryEntries';
 import MyText from '@components/common/MyText';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
+import { fontBasic, fontMedium } from '@utils/Sizing';
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat('ko-KR').format(number);
@@ -19,7 +19,7 @@ export default function PurchaseHistory() {
     { label: '전체보기', value: '전체보기' },
     { label: '조각사용', value: '조각사용' },
     { label: '조각충전', value: '조각충전' },
-    { label: '심리상담', value: '심리상담' },
+    { label: '마음휴식', value: '마음휴식' },
     { label: '작품구매', value: '작품구매' },
   ];
 
@@ -102,7 +102,7 @@ export default function PurchaseHistory() {
           />
         </View>
 
-        {sortedEntries.length === 0 ? (
+        {sortedEntries.length !== 0 ? (
           <View style={styles.emptyContainer}>
             <AntDesign name="exclamationcircleo" size={120} color="#D9D9D9" />
             <MyText style={styles.emptyText}>구매 항목이 없습니다.</MyText>
@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'rgba(255, 255, 255, 0.47)',
     borderWidth: 1,
+    borderColor: '#ccc',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     borderBottomWidth: 1,
+    borderColor: '#ccc',
   },
   dropdown: {
     height: 24,
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     marginTop: 10,
-    fontSize: fontLarge,
+    fontSize: fontMedium,
     color: 'gray',
   },
   list: {
@@ -203,12 +205,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateText: {
-    fontSize: fontLarge,
+    fontSize: fontMedium,
     fontFamily: 'GowunBatang-bold',
     marginBottom: 5,
   },
   summaryText: {
-    fontSize: fontLarge,
+    fontSize: fontMedium,
     fontFamily: 'GowunBatang-Regular',
     marginBottom: 5,
   },
