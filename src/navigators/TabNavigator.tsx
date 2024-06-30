@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Diary from '@navigators/DiaryStackNavigator';
 import Shop from '@navigators/ShopStackNavigator';
@@ -21,7 +22,7 @@ const TabNavigator = () => {
         },
       }}
       screenOptions={{
-        tabBarStyle: { backgroundColor: 'white', paddingBottom: 5 },
+        tabBarStyle: styles.tabbarStyle,
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
         tabBarActiveTintColor: appColor3,
         tabBarInactiveTintColor: 'gray',
@@ -72,5 +73,14 @@ const TabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  tabbarStyle: {
+    backgroundColor: 'rgba(255, 255, 255, 0.47)',
+    paddingBottom: 5,
+    paddingTop: 10,
+    borderColor: 'transparent',
+  },
+});
 
 export default TabNavigator;

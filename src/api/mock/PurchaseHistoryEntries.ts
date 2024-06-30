@@ -20,7 +20,7 @@ const PurchaseHistoryEntries = [
   {
     id: '3',
     date: '2024-04-25 15:54',
-    category: '심리상담',
+    category: '마음휴식',
     summary: '감정 리포트',
     content: '조각 사용',
     use: '100',
@@ -52,7 +52,7 @@ const PurchaseHistoryEntries = [
   {
     id: '7',
     date: '2024-01-15 12:45',
-    category: '심리상담',
+    category: '마음휴식',
     summary: '스트레스 관리',
     content: '개인 상담',
     use: '300',
@@ -84,7 +84,7 @@ const PurchaseHistoryEntries = [
   {
     id: '11',
     date: '2024-09-05 13:15',
-    category: '심리상담',
+    category: '마음휴식',
     summary: '정신 건강',
     content: '온라인 상담',
     use: '400',
@@ -116,7 +116,7 @@ const PurchaseHistoryEntries = [
   {
     id: '15',
     date: '2025-01-01 00:01',
-    category: '심리상담',
+    category: '마음휴식',
     summary: '새해 다짐',
     content: '새해 상담',
     use: '500',
@@ -148,7 +148,7 @@ const PurchaseHistoryEntries = [
   {
     id: '19',
     date: '2025-05-05 05:05',
-    category: '심리상담',
+    category: '마음휴식',
     summary: '어린이날 상담',
     content: '가족 상담',
     use: '600',

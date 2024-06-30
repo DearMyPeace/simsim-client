@@ -8,7 +8,7 @@ import MyText from '@components/common/MyText';
 import { fontBasic } from '@utils/Sizing';
 
 export default function Shop() {
-  const [selectedTab, setSelectedTab] = useState('조각충전');
+  const [selectedTab, setSelectedTab] = useState('구입내역');
 
   const renderContent = () => {
     switch (selectedTab) {
@@ -16,7 +16,7 @@ export default function Shop() {
         return <PieceShop />;
       case '구입내역':
         return <PurchaseHistory />;
-      case '심리상담':
+      case '마음휴식':
         return <PsychologicalConsulting />;
       case '작품상점':
         return <ArtworkShop />;
@@ -45,11 +45,11 @@ export default function Shop() {
           </MyText>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.navItem, selectedTab === '심리상담' && styles.selectedItem]}
-          onPress={() => setSelectedTab('심리상담')}
+          style={[styles.navItem, selectedTab === '마음휴식' && styles.selectedItem]}
+          onPress={() => setSelectedTab('마음휴식')}
         >
-          <MyText style={selectedTab === '심리상담' ? styles.selectedText : styles.navText}>
-            심리상담
+          <MyText style={selectedTab === '마음휴식' ? styles.selectedText : styles.navText}>
+            마음휴식
           </MyText>
         </TouchableOpacity>
         <TouchableOpacity
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 8,
+    paddingBottom: 50,
   },
   navbar: {
     flexDirection: 'row',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   },
   selectedItem: {
     height: 40,
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: '#F1E0CC',
     borderColor: '#000',
     borderBottomWidth: 0,
@@ -112,11 +113,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.47)',
   },
 });

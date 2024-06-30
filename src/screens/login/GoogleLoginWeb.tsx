@@ -15,7 +15,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   const sendUserToken = useMutation({
-    mutationFn: (data) => postUserToken(data),
+    mutationFn: (data) => postUserGoogleToken(data),
     onSuccess: async (data: { accessToken: string }) => {
       // TODO: back end에서 받은 data를 이용해 로그인 처리
       await saveToken(data.accessToken);
@@ -29,6 +29,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
+      console.log(tokenResponse);
       sendUserToken.mutate(tokenResponse);
       // const userInfo = await getUserInfo(tokenResponse.access_token);
       // console.log(userInfo);

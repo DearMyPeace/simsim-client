@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Platform,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -24,18 +25,31 @@ const MockTestAiLetter: React.FC = () => {
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+  const screenHeight = Dimensions.get('window').height;
 
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - 10);
   const endDate = new Date();
 
   useEffect(() => {
-    console.log('aiLetterEntries:', aiLetterEntries);
-  }, [aiLetterEntries]);
-
-  useEffect(() => {
     const entries = getMockAiLetterEntries(startDate, endDate);
     setAiLetterEntries(entries);
+
+    // 오늘 날짜에 해당하는 인덱스를 찾습니다.
+    const todayDateStr = new Date().toISOString().slice(0, 10);
+    const todayIndex = entries.findIndex((entry) => entry.date === todayDateStr);
+    console.log(todayIndex);
+    if (todayIndex !== -1) {
+      setActiveSections([todayIndex]);
+
+      setTimeout(() => {
+        if (flatListRef.current) {
+          const viewHeight = 50;
+          const offset = viewHeight * todayIndex - screenHeight / 2;
+          flatListRef.current.scrollToOffset({ offset, animated: true });
+        }
+      }, 0);
+    }
   }, []);
 
   const loadMoreData = () => {
@@ -59,7 +73,6 @@ const MockTestAiLetter: React.FC = () => {
         const updatedStartDate = new Date(
           Math.min(startDate.getTime(), firstNewEntryDate.getTime()),
         );
-        const updatedEndDate = new Date();
 
         // 날짜 범위에 맞춰서 데이터 채우기
         setAiLetterEntries(
@@ -80,9 +93,6 @@ const MockTestAiLetter: React.FC = () => {
   const handleAccordionChange = (section: IAiLetterEntry) => {
     const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
     setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({ index, animated: true });
-    }
   };
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
@@ -101,7 +111,7 @@ const MockTestAiLetter: React.FC = () => {
     }
 
     return (
-      <View>
+      <View style={styles.itemContainer}>
         {item.isPlaceholder ? (
           <View style={styles.notusingItem}>
             <NotUsingDay date={item.date} />
@@ -151,20 +161,23 @@ const MockTestAiLetter: React.FC = () => {
           )
         }
         ListHeaderComponent={
-          Platform.OS === 'web' && (
-            <TouchableOpacity
-              style={styles.loadMoreButton}
-              onPress={handleLoadMore}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="gray" />
-              ) : (
-                <Entypo name="chevron-small-up" color="gray" size={26} />
-              )}
-            </TouchableOpacity>
-          )
+          <>
+            {Platform.OS === 'web' && (
+              <TouchableOpacity
+                style={styles.loadMoreButton}
+                onPress={handleLoadMore}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator size="small" color="gray" />
+                ) : (
+                  <Entypo name="chevron-small-up" color="gray" size={26} />
+                )}
+              </TouchableOpacity>
+            )}
+          </>
         }
+        ListFooterComponent={<View style={{ height: screenHeight / 2 }} />}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -174,8 +187,12 @@ const MockTestAiLetter: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'white',
+    paddingLeft: 36,
+    paddingRight: 36,
+    backgroundColor: 'transparent',
+  },
+  itemContainer: {
+    backgroundColor: 'transparent',
   },
   loadMoreButton: {
     padding: 10,
