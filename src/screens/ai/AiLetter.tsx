@@ -84,7 +84,7 @@ const AiLetter: React.FC = () => {
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="gray" />
+        <ActivityIndicator size="small" color="gray" />
       </View>
     );
   }
@@ -135,8 +135,9 @@ const AiLetter: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.47)',
+    paddingLeft: 36,
+    paddingRight: 36,
+    backgroundColor: 'transparent',
   },
   loadMoreButton: {
     padding: 10,
