@@ -14,7 +14,12 @@ export const generateDateRange = (startDate: Date, endDate: Date): Date[] => {
 
 export const fillDatesWithData = (dates: Date[], entries: IAiLetterEntry[]): IAiLetterEntry[] => {
   const entriesByDate = entries.reduce<Record<string, IAiLetterEntry>>((acc, entry) => {
-    acc[new Date(entry.date).toISOString().slice(0, 10)] = entry;
+    const entryDate = new Date(entry.date);
+    if (!isNaN(entryDate.getTime())) {
+      acc[entryDate.toISOString().slice(0, 10)] = entry;
+    } else {
+      console.warn(`Invalid date format in entry: ${entry.date}`);
+    }
     return acc;
   }, {});
 
