@@ -5,7 +5,7 @@ export const authTokenState = atom({
   default: null,
 });
 
-export const userInfoState = atom({
+export const userInfoState = atom<IUserInfo | null>({
   key: 'userInfoState',
   default: null,
 });
