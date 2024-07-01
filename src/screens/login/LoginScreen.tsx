@@ -9,17 +9,8 @@ import logo from '@assets/logo/logo.png';
 import terms from '@stores/terms';
 import policy from '@stores/policy';
 import { fontBasic, fontLarge, fontMedium } from '@utils/Sizing';
-
-let AppleLogin;
-let GoogleLogin;
-
-if (Platform.OS === 'web') {
-  AppleLogin = require('@screens/login/AppleLoginWeb').default;
-  GoogleLogin = require('@screens/login/GoogleLoginWeb').default;
-} else {
-  AppleLogin = require('@screens/login/AppleLogin').default;
-  GoogleLogin = require('@screens/login/GoogleLogin').default;
-}
+import AppleLogin from '@screens/login/AppleLogin';
+import GoogleLogin from '@screens/login/GoogleLogin';
 
 const LoginScreen = () => {
   const [isPolicyChecked, setIsPolicyChecked] = useState(false);
@@ -28,7 +19,7 @@ const LoginScreen = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const modalFadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(300)).current;
-  const loginFuncRef = useRef(null);
+  const loginFuncRef = useRef<(() => void) | null>(null);
 
   const handleCheckboxPress = () => {
     setIsModalVisible(true);
@@ -42,6 +33,7 @@ const LoginScreen = () => {
       setIsModalVisible(false);
       if (loginFuncRef.current) {
         loginFuncRef.current();
+        loginFuncRef.current = null;
       }
     }
   };
@@ -90,7 +82,7 @@ const LoginScreen = () => {
     }
   }, [isModalVisible, modalFadeAnim, slideAnim]);
 
-  const handleLoginPress = (loginFunc) => {
+  const handleLoginPress = (loginFunc: () => void) => {
     if (!isPolicyChecked || !isTermsChecked) {
       loginFuncRef.current = loginFunc;
       setIsModalVisible(true);
@@ -124,6 +116,7 @@ const LoginScreen = () => {
               onCheckColor="#FFFFFF"
               onFillColor="black"
               onTintColor="black"
+              onChange={handleCheckboxPress}
               boxType="square"
             />
           )}
