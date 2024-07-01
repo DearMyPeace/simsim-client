@@ -10,7 +10,6 @@ export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResp
 };
 
 export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) => {
-  console.log('useDiaryList', targetDate, dateStatus);
   return useQuery({
     queryKey: ['diaryList', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
