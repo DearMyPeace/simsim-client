@@ -24,6 +24,7 @@ DerivedData
 *.p8
 .p8
 key/
+*.plist
 
 # Android/IntelliJ
 #
