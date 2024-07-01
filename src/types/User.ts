@@ -8,6 +8,6 @@ interface IUserInfo {
   personaCode: string;
   personaName: string;
   bgImage: string | null;
-  userStatus: 'Y';
+  userStatus: 'Y' | 'N';
   replyStatus: 'Y' | 'N';
 }

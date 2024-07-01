@@ -1,4 +1,4 @@
-import { useSetRecoilState } from 'recoil';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import { authTokenState, isLoggedInState, userInfoState } from '@stores/login.ts';
 import { removeToken } from '@components/login/AuthService.ts';
 import { useMutation } from '@tanstack/react-query';
@@ -7,7 +7,7 @@ import { snackMessage } from '@stores/snackMessage';
 
 const useLogout = () => {
   const setAuthToken = useSetRecoilState(authTokenState);
-  const setUserInfo = useSetRecoilState(userInfoState);
+  const resetUserInfo = useResetRecoilState(userInfoState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setSnackbar = useSetRecoilState(snackMessage);
 
@@ -39,7 +39,7 @@ const useLogout = () => {
   const handleLogout = async () => {
     setAuthToken(null);
     await removeToken();
-    setUserInfo(null);
+    resetUserInfo();
     setIsLoggedIn(false);
   };
   return { logoutMutation, deleteAccountMutation };

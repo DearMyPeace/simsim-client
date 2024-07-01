@@ -51,26 +51,6 @@ const GoogleLogin = ({ handleLoginPress }) => {
     }
   };
 
-  const handleLogout = async () => {
-    setAuthToken(null);
-    await removeToken();
-    setUserInfo(null);
-    setIsLoggedIn(false);
-  };
-
-  // useEffect(() => {
-  //   const checkStoredToken = async () => {
-  //     const storedToken = await getToken();
-  //     if (storedToken) {
-  //       setAuthToken(storedToken);
-  //       const userInfo = await getUserInfo(storedToken);
-  //       setUserInfo(userInfo);
-  //       setIsLoggedIn(true);
-  //     }
-  //   };
-  //   checkStoredToken();
-  // }, [setAuthToken, setUserInfo, setIsLoggedIn]);
-
   return (
     <View>
       <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(login)}>
