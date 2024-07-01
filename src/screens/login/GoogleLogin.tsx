@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fontBasic } from '@utils/Sizing';
+import useSendUserToken from '@hooks/login/useSendUserToken';
 
 GoogleSignin.configure({
   webClientId: process.env.GOOGLE_CLIENT_ID,
+  iosClientId: process.env.IOS_GOOGLE_CLIENT_ID,
 });
 
-const GoogleLogin = () => {
-  const [userInfo, setUserInfo] = useState(null);
+const GoogleLogin = ({ handleLoginPress }) => {
+  const sendUserToken = useSendUserToken();
 
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const token = userInfo.idToken;
-      await saveToken(token);
-      setUserInfo(userInfo);
-      console.log(userInfo);
+      if (token) {
+        sendUserToken.mutate({ token: token, type: 'google' });
+      }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User cancelled the login flow');
@@ -34,40 +36,17 @@ const GoogleLogin = () => {
     }
   };
 
-  const handleLogout = async () => {
-    await removeToken();
-    setUserInfo(null);
-    await GoogleSignin.signOut();
-  };
-
-  const checkUser = async () => {
-    const token = await getToken();
-    if (token) {
-      // Fetch user info using the token if necessary
-    }
-  };
-
-  useEffect(() => {
-    checkUser();
-  }, []);
-
   return (
     <View>
-      {userInfo ? (
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogout}>
-          <View style={styles.iconAndText}>
-            <Icon name="google" size={20} color="#000" style={styles.icon} />
-            <MyText style={styles.loginButtonText}>Logout from Google</MyText>
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.loginButton} onPress={signInWithGoogle}>
-          <View style={styles.iconAndText}>
-            <Icon name="google" size={20} color="#000" style={styles.icon} />
-            <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
-          </View>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => handleLoginPress(signInWithGoogle)}
+      >
+        <View style={styles.iconAndText}>
+          <Icon name="google" size={20} color="#000" style={styles.icon} />
+          <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
