@@ -6,7 +6,7 @@ export interface IAiPersonaData {
 
 export interface IAiPersonaPatchRequest {
   personaCode: string;
-  userId: string;
+  userId: number;
 }
 
 export interface IUserAIPersona {

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Platform,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -24,6 +25,7 @@ const MockTestAiLetter: React.FC = () => {
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+  const screenHeight = Dimensions.get('window').height;
 
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - 10);
@@ -32,25 +34,51 @@ const MockTestAiLetter: React.FC = () => {
   useEffect(() => {
     const entries = getMockAiLetterEntries(startDate, endDate);
     setAiLetterEntries(entries);
+
+    // 오늘 날짜에 해당하는 인덱스를 찾습니다.
+    const todayDateStr = new Date().toISOString().slice(0, 10);
+    const todayIndex = entries.findIndex((entry) => entry.date === todayDateStr);
+    console.log(todayIndex);
+    if (todayIndex !== -1) {
+      setActiveSections([todayIndex]);
+
+      setTimeout(() => {
+        if (flatListRef.current) {
+          const viewHeight = 50;
+          const offset = viewHeight * todayIndex - screenHeight / 2;
+          flatListRef.current.scrollToOffset({ offset, animated: true });
+        }
+      }, 0);
+    }
   }, []);
 
   const loadMoreData = () => {
-    const firstEntryId = aiLetterEntries[0]?.id;
-    const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
+    // id가 있는 첫 번째 data를 찾습니다.
+    const firstEntryWithId = aiLetterEntries.find((entry) => !entry.isPlaceholder);
+    const firstEntryId = firstEntryWithId?.id;
 
-    if (firstEntryIndex > 0) {
-      const additionalEntries = AiLetterEntries.slice(
-        Math.max(firstEntryIndex - 5, 0),
-        firstEntryIndex,
-      );
-      const newEntries = [...additionalEntries, ...aiLetterEntries];
+    if (firstEntryId) {
+      const firstEntryIndex = AiLetterEntries.findIndex((entry) => entry.id === firstEntryId);
 
-      const firstNewEntryDate = new Date(newEntries[0].date);
-      const updatedStartDate = new Date(Math.min(startDate.getTime(), firstNewEntryDate.getTime()));
-      const updatedEndDate = new Date();
-      setAiLetterEntries(
-        fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
-      );
+      if (firstEntryIndex > 0) {
+        // 추가로 가져올 항목의 범위를 계산합니다.
+        const start = Math.max(firstEntryIndex - 5, 0);
+        const additionalEntries = AiLetterEntries.slice(start, firstEntryIndex);
+
+        // 새로운 항목을 기존 항목 앞에 추가합니다.
+        const newEntries = [...additionalEntries, ...aiLetterEntries];
+
+        // 새로운 항목들의 날짜 범위를 계산합니다.
+        const firstNewEntryDate = new Date(newEntries[0].date);
+        const updatedStartDate = new Date(
+          Math.min(startDate.getTime(), firstNewEntryDate.getTime()),
+        );
+
+        // 날짜 범위에 맞춰서 데이터 채우기
+        setAiLetterEntries(
+          fillDatesWithData(generateDateRange(updatedStartDate, endDate), newEntries),
+        );
+      }
     }
   };
 
@@ -65,9 +93,6 @@ const MockTestAiLetter: React.FC = () => {
   const handleAccordionChange = (section: IAiLetterEntry) => {
     const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
     setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({ index, animated: true });
-    }
   };
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
@@ -81,12 +106,12 @@ const MockTestAiLetter: React.FC = () => {
       }
     }
 
-    if (consecutiveNotUsingDayCount > 3) {
+    if (consecutiveNotUsingDayCount > 1) {
       return null;
     }
 
     return (
-      <View>
+      <View style={styles.itemContainer}>
         {item.isPlaceholder ? (
           <View style={styles.notusingItem}>
             <NotUsingDay date={item.date} />
@@ -110,12 +135,6 @@ const MockTestAiLetter: React.FC = () => {
     );
   };
 
-  const getItemLayout = (data, index) => ({
-    length: 50, // 항목의 고정된 높이 (필요에 따라 조정)
-    offset: 50 * index,
-    index,
-  });
-
   const onScrollToIndexFailed = (info) => {
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
     wait.then(() => {
@@ -130,7 +149,6 @@ const MockTestAiLetter: React.FC = () => {
         data={aiLetterEntries}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        getItemLayout={getItemLayout}
         onScrollToIndexFailed={onScrollToIndexFailed}
         refreshControl={
           Platform.OS === 'web' ? null : (
@@ -143,20 +161,23 @@ const MockTestAiLetter: React.FC = () => {
           )
         }
         ListHeaderComponent={
-          Platform.OS === 'web' && (
-            <TouchableOpacity
-              style={styles.loadMoreButton}
-              onPress={handleLoadMore}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="gray" />
-              ) : (
-                <Entypo name="chevron-small-up" color="gray" size={26} />
-              )}
-            </TouchableOpacity>
-          )
+          <>
+            {Platform.OS === 'web' && (
+              <TouchableOpacity
+                style={styles.loadMoreButton}
+                onPress={handleLoadMore}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator size="small" color="gray" />
+                ) : (
+                  <Entypo name="chevron-small-up" color="gray" size={26} />
+                )}
+              </TouchableOpacity>
+            )}
+          </>
         }
+        ListFooterComponent={<View style={{ height: screenHeight / 2 }} />}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -166,8 +187,12 @@ const MockTestAiLetter: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'white',
+    paddingLeft: 36,
+    paddingRight: 36,
+    backgroundColor: 'transparent',
+  },
+  itemContainer: {
+    backgroundColor: 'transparent',
   },
   loadMoreButton: {
     padding: 10,

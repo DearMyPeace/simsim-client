@@ -6,7 +6,7 @@ import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { saveToken, getToken, removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';
-import { postUserToken } from '@api/login/post';
+import { postUserGoogleToken } from '@api/login/post';
 import googleLogo from '@assets/logo/google.png';
 
 const GoogleLogin = ({ handleLoginPress }) => {
@@ -15,10 +15,11 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   const sendUserToken = useMutation({
-    mutationFn: (data) => postUserToken(data),
-    onSuccess: (data) => {
+    mutationFn: (data) => postUserGoogleToken(data),
+    onSuccess: async (data: { accessToken: string }) => {
       // TODO: back end에서 받은 data를 이용해 로그인 처리
-      console.log(data);
+      await saveToken(data.accessToken);
+      setIsLoggedIn(true);
     },
     onError: (error) => {
       console.error(error.response.data.message);
@@ -28,12 +29,13 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
+      console.log(tokenResponse);
       sendUserToken.mutate(tokenResponse);
-      const userInfo = await getUserInfo(tokenResponse.access_token);
-      console.log(userInfo);
-      await saveToken(tokenResponse.access_token);
-      setUserInfo(userInfo);
-      setIsLoggedIn(true);
+      // const userInfo = await getUserInfo(tokenResponse.access_token);
+      // console.log(userInfo);
+      // await saveToken(tokenResponse.access_token);
+      // setUserInfo(userInfo);
+      // setIsLoggedIn(true);
     },
     onError: (error) => {
       console.error('Login failed:', error);

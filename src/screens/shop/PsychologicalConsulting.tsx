@@ -2,11 +2,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MyText from '@components/common/MyText';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { fontMedium } from '@utils/Sizing';
 
 export default function PsychologicalConsulting() {
   return (
     <View style={styles.container}>
-      <MyText>심리상담 페이지</MyText>
+      <View style={styles.emptyContainer}>
+        <AntDesign name="exclamationcircleo" size={120} color="#D9D9D9" />
+        <MyText style={styles.emptyText}>연결된 항목이 없습니다.</MyText>
+      </View>
     </View>
   );
 }
@@ -16,5 +21,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    marginTop: 10,
+    fontSize: fontMedium,
+    color: 'gray',
   },
 });

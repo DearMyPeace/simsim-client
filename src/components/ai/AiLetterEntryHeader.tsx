@@ -37,7 +37,7 @@ const AiLetterEntryHeader: React.FC<AiLetterEntryHeaderProps> = ({
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       onPress={() => handleAccordionChange(section)}
-      style={({ pressed }) => [{ backgroundColor: pressed ? 'white' : 'white' }]}
+      style={({ pressed }) => [{ backgroundColor: pressed ? 'transparent' : 'transparent' }]}
     >
       <View style={styles.incoming}>
         <MyText style={styles.date}>
@@ -69,11 +69,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 10,
     borderBottomColor: '#ccc',
+    backgroundColor: 'transparent',
   },
   date: {
     fontSize: fontMedium,
     fontFamily: 'GowunBatang-Bold',
     color: 'black',
+    backgroundColor: 'transparent',
   },
   summary: {
     fontSize: fontBasic,
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     overflow: 'hidden',
+    backgroundColor: 'transparent',
   },
   summaryPressed: {
     color: 'lightgray',

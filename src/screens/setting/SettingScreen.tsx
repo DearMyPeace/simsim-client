@@ -18,7 +18,7 @@ import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
 
 const SettingScreen = () => {
-  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onDeleteAccount, handleLogout } =
+  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onLogout, onDeleteAccount } =
     useSetting();
   const {
     diaryNotiEnabled,
@@ -57,7 +57,7 @@ const SettingScreen = () => {
             onPress={aiPickerOpen}
           />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />
-          <SettingSection label="로그아웃" buttonText="나가기" onPress={handleLogout} />
+          <SettingSection label="로그아웃" buttonText="나가기" onPress={onLogout} />
           <SettingSection label="회원탈퇴" buttonText="탈퇴하기" onPress={onDeleteAccount} />
         </View>
       </ScrollView>
