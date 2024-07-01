@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { snackMessage } from '@stores/snackMessage';
 import { patchUserAiPersona } from '@api/user/patch';
-import { userStatus } from '@stores/user';
 import { IAiPersonaData } from '@type/AiPersona';
 
 const useAiPersonaChange = () => {
   const [userAiPersona, setUserAiPersona] = useRecoilState(userAiPersonaStatus);
   const [selectedPersonaCode, setSelectedPersonaCode] = useState<string>(userAiPersona.personaCode);
   const setSnackbar = useSetRecoilState(snackMessage);
-  const userId = useRecoilValue(userStatus);
   const queryClient = useQueryClient();
 
   const changeAiPersona = useMutation({
-    mutationFn: (personaCode: string) => patchUserAiPersona({ personaCode, userId }),
+    mutationFn: (personaCode: string) => patchUserAiPersona(personaCode),
     onSuccess: (data: IAiPersonaData) => {
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       const { personaCode, personaName } = data;
