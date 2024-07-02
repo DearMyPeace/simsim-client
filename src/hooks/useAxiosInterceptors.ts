@@ -34,7 +34,7 @@ const useAxiosInterceptors = () => {
     if (error.response.status === 401) {
       console.log('토큰 만료');
       axios
-        .post(`${process.env.BASE_URL}/auth/reissue`)
+        .post(`${process.env.BASE_URL}/auth/reissue`, null, error.config)
         .then(async (res) => {
           await saveToken(res.data.accessToken);
           error.config.headers.Authorization = res.data.accessToken;
