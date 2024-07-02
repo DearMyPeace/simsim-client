@@ -34,7 +34,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       setTimeStartWriting('');
     },
     onError: (error) => {
-      setSnackbar(error.response.data.message);
+      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
       setIsEditing(false);
@@ -48,7 +48,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       setSnackbar('삭제가 완료되었습니다.');
     },
     onError: (error) => {
-      setSnackbar(error.response.data.message);
+      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
       setIsEditing(false);
@@ -63,7 +63,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       setSnackbar('수정이 완료되었습니다.');
     },
     onError: (error) => {
-      setSnackbar(error.response.data.message);
+      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
       setIsEditing(false);
