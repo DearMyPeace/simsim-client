@@ -4,11 +4,6 @@ export interface IAiPersonaData {
   personaName: string;
 }
 
-export interface IAiPersonaPatchRequest {
-  personaCode: string;
-  userId: number;
-}
-
 export interface IUserAIPersona {
   personaCode: string;
   personaName: string;

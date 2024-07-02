@@ -27,7 +27,6 @@ const AiPersonaSelectModal = ({ visible, setIsVisible, aiPersonaList }: IAiPerso
   }, [aiPersonaList]);
 
   const onClose = () => {
-    console.log(selectedPersonaCode);
     changeAiPersona.mutate(selectedPersonaCode);
     setIsVisible(false);
   };

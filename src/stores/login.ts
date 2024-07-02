@@ -5,9 +5,20 @@ export const authTokenState = atom({
   default: null,
 });
 
-export const userInfoState = atom({
+export const userInfoState = atom<IUserInfo>({
   key: 'userInfoState',
-  default: null,
+  default: {
+    userId: -1,
+    name: '',
+    email: '',
+    role: '',
+    pieceCnt: 0,
+    personaCode: '',
+    personaName: '',
+    bgImage: null,
+    userStatus: 'N',
+    replyStatus: 'N',
+  },
 });
 
 export const isLoggedInState = atom({

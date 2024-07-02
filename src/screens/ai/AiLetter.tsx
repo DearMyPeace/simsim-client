@@ -20,7 +20,6 @@ import { useAiLetterData } from '@hooks/ai/ailetterHook';
 
 const AiLetter: React.FC = () => {
   const todayDateStr = new Date().toISOString().slice(0, 10);
-  const userId = 1;
 
   const {
     aiLetterEntries,
@@ -32,7 +31,7 @@ const AiLetter: React.FC = () => {
     handleAccordionChange,
     isLoading,
     error,
-  } = useAiLetterData(userId, todayDateStr);
+  } = useAiLetterData(todayDateStr);
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
     let consecutiveNotUsingDayCount = 0;

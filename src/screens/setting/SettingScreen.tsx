@@ -15,7 +15,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import MySnackbar from '@components/common/MySnackbar';
 import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
-import { userAiPersonaStatus } from '@stores/userAiPersona';
+import { userInfoState } from '@stores/login';
 
 const SettingScreen = () => {
   const { deleteModalVisible, setDeleteModalVisible, onFeedback, onLogout, onDeleteAccount } =
@@ -30,7 +30,7 @@ const SettingScreen = () => {
     onToggleLetterSwitch,
   } = useNotification();
   const { aiPickerVisible, setAiPickerVisible, aiPickerOpen, aiPersonaList } = useAiPersonaGet();
-  const userSelectedAi = useRecoilValue(userAiPersonaStatus);
+  const userInfo = useRecoilValue(userInfoState);
   const [notiTime, setNotiTime] = React.useState(new Date());
   const onTimePickerClose = () => {
     setDiaryNotiEnabled(true);
@@ -53,7 +53,7 @@ const SettingScreen = () => {
         <View style={styles.basicPadding}>
           <SettingSection
             label="편지 작성자"
-            buttonText={userSelectedAi.personaName}
+            buttonText={userInfo.personaName}
             onPress={aiPickerOpen}
           />
           <SettingSection label="의견 보내기" buttonText="보내기" onPress={onFeedback} />

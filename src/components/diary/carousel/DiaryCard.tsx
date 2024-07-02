@@ -92,7 +92,6 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     }
     const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
-      userId: 1, // TODO: userId 수정
       content: diaryInput,
       createdDate: cretatedDate,
       modifiedDate: cretatedDate,
@@ -100,7 +99,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     if (id === NEW_DIARY) {
       addNewDiary.mutate(data);
     } else {
-      editDiary.mutate({ id, data });
+      editDiary.mutate({ diaryId: id, data });
     }
   };
 
