@@ -9,6 +9,7 @@ import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { useUserInfo } from '@api/user/get';
+import useAxiosInterceptors from '@hooks/useAxiosInterceptors';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const MainNavigator = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
   const setUserInfo = useSetRecoilState(userInfoState);
   const { data } = useUserInfo(isLoggedIn);
+  useAxiosInterceptors();
 
   useEffect(() => {
     const checkToken = async () => {

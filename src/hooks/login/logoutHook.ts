@@ -42,7 +42,7 @@ const useLogout = () => {
     resetUserInfo();
     setIsLoggedIn(false);
   };
-  return { logoutMutation, deleteAccountMutation };
+  return { logoutMutation, deleteAccountMutation, handleLogout };
 };
 
 export default useLogout;
