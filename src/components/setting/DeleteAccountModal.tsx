@@ -4,13 +4,9 @@ import TextButton from '@components/common/TextButton';
 import { StyleSheet, View } from 'react-native';
 import MyModal from '@components/common/MyModal';
 import useLogout from '@hooks/login/logoutHook';
+import { IBasicModalProps } from '@type/Modal';
 
-interface IDeleteAccountModalProps {
-  visible: boolean;
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const DeleteAccountModal = ({ visible, setIsVisible }: IDeleteAccountModalProps) => {
+const DeleteAccountModal = ({ visible, setIsVisible }: IBasicModalProps) => {
   const { deleteAccountMutation } = useLogout();
 
   const onDeleteAccount = () => {
