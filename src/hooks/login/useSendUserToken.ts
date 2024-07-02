@@ -16,9 +16,9 @@ interface TokenData {
 }
 
 const useSendUserToken = () => {
-  const [, setAuthToken] = useRecoilState(authTokenState);
-  const [, setUserInfo] = useRecoilState(userInfoState);
-  const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
+  const setAuthToken = useSetRecoilState(authTokenState);
+  const setUserInfo = useSetRecoilState(userInfoState);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
   return useMutation({
     mutationFn: (data: TokenData) => {
