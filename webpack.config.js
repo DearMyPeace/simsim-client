@@ -24,6 +24,8 @@ const uncompiled = [
   'react-native-encrypted-storage',
   'react-native-markdown-display',
   'react-apple-signin-auth',
+  'react-native-svg',
+  'react-native-svg-transformer',
 ];
 
 const babelLoaderConfiguration = {
