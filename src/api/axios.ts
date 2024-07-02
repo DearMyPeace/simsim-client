@@ -18,7 +18,7 @@ instance.interceptors.request.use(
     // 로그인 후 토큰 헤더에 추가
     const accessToken = await getToken();
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = accessToken;
     }
     return config;
   },
