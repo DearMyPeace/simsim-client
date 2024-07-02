@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { ItemValue } from '@react-native-picker/picker/typings/Picker';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
-import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { snackMessage } from '@stores/snackMessage';
 import { fetchAiPersonaList } from '@api/ai/get';
+import { userInfoState } from '@stores/login';
 
 const useAiPersonaGet = () => {
-  const setUserSelectedAi = useSetRecoilState(userAiPersonaStatus);
+  const setUserInfo = useSetRecoilState(userInfoState);
   const [aiPickerVisible, setAiPickerVisible] = useState<boolean>(false);
   const setSnackbar = useSetRecoilState(snackMessage);
   const { data, isError, isPending } = useQuery({
@@ -26,7 +26,11 @@ const useAiPersonaGet = () => {
   };
 
   const onSelectAi = (value: ItemValue) => {
-    setUserSelectedAi({ personaCode: value as string, personaName: value as string });
+    setUserInfo((prev) => ({
+      ...prev,
+      personaCode: value as string,
+      personaName: value as string,
+    }));
     setAiPickerVisible(false);
   };
   return {

@@ -39,7 +39,6 @@ export interface IMarkedDates {
 // api 요청 관련 타입
 export interface IDiaryListResponse {
   diaryId: number;
-  userId: number;
   content: string;
   createdDate: string;
   modifiedDate: string;
@@ -51,7 +50,6 @@ export interface IDiaryCount {
 }
 
 export interface IDiaryPostRequest {
-  userId: number;
   content: string;
   createdDate: string; // iso8601
   modifiedDate: string; // iso8601
@@ -59,13 +57,12 @@ export interface IDiaryPostRequest {
 
 export interface IDiaryPostResponse {
   diaryId: number;
-  userId: number;
   content: string;
   createdDate: string;
   modifiedDate: string;
 }
 
 export interface IDiaryPatchRequest {
-  id: number;
+  diaryId: number;
   data: IDiaryPostRequest;
 }

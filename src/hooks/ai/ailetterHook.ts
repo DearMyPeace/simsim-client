@@ -6,7 +6,7 @@ import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
 import { fetchNextAiLetter } from '@api/ai/get';
 import { postAiLetters } from '@api/ai/post';
 
-export const useAiLetterData = (userId: number, todayDateStr: string) => {
+export const useAiLetterData = (todayDateStr: string) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -16,8 +16,8 @@ export const useAiLetterData = (userId: number, todayDateStr: string) => {
   const endDate = useRef(new Date());
 
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ['aiLetters', userId, todayDateStr],
-    queryFn: () => postAiLetters({ userId, targetDate: todayDateStr }),
+    queryKey: ['aiLetters', todayDateStr],
+    queryFn: () => postAiLetters({ targetDate: todayDateStr }),
   });
 
   useEffect(() => {
