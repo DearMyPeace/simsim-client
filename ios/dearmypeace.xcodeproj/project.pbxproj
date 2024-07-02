@@ -22,6 +22,9 @@
 		5F2975D4800947B5B438A508 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7D7DEC49252466C8666BA0C /* FontAwesome.ttf */; };
 		641965F627514DDBAF620056 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5B1D94BBD1045779ABCC8F1 /* Feather.ttf */; };
 		64880C4F2C3283F9009E2304 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64880C4E2C3283F8009E2304 /* GoogleService-Info.plist */; };
+		64880C532C33C1BC009E2304 /* Kalam-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */; };
+		64880C542C33C1BC009E2304 /* Kalam-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64880C512C33C1BC009E2304 /* Kalam-Light.ttf */; };
+		64880C552C33C1BC009E2304 /* Kalam-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64880C522C33C1BC009E2304 /* Kalam-Regular.ttf */; };
 		6C81110E134B4133B7BBFA58 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 391B37A4C9314BE58D0CA0BD /* AntDesign.ttf */; };
 		7C21F5F2D9E94F29BCDD103E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A473DD0784EE4C70A9866D67 /* Ionicons.ttf */; };
 		7C48246F68C84F3CB383029D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76C538F261A64E7A9AFA721A /* Foundation.ttf */; };
@@ -67,6 +70,9 @@
 		4AB4F72C4C2246A690E9A574 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../src/assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
 		582A185F068242EA99AC1C92 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = ../src/assets/fonts/MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		64880C4E2C3283F8009E2304 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../key/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Kalam-Bold.ttf"; path = "../src/assets/fonts/Kalam-Bold.ttf"; sourceTree = "<group>"; };
+		64880C512C33C1BC009E2304 /* Kalam-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Kalam-Light.ttf"; path = "../src/assets/fonts/Kalam-Light.ttf"; sourceTree = "<group>"; };
+		64880C522C33C1BC009E2304 /* Kalam-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Kalam-Regular.ttf"; path = "../src/assets/fonts/Kalam-Regular.ttf"; sourceTree = "<group>"; };
 		64C8F1AC2C2BFBBD00CAC7F8 /* dearmypeace.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = dearmypeace.entitlements; path = dearmypeace/dearmypeace.entitlements; sourceTree = "<group>"; };
 		69C39DA37EE04490A92B2DD3 /* GowunBatang-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GowunBatang-Regular.ttf"; path = "../src/assets/fonts/GowunBatang-Regular.ttf"; sourceTree = "<group>"; };
 		6DF4937B063240499BE351DD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../src/assets/fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
@@ -169,6 +175,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */,
+				64880C512C33C1BC009E2304 /* Kalam-Light.ttf */,
+				64880C522C33C1BC009E2304 /* Kalam-Regular.ttf */,
 				13B07FAE1A68108700A75B9A /* dearmypeace */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dearmypeaceTests */,
@@ -324,6 +333,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64880C532C33C1BC009E2304 /* Kalam-Bold.ttf in Resources */,
+				64880C542C33C1BC009E2304 /* Kalam-Light.ttf in Resources */,
+				64880C552C33C1BC009E2304 /* Kalam-Regular.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				64880C4F2C3283F9009E2304 /* GoogleService-Info.plist in Resources */,

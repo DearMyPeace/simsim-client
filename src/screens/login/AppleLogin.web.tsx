@@ -41,11 +41,11 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
         onSuccess={async (response) => {
           console.log('Apple login response:', response);
           try {
-            const data = {
+            const token = {
               authorization: response.authorization,
               user: response.user,
             };
-            sendUserToken.mutate({ token: data });
+            sendUserToken.mutate(token);
           } catch (error) {
             console.error('Error during Apple login processing:', error);
           }

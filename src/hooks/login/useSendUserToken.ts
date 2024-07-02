@@ -10,7 +10,7 @@ interface AppleData {
 }
 
 interface GoogleTokenData {
-  token: string;
+  access_token: string;
 }
 
 const useSendUserToken = (loginType: 'google' | 'apple') => {
@@ -21,7 +21,13 @@ const useSendUserToken = (loginType: 'google' | 'apple') => {
   const mutationFn = loginType === 'google' ? postUserGoogleToken : postUserAppleToken;
 
   return useMutation({
-    mutationFn: (data: GoogleTokenData | AppleData) => mutationFn(data),
+    mutationFn: (data: GoogleTokenData | AppleData) => {
+      if (loginType === 'google') {
+        return mutationFn({ access_token: (data as GoogleTokenData).access_token });
+      } else {
+        return mutationFn(data);
+      }
+    },
     onSuccess: async (data) => {
       await saveToken(data.accessToken);
       setIsLoggedIn(true);

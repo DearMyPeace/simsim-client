@@ -32,6 +32,9 @@ ios-open:
 asset:
 	npx react-native-asset
 
+cc: 
+	npx react-native start --reset-cache
+
 clean:
 	rm -rf ./node_modules
 	rm -rf ./ios/Pods

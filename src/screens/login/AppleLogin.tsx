@@ -28,7 +28,7 @@ const AppleLogin = ({ handleLoginPress }) => {
             authorization: identityToken,
             user: JSON.stringify({ email, fullName }),
           };
-          sendUserToken.mutate({ token });
+          sendUserToken.mutate(token);
         } else {
           console.error('Failed to get identity token');
         }
