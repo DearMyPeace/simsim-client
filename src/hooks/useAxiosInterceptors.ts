@@ -29,8 +29,9 @@ const useAxiosInterceptors = () => {
   };
 
   const resErrorConfig = async (error: any) => {
-    // auth/google 제외한 요청 401 에러 시 토큰 재발급
-    if (error.response.status === 401 && error.config.url !== '/auth/google') {
+    if (error.config.url === '/auth/google') return Promise.reject(error);
+    // auth/google 제외한 요청 401(토큰 만료) 에러 시 토큰 재발급, 403(권한 없음) 에러 시 로그아웃
+    if (error.response.status === 401) {
       console.log('토큰 만료');
       axios
         .post(`${process.env.BASE_URL}/auth/reissue`)
@@ -41,9 +42,11 @@ const useAxiosInterceptors = () => {
         })
         .catch((err) => {
           console.log('토큰 재발급 실패', err);
-          // 토큰 재발급 실패 시 로그아웃
           handleLogout();
         });
+    } else if (error.response.status === 403) {
+      console.log('권한 없음');
+      handleLogout();
     }
     return Promise.reject(error);
   };
