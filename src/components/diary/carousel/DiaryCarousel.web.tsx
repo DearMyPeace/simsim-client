@@ -59,8 +59,6 @@ export default DiaryCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   cardContainer: {
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '90%',
+    height: '100%',
     position: 'relative',
   },
 });

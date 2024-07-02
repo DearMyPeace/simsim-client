@@ -94,13 +94,13 @@ module.exports = {
       resourceRegExp: /^expo-constants$/,
     }),
     new CopyWebpackPlugin({
-        patterns: [
+      patterns: [
         {
-            from: path.resolve(appDirectory, 'public/favicon'),
-            to: path.resolve(appDirectory, 'dist/favicon'),
-            },
-        ],
-        }),
+          from: path.resolve(appDirectory, 'public/favicon'),
+          to: path.resolve(appDirectory, 'dist/favicon'),
+        },
+      ],
+    }),
   ],
   resolve: {
     alias: {

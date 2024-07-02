@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MyCalendar from '@components/diary/calendar/MyCalendar';
 import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 import useCalendarHook from '@hooks/diary/calendarHook';
 import MySnackbar from '@components/common/MySnackbar';
+import { paddingLarge } from '@utils/Sizing';
 
 const DiaryScreen = () => {
   const { selectedDate, onDayPress, onMonthChange, markedDates, snackbarText } = useCalendarHook();
@@ -27,7 +28,8 @@ const DiaryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: paddingLarge,
+    paddingVertical: 10,
   },
 });
 

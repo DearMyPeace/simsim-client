@@ -151,10 +151,9 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 10,
     ...Platform.select({
       web: {
-        width: '90%',
+        width: '100%',
         height: '100%',
       },
     }),
@@ -166,13 +165,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#F1E2CC',
     borderRadius: 12,
-    marginHorizontal: 6,
-    ...Platform.select({
-      web: {
-        width: '100%',
-        height: '100%',
-      },
-    }),
   },
 });
 
