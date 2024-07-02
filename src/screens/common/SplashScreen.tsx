@@ -17,7 +17,7 @@ const SplashScreen = ({ onFinish }) => {
         duration: 1000,
         useNativeDriver: true,
       }).start();
-    }, 300);
+    }, 3000);
 
     const translateTimer = setTimeout(() => {
       Animated.timing(translateYAnim, {
@@ -27,7 +27,7 @@ const SplashScreen = ({ onFinish }) => {
       }).start(() => {
         onFinish();
       });
-    }, 300);
+    }, 3000);
 
     return () => {
       clearTimeout(textTimer);
