@@ -1,55 +1,24 @@
-import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { authTokenState, userInfoState, isLoggedInState } from '@stores/login';
+// GoogleLoginWeb.tsx
+import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
-import { saveToken, getToken, removeToken } from '@components/login/AuthService';
-import { useMutation } from '@tanstack/react-query';
-import { postUserGoogleToken } from '@api/login/post';
 import googleLogo from '@assets/logo/google.png';
+import useSendUserToken from '@hooks/login/useSendUserToken';
 
-const GoogleLogin = ({ handleLoginPress }) => {
-  const [authToken, setAuthToken] = useRecoilState(authTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [, setIsLoggedIn] = useRecoilState(isLoggedInState);
-
-  const sendUserToken = useMutation({
-    mutationFn: (data) => postUserGoogleToken(data),
-    onSuccess: async (data: { accessToken: string }) => {
-      // TODO: back end에서 받은 data를 이용해 로그인 처리
-      await saveToken(data.accessToken);
-      setIsLoggedIn(true);
-    },
-    onError: (error) => {
-      console.error(error.response.data.message);
-    },
-  });
+const GoogleLoginWeb = ({ handleLoginPress }) => {
+  const sendUserToken = useSendUserToken('google');
 
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
       console.log(tokenResponse);
-      sendUserToken.mutate(tokenResponse);
+      sendUserToken.mutate({ token: tokenResponse.access_token });
     },
     onError: (error) => {
       console.error('Login failed:', error);
     },
   });
-
-  const getUserInfo = async (token) => {
-    if (!token) return;
-    try {
-      console.log(token);
-      const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const userInfoResponse = await response.json();
-      return userInfoResponse;
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <View>
@@ -98,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoogleLogin;
+export default GoogleLoginWeb;

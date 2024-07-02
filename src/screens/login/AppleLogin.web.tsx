@@ -1,40 +1,21 @@
 import React, { useRef } from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useMutation } from '@tanstack/react-query';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
-import { postUserAppleToken } from '@api/login/post';
-import { saveToken } from '@components/login/AuthService';
+import useSendUserToken from '@hooks/login/useSendUserToken';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
+  const sendUserToken = useSendUserToken('apple');
   const appleSignInRef = useRef(null);
 
   const AppleSignIn = async () => {
-    console.log('Apple Sign-In 웹용 로직 추가 가능');
-    Alert.alert('애플 로그인은 iOS에서만 지원됩니다.');
     if (appleSignInRef.current) {
       appleSignInRef.current();
     }
   };
-
-  const sendUserToken = useMutation({
-    mutationFn: (data) => postUserAppleToken(data),
-    onSuccess: async (data) => {
-      try {
-        console.log(data);
-        await saveToken(data.access_token);
-      } catch (error) {
-        console.error('Error saving token:', error);
-      }
-    },
-    onError: (error) => {
-      console.error('Error during token exchange:', error);
-      Alert.alert('로그인 오류', '애플 로그인 중 오류가 발생했습니다.');
-    },
-  });
 
   const _clientId: string = process.env.APPLE_CLIENT_ID ?? '';
   const _redirectURI: string = process.env.APPLE_REDIRECT_URI ?? '';
@@ -64,15 +45,13 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
               authorization: response.authorization,
               user: response.user,
             };
-            sendUserToken.mutate(data);
+            sendUserToken.mutate({ token: data });
           } catch (error) {
             console.error('Error during Apple login processing:', error);
-            Alert.alert('로그인 오류', '로그인 처리 중 오류가 발생했습니다.');
           }
         }}
         onError={(error) => {
           console.error('Apple login error:', error);
-          Alert.alert('로그인 오류', '애플 로그인 중 오류가 발생했습니다.');
         }}
         render={(props) => {
           appleSignInRef.current = props.onClick;

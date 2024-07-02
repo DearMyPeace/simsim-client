@@ -9,6 +9,7 @@ import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWra
 import MainNavigator from '@navigators/MainNavigator';
 import SplashScreen from '@screens/common/SplashScreen';
 import { lightTheme } from '@utils/lightTheme';
+import BackgroundProvider from '@screens/common/BackgroundProvider';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,29 +30,31 @@ const App = () => {
 
   return (
     <RecoilRoot>
-      <GoogleOAuthProviderWrapper>
-        <QueryClientProvider client={queryClient}>
-          <SafeAreaProvider>
-            <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
-              {isLoading ? (
-                <SplashScreen onFinish={() => setIsLoading(false)} />
-              ) : (
-                <PaperProvider theme={theme}>
-                  <NavigationContainer
-                    theme={{
-                      colors: {
-                        background: 'transparent',
-                      },
-                    }}
-                  >
-                    <MainNavigator />
-                  </NavigationContainer>
-                </PaperProvider>
-              )}
-            </SafeAreaView>
-          </SafeAreaProvider>
-        </QueryClientProvider>
-      </GoogleOAuthProviderWrapper>
+      <BackgroundProvider>
+        <GoogleOAuthProviderWrapper>
+          <QueryClientProvider client={queryClient}>
+            <SafeAreaProvider>
+              <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
+                {isLoading ? (
+                  <SplashScreen onFinish={() => setIsLoading(false)} />
+                ) : (
+                  <PaperProvider theme={theme}>
+                    <NavigationContainer
+                      theme={{
+                        colors: {
+                          background: 'transparent',
+                        },
+                      }}
+                    >
+                      <MainNavigator />
+                    </NavigationContainer>
+                  </PaperProvider>
+                )}
+              </SafeAreaView>
+            </SafeAreaProvider>
+          </QueryClientProvider>
+        </GoogleOAuthProviderWrapper>
+      </BackgroundProvider>
     </RecoilRoot>
   );
 };
