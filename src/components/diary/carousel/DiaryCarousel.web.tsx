@@ -11,6 +11,10 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
   const { data, isPending, isError, isSuccess } = useDiaryHook(selectedDate);
   const [isEditing, setIsEditing] = useState(false);
 
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [selectedDate]);
+
   if (isPending) {
     return <CenterViewText text="심심기록을 가져오는 중입니다." />;
   }
