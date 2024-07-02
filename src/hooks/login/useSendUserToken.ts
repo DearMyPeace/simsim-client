@@ -2,7 +2,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { postUserGoogleToken, postUserAppleToken } from '@api/login/post';
 import { saveToken } from '@components/login/AuthService';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { authTokenState, userInfoState, isLoggedInState } from '@stores/login';
 
 interface AppleData {
