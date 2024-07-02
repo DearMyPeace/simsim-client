@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MyText from '@components/common/MyText';
 
 const AppleLogin = ({ handleLoginPress }) => {
-  const sendUserToken = useSendUserToken();
-  const appleSignInRef = useRef(null);
+  const sendUserToken = useSendUserToken('apple');
 
   const AppleSignIn = async () => {
     try {
@@ -26,7 +28,7 @@ const AppleLogin = ({ handleLoginPress }) => {
             authorization: identityToken,
             user: JSON.stringify({ email, fullName }),
           };
-          sendUserToken.mutate({ token, type: 'apple' });
+          sendUserToken.mutate({ token });
         } else {
           console.error('Failed to get identity token');
         }
@@ -37,29 +39,47 @@ const AppleLogin = ({ handleLoginPress }) => {
   };
 
   return (
-    <AppleButton
-      buttonStyle={AppleButton.Style.WHITE}
-      buttonType={AppleButton.Type.SIGN_IN}
-      style={styles.appleButton}
-      onPress={() => handleLoginPress(AppleSignIn)}
-    />
+    <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
+      <View style={styles.iconAndText}>
+        <Icon name="apple" size={20} color="#000" style={styles.icon} />
+        <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   loginButton: {
+    width: 200,
+    height: 42,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
     marginBottom: 15,
-    elevation: 3,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  appleButton: {
-    width: 160,
-    height: 45,
-    borderRadius: 20,
     borderWidth: 1,
+    borderColor: '#000',
+  },
+  iconAndText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
+    width: 20,
+    height: 20,
+  },
+  loginButtonText: {
+    fontSize: fontBasic,
+    color: '#000',
   },
 });
 

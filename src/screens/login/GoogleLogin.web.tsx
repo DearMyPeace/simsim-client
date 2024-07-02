@@ -7,13 +7,13 @@ import googleLogo from '@assets/logo/google.png';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 
 const GoogleLoginWeb = ({ handleLoginPress }) => {
-  const sendUserToken = useSendUserToken();
+  const sendUserToken = useSendUserToken('google');
 
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
       console.log(tokenResponse);
-      sendUserToken.mutate({ token: tokenResponse.access_token, type: 'google' });
+      sendUserToken.mutate({ token: tokenResponse.access_token });
     },
     onError: (error) => {
       console.error('Login failed:', error);

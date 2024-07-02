@@ -1,9 +1,8 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import MyText from '@components/common/MyText';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import googleLogo from '@assets/logo/google.png';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 
@@ -13,15 +12,17 @@ GoogleSignin.configure({
 });
 
 const GoogleLogin = ({ handleLoginPress }) => {
-  const sendUserToken = useSendUserToken();
+  const sendUserToken = useSendUserToken('google');
 
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const token = userInfo.idToken;
+      console.log('UI', userInfo);
+      console.log('token', token);
       if (token) {
-        sendUserToken.mutate({ token: token, type: 'google' });
+        sendUserToken.mutate({ token: token });
       }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -43,7 +44,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
         onPress={() => handleLoginPress(signInWithGoogle)}
       >
         <View style={styles.iconAndText}>
-          <Icon name="google" size={20} color="#000" style={styles.icon} />
+          <Image source={googleLogo} style={styles.icon} />
           <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
         </View>
       </TouchableOpacity>
@@ -77,6 +78,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    width: 20,
+    height: 20,
   },
   loginButtonText: {
     fontSize: fontBasic,
