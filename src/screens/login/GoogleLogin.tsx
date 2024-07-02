@@ -17,12 +17,9 @@ const GoogleLogin = ({ handleLoginPress }) => {
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = userInfo.idToken;
-      console.log('UI', userInfo);
-      console.log('token', token);
-      if (token) {
-        sendUserToken.mutate({ token: token });
+      const getToken = await GoogleSignin.getTokens();
+      if (getToken) {
+        sendUserToken.mutate({ access_token: getToken.accessToken });
       }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
