@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import MyIconButtons from '@components/common/MyIconButtons.tsx';
 import PieceIconPNG from '@assets/images/tab_piece_2.svg';
-import CalendarIconSVG from '@assets/images/dialy.svg';
+import CalendarIconSVG from '@assets/images/dialy_1.svg';
 import { View, Text, Image } from 'react-native';
 import { red } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
