@@ -1,3 +1,4 @@
+// useAxiosInterceptors.ts
 import { useEffect } from 'react';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import instance from '@api/axios';
@@ -8,10 +9,12 @@ const useAxiosInterceptors = () => {
   const { handleLogout } = useLogout();
 
   const reqConfig = async (config: InternalAxiosRequestConfig) => {
+    console.log('Starting Request', JSON.stringify(config, null, 2));
+
     if (config.url === '/auth/google') {
       return config;
     }
-    // 로그인 후 토큰 헤더에 추가
+
     const accessToken = await getToken();
     if (accessToken) {
       config.headers.Authorization = accessToken;
@@ -21,14 +24,18 @@ const useAxiosInterceptors = () => {
   };
 
   const reqErrorConfig = (error: any) => {
+    console.log('Error Request:', JSON.stringify(error, null, 2));
     return Promise.reject(error);
   };
 
   const resConfig = (response: AxiosResponse) => {
+    console.log('Starting Response:', JSON.stringify(response, null, 2));
     return response;
   };
 
   const resErrorConfig = async (error: any) => {
+    console.log('Error Response:', JSON.stringify(error, null, 2));
+
     if (error.config.url === '/auth/google') return Promise.reject(error);
     // auth/google 제외한 요청 401(토큰 만료) 에러 시 토큰 재발급, 403(권한 없음) 에러 시 로그아웃
     if (error.response.status === 401) {
@@ -54,11 +61,14 @@ const useAxiosInterceptors = () => {
   useEffect(() => {
     const reqInterceptor = instance.interceptors.request.use(reqConfig, reqErrorConfig);
     const resInterceptor = instance.interceptors.response.use(resConfig, resErrorConfig);
+
     return () => {
       instance.interceptors.request.eject(reqInterceptor);
       instance.interceptors.response.eject(resInterceptor);
     };
   }, []);
+
+  return null;
 };
 
 export default useAxiosInterceptors;
