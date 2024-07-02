@@ -31,11 +31,6 @@ const GoogleLogin = ({ handleLoginPress }) => {
     onSuccess: async (tokenResponse) => {
       console.log(tokenResponse);
       sendUserToken.mutate(tokenResponse);
-      // const userInfo = await getUserInfo(tokenResponse.access_token);
-      // console.log(userInfo);
-      // await saveToken(tokenResponse.access_token);
-      // setUserInfo(userInfo);
-      // setIsLoggedIn(true);
     },
     onError: (error) => {
       console.error('Login failed:', error);
@@ -55,26 +50,6 @@ const GoogleLogin = ({ handleLoginPress }) => {
       console.log(e);
     }
   };
-
-  const handleLogout = async () => {
-    setAuthToken(null);
-    await removeToken();
-    setUserInfo(null);
-    setIsLoggedIn(false);
-  };
-
-  useEffect(() => {
-    const checkStoredToken = async () => {
-      const storedToken = await getToken();
-      if (storedToken) {
-        setAuthToken(storedToken);
-        const userInfo = await getUserInfo(storedToken);
-        setUserInfo(userInfo);
-        setIsLoggedIn(true);
-      }
-    };
-    checkStoredToken();
-  }, [setAuthToken, setUserInfo, setIsLoggedIn]);
 
   return (
     <View>

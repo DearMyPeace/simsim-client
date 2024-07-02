@@ -8,7 +8,6 @@ import { getToken } from '@components/login/AuthService';
 import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
 import { userAiPersonaStatus } from '@stores/userAiPersona';
-import { userStatus } from '@stores/user';
 import { useUserInfo } from '@api/user/get';
 
 const Stack = createStackNavigator();
@@ -16,8 +15,6 @@ const Stack = createStackNavigator();
 const MainNavigator = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const isLoggedIn = useRecoilValue(isLoggedInState);
-  const setUserAiPersona = useSetRecoilState(userAiPersonaStatus);
-  const setUserId = useSetRecoilState(userStatus);
   const setUserInfo = useSetRecoilState(userInfoState);
   const { data } = useUserInfo(isLoggedIn);
 
@@ -32,8 +29,7 @@ const MainNavigator = () => {
   }, [setIsLoggedIn]);
 
   if (data) {
-    setUserAiPersona({ personaCode: data.personaCode, personaName: data.personaName });
-    setUserId(data.userId); // userId 임시 저장
+    // setUserAiPersona({ personaCode: data.personaCode, personaName: data.personaName });
     setUserInfo(data); // todo: 필요한 정보만 저장하기
   }
 
