@@ -11,7 +11,7 @@ export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResp
 
 export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) => {
   return useQuery({
-    queryKey: ['diaryList', targetDate],
+    queryKey: ['diary', 'list', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
     enabled: !!dateStatus,
     staleTime: Infinity,
@@ -35,14 +35,13 @@ export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) 
 };
 
 export const fetchDiaryCounts = async ({ year, month }: IDate): Promise<IDiaryCount[]> => {
-  console.log('fetchDiaryCounts', year, month);
   const response = await instance.get(`/diary/${year}/${month}`);
   return response.data;
 };
 
 export const useDiaryCounts = ({ year, month }: IDate): UseQueryResult<IDiaryCount[]> => {
   return useQuery({
-    queryKey: ['diaryCounts', year, month],
+    queryKey: ['diary', 'counts', year, month],
     queryFn: () => fetchDiaryCounts({ year, month }),
     enabled: !!year && !!month,
     staleTime: Infinity,

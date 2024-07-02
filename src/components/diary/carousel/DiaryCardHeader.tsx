@@ -13,6 +13,7 @@ interface DiaryCardHeaderProps {
   isEditing: boolean;
   onSave: () => void;
   onClose: () => void;
+  onDelete: () => void;
 }
 
 const formatTime = (time: string) => {
@@ -27,6 +28,7 @@ const DiaryCardHeader = ({
   isEditing,
   onSave,
   onClose,
+  onDelete,
 }: DiaryCardHeaderProps) => {
   return (
     <View style={styles.header}>
@@ -43,7 +45,7 @@ const DiaryCardHeader = ({
               iconSet="Feather"
               name="trash-2"
               size={16}
-              onPress={onClose}
+              onPress={onDelete}
               style={styles.icon}
             />
           ))}

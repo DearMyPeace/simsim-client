@@ -12,6 +12,7 @@ import { patchDiary } from '@api/diary/patch';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
 import { tense } from '@stores/tense';
+import BasicConfirmModal from '@components/common/BasicConfirmModal';
 
 const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
@@ -19,6 +20,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   const dateStatus = useRecoilValue(tense);
   const setSnackbar = useSetRecoilState(snackMessage);
   const queryClient = useQueryClient();
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     setDiaryInput(id === NEW_DIARY ? '' : content);
@@ -28,8 +30,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
-      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      queryClient.invalidateQueries({ queryKey: ['diary'] });
       setSnackbar('저장이 완료되었습니다.');
       setTimeStartWriting('');
     },
@@ -43,8 +44,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   const removeDiary = useMutation({
     mutationFn: (id: number) => deleteDiary(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['diaryCounts'] });
-      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      queryClient.invalidateQueries({ queryKey: ['diary'] });
       setSnackbar('삭제가 완료되었습니다.');
     },
     onError: (error) => {
@@ -53,13 +53,14 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     onSettled: () => {
       setIsEditing(false);
       setDiaryInput('');
+      setIsDeleteModalVisible(false);
     },
   });
   const editDiary = useMutation({
     mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
     onSuccess: (data) => {
       setTimeStartWriting(data.createdDate);
-      queryClient.invalidateQueries({ queryKey: ['diaryList'] });
+      queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       setSnackbar('수정이 완료되었습니다.');
     },
     onError: (error) => {
@@ -78,6 +79,13 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
       setSnackbar('수정이 취소되었습니다.');
       return;
     }
+  };
+
+  const onDelete = () => {
+    setIsDeleteModalVisible(true);
+  };
+
+  const onConfirmDelete = () => {
     removeDiary.mutate(id);
   };
 
@@ -109,40 +117,49 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   };
 
   return (
-    <Pressable
-      style={styles.container}
-      onPress={onKeyboardDismiss}
-      disabled={Platform.OS === 'web'}
-    >
-      <View style={styles.card}>
-        <DiaryCardHeader
-          isNew={id === NEW_DIARY}
-          createdTime={id !== NEW_DIARY ? createdTime : ''}
-          timeStartWriting={timeStartWriting}
-          isEditing={isEditing}
-          onClose={onClose}
-          onSave={onSave}
-        />
-        {dateStatus === 'TODAY' ? (
-          <DiaryInput
-            id={id}
+    <>
+      <Pressable
+        style={styles.container}
+        onPress={onKeyboardDismiss}
+        disabled={Platform.OS === 'web'}
+      >
+        <View style={styles.card}>
+          <DiaryCardHeader
             isNew={id === NEW_DIARY}
-            diaryInput={diaryInput}
-            setDiaryInput={setDiaryInput}
+            createdTime={id !== NEW_DIARY ? createdTime : ''}
             timeStartWriting={timeStartWriting}
-            setTimeStartWriting={setTimeStartWriting}
             isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            placeholder={content}
+            onClose={onClose}
+            onSave={onSave}
+            onDelete={onDelete}
           />
-        ) : (
-          <DiaryContent
-            isEmpty={createdTime === ''}
-            content={content || '작성된 일기가 없습니다'}
-          />
-        )}
-      </View>
-    </Pressable>
+          {dateStatus === 'TODAY' ? (
+            <DiaryInput
+              id={id}
+              isNew={id === NEW_DIARY}
+              diaryInput={diaryInput}
+              setDiaryInput={setDiaryInput}
+              timeStartWriting={timeStartWriting}
+              setTimeStartWriting={setTimeStartWriting}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              placeholder={content}
+            />
+          ) : (
+            <DiaryContent
+              isEmpty={createdTime === ''}
+              content={content || '작성된 일기가 없습니다'}
+            />
+          )}
+        </View>
+      </Pressable>
+      <BasicConfirmModal
+        visible={isDeleteModalVisible}
+        setIsVisible={setIsDeleteModalVisible}
+        onConfirm={onConfirmDelete}
+        content="심심기록을 삭제하시겠습니까?"
+      />
+    </>
   );
 };
 
