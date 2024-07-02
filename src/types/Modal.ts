@@ -11,4 +11,7 @@ export interface IMyModalProps extends ModalProps {
 export interface IBasicModalProps {
   visible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onConfirm: () => void;
+  content: string;
+  confirmText?: string;
 }
