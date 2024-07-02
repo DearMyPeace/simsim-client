@@ -1,6 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { authTokenState, isLoggedInState, userInfoState } from '@stores/login.ts';
-import { removeToken } from '@components/login/AuthService.ts';
+import { removeToken } from '@components/login/AuthService';
 import { useMutation } from '@tanstack/react-query';
 import { logoutRequest, deleteAccountRequest } from '@api/auth/delete';
 import { snackMessage } from '@stores/snackMessage';
