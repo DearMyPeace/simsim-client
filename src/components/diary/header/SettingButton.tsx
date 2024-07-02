@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 const SettingButton = () => {
@@ -10,7 +10,7 @@ const SettingButton = () => {
     navigation.navigate('Settings');
   };
 
-  return <IconButton icon="dots-horizontal" iconColor="black" size={24} onPress={onPress} />;
+  return <Ionicons name="ellipsis-horizontal-outline" color="#555" size={24} onPress={onPress} />;
 };
 
 export default SettingButton;
