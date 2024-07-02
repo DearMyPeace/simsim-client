@@ -1,4 +1,4 @@
-// src/api/ai/api.ts
+// src/api/ai/get.ts
 import instance from '@api/axios';
 import { IAiPersonaData } from '@type/AiPersona';
 
@@ -12,7 +12,7 @@ export const fetchAiLetters = async (total) => {
 };
 
 export const fetchTodayAiLetters = async (count) => {
-  const response = await instance.get(`aiLetters?total=${count}`, {
+  const response = await instance.get(`/aiLetters?total=${count}`, {
     params: {
       count,
     },
@@ -21,7 +21,7 @@ export const fetchTodayAiLetters = async (count) => {
 };
 
 export const fetchNextAiLetter = async (offset, count) => {
-  const response = await instance.get(`aiLetters?offset=${offset}&total=${count}`, {
+  const response = await instance.get(`/aiLetters?offset=${offset}&total=${count}`, {
     params: { offset, count },
   });
   return response.data;
