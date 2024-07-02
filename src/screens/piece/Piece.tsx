@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MyText from '@components/common/MyText';
 import PieceEntries from '@api/mock/PieceEntries';
 import { appColor1, appColor2, appColor3, appColor4, appColor5 } from '@utils/colors';
-import stainedglass from '@assets/images/stainedglass.jpg';
+import stainedglass from '@assets/images/piece_peace_4.png';
 import { fontBasic } from '@utils/Sizing';
 
 const chartConfig = {
@@ -100,30 +100,17 @@ const Piece = () => {
           setLayoutWidth(width);
         }}
       >
-        <Animated.View
-          style={[
-            styles.swipeContainer,
-            { width: layoutWidth * 2, flexDirection: 'row', transform: [{ translateX: pan }] },
-          ]}
-          {...panResponder.panHandlers}
+        <View
+          style={{
+            width: layoutWidth,
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+          }}
         >
-          <View style={{ width: layoutWidth, justifyContent: 'center', alignItems: 'center' }}>
-            <PieChart
-              data={chartData}
-              width={layoutWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor="population"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              hasLegend={false}
-              absolute
-            />
-          </View>
-          <View style={{ width: layoutWidth, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={stainedglass} style={styles.image} />
-          </View>
-        </Animated.View>
+          <Image source={stainedglass} style={styles.image} />
+        </View>
         <View style={styles.reportContainer}>
           <MyText style={styles.reportHeader}>리포트</MyText>
           <MyText style={styles.reportText}>여기에 해당 페이지의 리포트가 표시됩니다.</MyText>
@@ -136,7 +123,7 @@ const Piece = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'transparent',
   },
   swipeContainer: {
     flex: 1,
@@ -153,8 +140,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   image: {
-    width: '100%',
-    height: 220,
+    width: '70%',
+    height: '100%',
   },
   reportContainer: {
     padding: 20,

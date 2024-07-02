@@ -17,7 +17,7 @@ const SplashScreen = ({ onFinish }) => {
         duration: 1000,
         useNativeDriver: true,
       }).start();
-    }, 3000);
+    }, 300);
 
     const translateTimer = setTimeout(() => {
       Animated.timing(translateYAnim, {
@@ -27,7 +27,7 @@ const SplashScreen = ({ onFinish }) => {
       }).start(() => {
         onFinish();
       });
-    }, 3000);
+    }, 300);
 
     return () => {
       clearTimeout(textTimer);
@@ -35,16 +35,7 @@ const SplashScreen = ({ onFinish }) => {
     };
   }, [translateYAnim, fadeAnim, onFinish]);
 
-  const words = [
-    '오은영 선생님',
-    '감정형 (F)',
-    '사고형 (T)',
-    '뽀로로',
-    '펭수',
-    '이성 친구',
-    '동성 친구',
-    '옆집 친구',
-  ];
+  const words = ['고양이', '감정형 (F)', '사고형 (T)', '옆집 친구'];
 
   return (
     <View style={styles.container}>
