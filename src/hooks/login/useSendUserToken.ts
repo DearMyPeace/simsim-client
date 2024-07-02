@@ -1,4 +1,3 @@
-// useSendUserToken.ts
 import { useMutation } from '@tanstack/react-query';
 import { postUserGoogleToken, postUserAppleToken } from '@api/login/post';
 import { saveToken } from '@components/login/AuthService';
@@ -10,25 +9,20 @@ interface AppleData {
   user: string | undefined;
 }
 
-interface TokenData {
-  token: string | AppleData;
-  type: 'google' | 'apple';
+interface GoogleTokenData {
+  token: string;
 }
 
-const useSendUserToken = () => {
+const useSendUserToken = (loginType: 'google' | 'apple') => {
   const setAuthToken = useSetRecoilState(authTokenState);
   const setUserInfo = useSetRecoilState(userInfoState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
+  const mutationFn = loginType === 'google' ? postUserGoogleToken : postUserAppleToken;
+
   return useMutation({
-    mutationFn: (data: TokenData) => {
-      if (data.type === 'google') {
-        return postUserGoogleToken(data);
-      } else {
-        return postUserAppleToken(data);
-      }
-    },
-    onSuccess: async (data: { accessToken: string }) => {
+    mutationFn: (data: GoogleTokenData | AppleData) => mutationFn(data),
+    onSuccess: async (data) => {
       await saveToken(data.accessToken);
       setIsLoggedIn(true);
     },
