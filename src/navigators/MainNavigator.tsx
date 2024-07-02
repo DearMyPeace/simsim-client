@@ -7,7 +7,6 @@ import LoginScreen from '@screens/login/LoginScreen';
 import { getToken } from '@components/login/AuthService';
 import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
-import { userAiPersonaStatus } from '@stores/userAiPersona';
 import { useUserInfo } from '@api/user/get';
 import useAxiosInterceptors from '@hooks/useAxiosInterceptors';
 
@@ -31,7 +30,6 @@ const MainNavigator = () => {
   }, [setIsLoggedIn]);
 
   if (data) {
-    // setUserAiPersona({ personaCode: data.personaCode, personaName: data.personaName });
     setUserInfo(data); // todo: 필요한 정보만 저장하기
   }
 
