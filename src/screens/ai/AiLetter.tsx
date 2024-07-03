@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   FlatList,
@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   Platform,
   RefreshControl,
+  Modal,
+  Text,
+  Button,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -15,7 +18,6 @@ import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import NotUsingDay from '@components/ai/NotUsingDay';
 import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
 import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
-import MockTestAiLetter from '@screens/ai/test/MockTestAiLetter';
 import { useAiLetterData } from '@hooks/ai/ailetterHook';
 
 const AiLetter: React.FC = () => {
@@ -32,6 +34,8 @@ const AiLetter: React.FC = () => {
     isLoading,
     error,
   } = useAiLetterData(todayDateStr);
+
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
     let consecutiveNotUsingDayCount = 0;
@@ -80,16 +84,17 @@ const AiLetter: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (error) {
+    }
+  }, [error]);
+
   if (isLoading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="small" color="gray" />
       </View>
     );
-  }
-
-  if (error) {
-    return <MockTestAiLetter />;
   }
 
   return (
@@ -146,6 +151,24 @@ const styles = StyleSheet.create({
   },
   notusingItem: {
     alignItems: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    marginBottom: 20,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
-import { fetchNextAiLetter } from '@api/ai/get';
+import { fetchNextAiLetter, fetchTodayAiLetters } from '@api/ai/get';
 import { postAiLetters } from '@api/ai/post';
 
 export const useAiLetterData = (todayDateStr: string) => {
@@ -15,13 +15,16 @@ export const useAiLetterData = (todayDateStr: string) => {
   const startDate = useRef(new Date());
   const endDate = useRef(new Date());
 
-  const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ['aiLetters', todayDateStr],
-    queryFn: () => postAiLetters({ targetDate: todayDateStr }),
-  });
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (data) {
+  const {
+    data: initialData,
+    error: initialError,
+    isLoading: initialLoading,
+  } = useQuery({
+    queryKey: ['fetchTodayAiLetters', todayDateStr],
+    queryFn: () => fetchTodayAiLetters(5),
+    onSuccess: (data) => {
       if (data.length > 0) {
         startDate.current = new Date(data[0].date);
         endDate.current = new Date(data[data.length - 1].date);
@@ -43,12 +46,44 @@ export const useAiLetterData = (todayDateStr: string) => {
           }
         }, 0);
       }
-    }
-  }, [data, todayDateStr]);
+
+      // fetch postAiLetters only after fetchTodayAiLetters is successful
+      queryClient.prefetchQuery({
+        queryKey: ['postAiLetters', todayDateStr],
+        queryFn: () => postAiLetters({ targetDate: todayDateStr }),
+      });
+    },
+  });
+
+  const {
+    data: postData,
+    error: postError,
+    isLoading: postLoading,
+  } = useQuery({
+    queryKey: ['postAiLetters', todayDateStr],
+    queryFn: () => postAiLetters({ targetDate: todayDateStr }),
+    enabled: !!initialData,
+    onSuccess: (data) => {
+      if (data && data.length > 0) {
+        const newEntries = fillDatesWithData(
+          generateDateRange(startDate.current, endDate.current),
+          data,
+        );
+        setAiLetterEntries((prevEntries) => [
+          ...prevEntries,
+          ...newEntries.filter(
+            (newEntry) => !prevEntries.some((entry) => entry.date === newEntry.date),
+          ),
+        ]);
+      }
+    },
+  });
 
   useEffect(() => {
-    refetch();
-  }, [refetch]);
+    if (initialData) {
+      queryClient.invalidateQueries(['postAiLetters', todayDateStr]);
+    }
+  }, [initialData, todayDateStr, queryClient]);
 
   const loadMoreData = useCallback(async () => {
     try {
@@ -101,7 +136,7 @@ export const useAiLetterData = (todayDateStr: string) => {
     flatListRef,
     handleLoadMore,
     handleAccordionChange,
-    isLoading,
-    error,
+    isLoading: initialLoading || postLoading,
+    error: initialError || postError,
   };
 };

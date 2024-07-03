@@ -17,7 +17,7 @@ const SplashScreen = ({ onFinish }) => {
         duration: 1000,
         useNativeDriver: true,
       }).start();
-    }, 3000);
+    }, 1500);
 
     const translateTimer = setTimeout(() => {
       Animated.timing(translateYAnim, {
@@ -27,7 +27,7 @@ const SplashScreen = ({ onFinish }) => {
       }).start(() => {
         onFinish();
       });
-    }, 3000);
+    }, 1500);
 
     return () => {
       clearTimeout(textTimer);
@@ -35,7 +35,18 @@ const SplashScreen = ({ onFinish }) => {
     };
   }, [translateYAnim, fadeAnim, onFinish]);
 
-  const words = ['고양이', '감정형 (F)', '사고형 (T)', '옆집 친구'];
+  const words = [
+    '고양이',
+    '감정형 (F)',
+    '사고형 (T)',
+    '옆집 친구',
+    '강아지',
+    '개발자',
+    '귀염둥이',
+    '개자이너',
+    '상담사 선생님',
+    '심리 상담사',
+  ];
 
   return (
     <View style={styles.container}>
