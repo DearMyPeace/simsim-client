@@ -1,12 +1,11 @@
 import React from 'react';
 import { Platform, Image } from 'react-native';
 import { ITabBarIconProps } from '@type/ITabBarIconProps';
-import CalendarIconSVG from '@assets/images/dialy_1.svg';
+import CalendarIconSVG from '@assets/images/diary.svg';
 import PieceIconSVG from '@assets/images/tab_piece_2.svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MyIconButtons from '@components/common/MyIconButtons';
-import { SvgUri } from 'react-native-svg';
 
 export const CalendarIcon = ({ color }: ITabBarIconProps) => {
   if (Platform.OS === 'web') {
