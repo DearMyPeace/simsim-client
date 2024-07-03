@@ -16,7 +16,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
 
   const signInWithGoogle = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn();
       const getToken = await GoogleSignin.getTokens();
       if (getToken) {
         sendUserToken.mutate({ access_token: getToken.accessToken });

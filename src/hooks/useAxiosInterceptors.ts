@@ -1,3 +1,4 @@
+// useAxiosInterceptors.ts
 import { useEffect } from 'react';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import instance from '@api/axios';
@@ -13,7 +14,7 @@ const useAxiosInterceptors = () => {
     if (config.url === '/auth/google') {
       return config;
     }
-    // 로그인 후 토큰 헤더에 추가
+
     const accessToken = await getToken();
     if (accessToken) {
       config.headers.Authorization = accessToken;
@@ -23,13 +24,12 @@ const useAxiosInterceptors = () => {
   };
 
   const reqErrorConfig = (error: any) => {
-    console.log('Error Response:', JSON.stringify(error, null, 2));
-
+    console.log('Error Request:', JSON.stringify(error, null, 2));
     return Promise.reject(error);
   };
 
   const resConfig = (response: AxiosResponse) => {
-    console.log('Response:', JSON.stringify(response, null, 2));
+    console.log('Starting Response:', JSON.stringify(response, null, 2));
     return response;
   };
 
@@ -62,6 +62,7 @@ const useAxiosInterceptors = () => {
   useEffect(() => {
     const reqInterceptor = instance.interceptors.request.use(reqConfig, reqErrorConfig);
     const resInterceptor = instance.interceptors.response.use(resConfig, resErrorConfig);
+
     return () => {
       instance.interceptors.request.eject(reqInterceptor);
       instance.interceptors.response.eject(resInterceptor);

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getToken } from '@components/login/AuthService';
 
 const instance = axios.create({
   baseURL: process.env.BASE_URL,
