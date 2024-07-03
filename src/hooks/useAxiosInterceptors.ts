@@ -67,8 +67,6 @@ const useAxiosInterceptors = () => {
       instance.interceptors.response.eject(resInterceptor);
     };
   }, []);
-
-  return null;
 };
 
 export default useAxiosInterceptors;
