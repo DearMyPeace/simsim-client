@@ -17,7 +17,7 @@ const useAiPersonaChange = () => {
     onSuccess: (data: IAiPersonaData) => {
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       setUserInfo({ ...userInfo, ...data });
-      setSnackbar(`${data.personaName} AI가 편지를 보냅니다`);
+      setSnackbar(`${data.personaName}(이)가 편지를 보냅니다`);
     },
     onError: (error) => {
       setSnackbar('AI 변경 중 오류가 발생했습니다');
