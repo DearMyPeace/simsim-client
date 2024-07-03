@@ -3,7 +3,6 @@ import MyText from '@components/common/MyText';
 import { SafeAreaView, StyleSheet, ScrollView, View, Platform } from 'react-native';
 import SettingSection from '@components/setting/SettingSection';
 import NotiSection from '@components/setting/NotiSection';
-import DeleteAccountModal from '@components/setting/DeleteAccountModal';
 import useAiPersonaGet from '@hooks/setting/aiPersonaGetHook';
 import useNotification from '@hooks/setting/notificationHook';
 import useSetting from '@hooks/setting/settingHook';
@@ -16,10 +15,17 @@ import { ko } from 'date-fns/locale';
 import MySnackbar from '@components/common/MySnackbar';
 import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userInfoState } from '@stores/login';
+import BasicConfirmModal from '@components/common/BasicConfirmModal';
 
 const SettingScreen = () => {
-  const { deleteModalVisible, setDeleteModalVisible, onFeedback, onLogout, onDeleteAccount } =
-    useSetting();
+  const {
+    deleteModalVisible,
+    setDeleteModalVisible,
+    onConfirmDeleteAccount,
+    onFeedback,
+    onLogout,
+    onDeleteAccount,
+  } = useSetting();
   const {
     diaryNotiEnabled,
     letterNotiEnabled,
@@ -82,7 +88,12 @@ const SettingScreen = () => {
         setIsVisible={setAiPickerVisible}
         aiPersonaList={aiPersonaList}
       />
-      <DeleteAccountModal visible={deleteModalVisible} setIsVisible={setDeleteModalVisible} />
+      <BasicConfirmModal
+        visible={deleteModalVisible}
+        setIsVisible={setDeleteModalVisible}
+        onConfirm={onConfirmDeleteAccount}
+        content={`정말로 탈퇴하시겠습니까?\n작성한 모든 심심기록이 지워집니다.`}
+      />
       <View style={styles.footer}>
         <MyText size={11}>심심조각 초판</MyText>
       </View>

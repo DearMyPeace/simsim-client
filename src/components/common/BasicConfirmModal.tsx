@@ -3,21 +3,15 @@ import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import { StyleSheet, View } from 'react-native';
 import MyModal from '@components/common/MyModal';
-import useLogout from '@hooks/login/logoutHook';
+import { IBasicModalProps } from '@type/Modal';
 
-interface IDeleteAccountModalProps {
-  visible: boolean;
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const DeleteAccountModal = ({ visible, setIsVisible }: IDeleteAccountModalProps) => {
-  const { deleteAccountMutation } = useLogout();
-
-  const onDeleteAccount = () => {
-    deleteAccountMutation.mutate();
-    setIsVisible(false);
-  };
-
+const BasicConfirmModal = ({
+  visible,
+  setIsVisible,
+  onConfirm,
+  content,
+  confirmText = '확인',
+}: IBasicModalProps) => {
   const onCancel = () => {
     setIsVisible(false);
   };
@@ -25,12 +19,11 @@ const DeleteAccountModal = ({ visible, setIsVisible }: IDeleteAccountModalProps)
   return (
     <MyModal visible={visible} setIsVisible={setIsVisible} transparent={true} animationType="fade">
       <View style={styles.modalContent}>
-        <MyText>정말로 탈퇴하시겠습니까?</MyText>
-        <MyText>작성한 모든 심심기록이 지워집니다.</MyText>
+        <MyText style={{ textAlign: 'center' }}>{content}</MyText>
       </View>
       <View style={styles.modalButtons}>
         <TextButton onPress={onCancel}>취소</TextButton>
-        <TextButton onPress={onDeleteAccount}>확인</TextButton>
+        <TextButton onPress={onConfirm}>{confirmText}</TextButton>
       </View>
     </MyModal>
   );
@@ -52,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DeleteAccountModal;
+export default BasicConfirmModal;

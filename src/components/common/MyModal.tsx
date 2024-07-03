@@ -1,12 +1,6 @@
 import React from 'react';
-import { Modal, ModalProps, Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-
-interface IMyModalProps extends ModalProps {
-  visible: boolean;
-  setIsVisible: (visible: boolean) => void;
-  children: React.ReactNode;
-  containerStyle?: StyleProp<ViewStyle>;
-}
+import { Modal, Pressable, StyleSheet } from 'react-native';
+import { IMyModalProps } from '@type/Modal';
 
 const MyModal = ({ visible, setIsVisible, children, containerStyle, ...rest }: IMyModalProps) => {
   const onClose = () => {

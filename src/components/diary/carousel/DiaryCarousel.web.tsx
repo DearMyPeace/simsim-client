@@ -13,7 +13,7 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [data]);
+  }, [selectedDate]);
 
   if (isPending) {
     return <CenterViewText text="심심기록을 가져오는 중입니다." />;
