@@ -15,20 +15,11 @@ const AiLetter: React.FC = () => {
     activeSections,
     flatListRef,
     handleAccordionChange,
+    onScrollToIndexFailed,
     isLoading,
     error,
     refetchMonthSummary,
   } = useAiLetterData(todayDateStr);
-
-  console.log('AiLetter entries: ', aiLetterEntries);
-
-  const onScrollToIndexFailed = (info) => {
-    const wait = new Promise((resolve) => setTimeout(resolve, 500));
-    wait.then(() => {
-      flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
-    });
-  };
-
   const handleMonthChange = (newDateStr: string) => {
     refetchMonthSummary(newDateStr);
   };
@@ -60,6 +51,7 @@ const styles = StyleSheet.create({
     paddingLeft: 36,
     paddingRight: 36,
     backgroundColor: 'transparent',
+    paddingBottom: 20,
   },
 });
 
