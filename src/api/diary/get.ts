@@ -2,34 +2,32 @@ import React from 'react';
 import instance from '@api/axios';
 import { DateStatus, IDate, IDiaryCount, IDiaryListResponse, NEW_DIARY } from '@type/Diary';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { isToday } from 'date-fns';
 
-export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse[]> => {
+export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse> => {
   const response = await instance.get(`/diary/${targetDate}`);
   return response.data;
 };
 
-export const useDiaryList = (targetDate: string, dateStatus: DateStatus | null) => {
+export const useDiaryList = (targetDate: string, dateStatus: DateStatus) => {
   return useQuery({
     queryKey: ['diary', 'list', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
-    enabled: !!dateStatus,
+    enabled: !!targetDate,
     staleTime: Infinity,
     select: (data) => {
-      const diaryList = data.map((item) => ({
+      const diaryList = data.diaries.map((item) => ({
         id: item.diaryId,
         content: item.content,
         createdTime: item.createdDate,
       }));
-      const today = isToday(new Date(targetDate));
-      today &&
+      dateStatus === 'TODAY' &&
         diaryList.length < 3 &&
         diaryList.push({
           id: NEW_DIARY,
           content: '오늘의 심심기록을 남겨보세요',
           createdTime: '',
         });
-      return diaryList;
+      return { sendStatus: data.sendStatus, diaryList };
     },
   });
 };

@@ -8,7 +8,7 @@ import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
 
 const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
-  const { data, isPending, isError } = useDiaryHook(selectedDate);
+  const { data, isPending, isError, sendStatus } = useDiaryHook(selectedDate);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const flatListRef = useRef<FlatList<IDiary>>(null);
@@ -27,6 +27,7 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
         content={item.content}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
+        isLetterSent={sendStatus}
       />
     ),
     [data],
@@ -58,6 +59,7 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
           content=""
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          isLetterSent={sendStatus}
         />
         <DiaryPagination activeIndex={0} diaryList={data} />
       </View>

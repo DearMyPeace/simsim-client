@@ -7,10 +7,11 @@ const useDiaryHook = (selectedDate: string) => {
   const { data, isPending, isError, isSuccess } = useDiaryList(selectedDate, dateStatus);
 
   return {
-    data: data || [],
+    data: data?.diaryList || [],
     isPending,
     isError,
     isSuccess,
+    sendStatus: data?.sendStatus || false,
   };
 };
 

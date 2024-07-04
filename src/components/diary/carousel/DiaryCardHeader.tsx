@@ -11,9 +11,11 @@ interface DiaryCardHeaderProps {
   createdTime: string;
   timeStartWriting: string;
   isEditing: boolean;
+  isLetterSent: boolean;
   onSave: () => void;
   onClose: () => void;
   onDelete: () => void;
+  onSend: () => void;
 }
 
 const formatTime = (time: string) => {
@@ -26,9 +28,11 @@ const DiaryCardHeader = ({
   createdTime,
   timeStartWriting,
   isEditing,
+  isLetterSent,
   onSave,
   onClose,
   onDelete,
+  onSend,
 }: DiaryCardHeaderProps) => {
   return (
     <View style={styles.header}>
@@ -41,13 +45,23 @@ const DiaryCardHeader = ({
           (isEditing ? (
             <IconButton icon="close" size={16} onPress={onClose} style={styles.icon} />
           ) : (
-            <MyIconButton
-              iconSet="Feather"
-              name="trash-2"
-              size={16}
-              onPress={onDelete}
-              style={styles.icon}
-            />
+            <>
+              <MyIconButton
+                iconSet="Feather"
+                name="send"
+                size={16}
+                onPress={onSend}
+                style={styles.icon}
+                disabled={isLetterSent}
+              />
+              <MyIconButton
+                iconSet="Feather"
+                name="trash-2"
+                size={16}
+                onPress={onDelete}
+                style={styles.icon}
+              />
+            </>
           ))}
       </View>
     </View>

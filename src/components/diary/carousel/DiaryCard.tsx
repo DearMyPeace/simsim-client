@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Platform, Pressable, Keyboard, TextInput } from 'react-native';
+import { View, StyleSheet, Platform, Pressable, Keyboard } from 'react-native';
 import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import DiaryInput from '@components/diary/carousel/DiaryInput';
@@ -11,16 +11,29 @@ import { deleteDiary } from '@api/diary/delete';
 import { patchDiary } from '@api/diary/patch';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
-import { tense } from '@stores/tense';
+import { selectedDateStatus, tense } from '@stores/tense';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
+import { postAiLetters } from '@api/ai/post';
+import { IAiLetterRequest } from '@type/IAiLetterRequest';
+import DiaryLoading from '@components/diary/carousel/DiaryLoading';
 
-const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiaryCardProps) => {
+const DiaryCard = ({
+  id,
+  createdTime,
+  content,
+  isEditing,
+  setIsEditing,
+  isLetterSent,
+}: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
   const dateStatus = useRecoilValue(tense);
   const setSnackbar = useSetRecoilState(snackMessage);
   const queryClient = useQueryClient();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isSendModalVisible, setSendModalVisible] = useState(false);
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const targetDate = useRecoilValue(selectedDateStatus);
 
   useEffect(() => {
     setDiaryInput(id === NEW_DIARY ? '' : content);
@@ -71,14 +84,29 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     },
   });
 
+  const sendDiary = useMutation({
+    mutationFn: (data: IAiLetterRequest) => postAiLetters(data),
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+      // setSnackbar('편지가 도착했습니다');
+    },
+    onError: (error) => {
+      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
+    },
+    onSettled: () => {
+      setSendModalVisible(false);
+    },
+  });
+
   const onClose = () => {
-    if (id === NEW_DIARY) return;
-    if (isEditing) {
-      setIsEditing(false);
-      setDiaryInput(content);
-      setSnackbar('수정이 취소되었습니다.');
-      return;
-    }
+    // 변경된 내용이 없을 땐 모달 띄우지 않음
+    diaryInput === content ? setIsEditing(false) : setEditModalVisible(true);
+  };
+
+  const onSend = () => {
+    setSendModalVisible(true);
   };
 
   const onDelete = () => {
@@ -87,6 +115,17 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
 
   const onConfirmDelete = () => {
     removeDiary.mutate(id);
+  };
+
+  const onConfirmEdit = () => {
+    setIsEditing(false);
+    setDiaryInput(content);
+    setSnackbar('수정이 취소되었습니다.');
+    setEditModalVisible(false);
+  };
+
+  const onConfirmSend = () => {
+    sendDiary.mutate({ targetDate });
   };
 
   const onSave = () => {
@@ -129,9 +168,11 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
             createdTime={id !== NEW_DIARY ? createdTime : ''}
             timeStartWriting={timeStartWriting}
             isEditing={isEditing}
+            isLetterSent={isLetterSent}
             onClose={onClose}
             onSave={onSave}
             onDelete={onDelete}
+            onSend={onSend}
           />
           {dateStatus === 'TODAY' ? (
             <DiaryInput
@@ -159,6 +200,20 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
         onConfirm={onConfirmDelete}
         content="심심기록을 삭제하시겠습니까?"
       />
+      <BasicConfirmModal
+        visible={isEditModalVisible}
+        setIsVisible={setEditModalVisible}
+        onConfirm={onConfirmEdit}
+        content="수정을 취소하시겠습니까?"
+      />
+      <BasicConfirmModal
+        visible={isSendModalVisible}
+        setIsVisible={setSendModalVisible}
+        onConfirm={onConfirmSend}
+        content="기록을 보내시겠습니까?"
+        confirmText="보내기"
+      />
+      {sendDiary.isPending && <DiaryLoading />}
     </>
   );
 };

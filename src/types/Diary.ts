@@ -21,6 +21,7 @@ export interface IDiaryCarouselProps {
 export interface IDiaryCardProps extends IDiary {
   isEditing: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  isLetterSent: boolean;
 }
 
 export interface IDate {
@@ -43,11 +44,15 @@ export interface IMarkedDates {
 }
 
 // api 요청 관련 타입
-export interface IDiaryListResponse {
+export interface IDiariesResponse {
   diaryId: number;
   content: string;
   createdDate: string;
   modifiedDate: string;
+}
+export interface IDiaryListResponse {
+  sendStatus: boolean;
+  diaries: IDiariesResponse[];
 }
 
 export interface IDiaryCount {

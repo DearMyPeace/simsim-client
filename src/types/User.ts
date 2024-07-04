@@ -9,5 +9,5 @@ interface IUserInfo {
   personaName: string;
   bgImage: string | null;
   userStatus: 'Y' | 'N';
-  replyStatus: 'R' | 'C' | 'D';
+  replyStatus: 'R' | 'C' | 'D'; // R: recieve, C: check, D: default
 }

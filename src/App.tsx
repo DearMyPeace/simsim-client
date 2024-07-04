@@ -20,6 +20,9 @@ const App = () => {
         staleTime: 1000 * 60 * 5,
         placeholderData: keepPreviousData,
       },
+      mutations: {
+        retry: 1,
+      },
     },
   });
 

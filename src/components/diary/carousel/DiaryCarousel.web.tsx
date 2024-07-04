@@ -8,11 +8,12 @@ import CenterViewText from '@components/common/CenterViewText';
 
 const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data, isPending, isError, isSuccess } = useDiaryHook(selectedDate);
+  const { data, isPending, isError, isSuccess, sendStatus } = useDiaryHook(selectedDate);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setActiveIndex(0);
+    setIsEditing(false);
   }, [selectedDate]);
 
   if (isPending) {
@@ -48,6 +49,7 @@ const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
           content={data[activeIndex]?.content || ''}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          isLetterSent={sendStatus}
         />
       </View>
     </View>
