@@ -40,12 +40,15 @@ const AiLetterEntryHeader: React.FC<AiLetterEntryHeaderProps> = ({
       style={({ pressed }) => [{ backgroundColor: pressed ? 'transparent' : 'transparent' }]}
     >
       <View style={styles.incoming}>
-        <MyText style={styles.date}>
-          {new Date(section.date).toLocaleDateString('ko-KR', {
-            month: 'long',
-            day: '2-digit',
-          })}
-        </MyText>
+        <View style={styles.dateWrapper}>
+          <MyText style={styles.date}>
+            {new Date(section.date).toLocaleDateString('ko-KR', {
+              month: 'long',
+              day: '2-digit',
+            })}
+          </MyText>
+          {section.replyStatus === 'N' && <View style={styles.badge} />}
+        </View>
         <MyText
           style={[styles.summary, isPressed && styles.summaryPressed]}
           numberOfLines={1}
@@ -53,6 +56,7 @@ const AiLetterEntryHeader: React.FC<AiLetterEntryHeaderProps> = ({
         >
           {section.summary}
         </MyText>
+
         <Animated.View style={{ transform: [{ rotate }] }}>
           <Entypo name="chevron-small-right" size={24} color="gray" />
         </Animated.View>
@@ -71,6 +75,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     backgroundColor: 'transparent',
   },
+  dateWrapper: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   date: {
     fontSize: fontMedium,
     fontFamily: 'GowunBatang-Bold',
@@ -87,6 +96,17 @@ const styles = StyleSheet.create({
   },
   summaryPressed: {
     color: 'lightgray',
+  },
+  badge: {
+    position: 'absolute',
+    top: 1,
+    right: -4,
+    backgroundColor: '#EB6D52',
+    borderRadius: 4,
+    width: 4,
+    height: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
