@@ -61,7 +61,7 @@ export const useAiLetterData = (initialDateStr: string) => {
       if (response && response.content) {
         setAiLetterEntries((prevEntries) => {
           const updatedEntries = prevEntries.map((entry) =>
-            entry.id === id ? { ...entry, content: response.content } : entry,
+            entry.id === id ? { ...entry, content: response.content, replyStatus: 'Y' } : entry,
           );
           console.log('Updated aiLetterEntries after fetchContentForID: ', updatedEntries);
           queryClient.setQueryData(['fetchAiLetterByID', id], response);
@@ -124,6 +124,7 @@ export const useAiLetterData = (initialDateStr: string) => {
             await fetchContentForID(section.id);
           }
           setActiveSections([todayIndex]);
+
           if (flatListRef.current) {
             flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
           }
