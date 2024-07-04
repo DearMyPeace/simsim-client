@@ -15,9 +15,16 @@ import { selectedDateStatus, tense } from '@stores/tense';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
 import { postAiLetters } from '@api/ai/post';
 import { IAiLetterRequest } from '@type/IAiLetterRequest';
-import { set } from 'date-fns';
+import DiaryLoading from '@components/diary/carousel/DiaryLoading';
 
-const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiaryCardProps) => {
+const DiaryCard = ({
+  id,
+  createdTime,
+  content,
+  isEditing,
+  setIsEditing,
+  isLetterSent,
+}: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
   const dateStatus = useRecoilValue(tense);
@@ -26,7 +33,6 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isSendModalVisible, setSendModalVisible] = useState(false);
   const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const [isLetterSent, setIsLetterSent] = useState(false);
   const targetDate = useRecoilValue(selectedDateStatus);
 
   useEffect(() => {
@@ -82,8 +88,9 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
     mutationFn: (data: IAiLetterRequest) => postAiLetters(data),
     onSuccess: (data) => {
       console.log(data);
-      setIsLetterSent(true);
-      setSnackbar('기록이 전송되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+      // setSnackbar('편지가 도착했습니다');
     },
     onError: (error) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
@@ -118,9 +125,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
   };
 
   const onConfirmSend = () => {
-    setIsLetterSent(true);
-    setSendModalVisible(false);
-    // sendDiary.mutate({ targetDate });
+    sendDiary.mutate({ targetDate });
   };
 
   const onSave = () => {
@@ -208,6 +213,7 @@ const DiaryCard = ({ id, createdTime, content, isEditing, setIsEditing }: IDiary
         content="기록을 보내시겠습니까?"
         confirmText="보내기"
       />
+      {sendDiary.isPending && <DiaryLoading />}
     </>
   );
 };
