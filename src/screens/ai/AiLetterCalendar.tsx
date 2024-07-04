@@ -1,5 +1,6 @@
 // src/screens/ai/AiLetterCalendar.tsx
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
 import { IDate, IDay } from '@type/Diary';
 import { CalendarProvider } from 'react-native-calendars';
@@ -31,7 +32,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
       const month = date.month.toString().padStart(2, '0') as IDate['month'];
       const day = getDay();
       setSelectedDate({ year, month, day });
-      onMonthChange({ year, month });
+      onMonthChange(`${year}-${month}`);
     },
     [onMonthChange],
   );
@@ -42,7 +43,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
     const month = format(newDate, 'MM') as IDate['month'];
     const day = getDay();
     setSelectedDate({ year, month, day });
-    onMonthChange({ year, month });
+    onMonthChange(`${year}-${month}`);
   };
 
   const onRightPress = () => {
@@ -51,25 +52,37 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
     const month = format(newDate, 'MM') as IDate['month'];
     const day = getDay();
     setSelectedDate({ year, month, day });
-    onMonthChange({ year, month });
+    onMonthChange(`${year}-${month}`);
   };
 
   return (
-    <CalendarProvider
-      date={`${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`}
-      onDateChanged={() => {}}
-      onMonthChange={handleMonthChange}
-      showTodayButton
-      theme={todayBtnTheme.current}
-    >
-      <AiLetterCalendarHeader
-        selectedDate={selectedDate}
-        onLeftPress={onLeftPress}
-        onRightPress={onRightPress}
-      />
-      {children}
-    </CalendarProvider>
+    <View style={styles.container}>
+      <CalendarProvider
+        date={`${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`}
+        onDateChanged={() => {}}
+        onMonthChange={handleMonthChange}
+        showTodayButton
+        theme={todayBtnTheme.current}
+      >
+        <AiLetterCalendarHeader
+          selectedDate={selectedDate}
+          onLeftPress={onLeftPress}
+          onRightPress={onRightPress}
+        />
+        {children}
+      </CalendarProvider>
+    </View>
   );
 };
 
 export default AiLetterCalendar;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: 'transparent',
+  },
+});

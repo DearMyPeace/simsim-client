@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
 import { IDay } from '@type/Diary';
 import { fontLarge } from '@utils/Sizing';
+import MyText from '@components/common/MyText';
 
 interface AiLetterCalendarHeaderProps {
   selectedDate: IDay;
@@ -32,9 +33,9 @@ const AiLetterCalendarHeader = ({
 
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>{`${kMonth[selectedDate.month - 1]} ${
+      <MyText style={styles.headerText}>{`${kMonth[selectedDate.month - 1]} ${
         selectedDate.year
-      }년 `}</Text>
+      }`}</MyText>
       <View style={styles.arrowContainer}>
         <TouchableOpacity onPress={onLeftPress}>
           <CalendarArrow direction="left" />
@@ -58,8 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   headerText: {
-    fontSize: fontLarge,
-    fontFamily: 'GowunBatang-Regular',
+    fontSize: 26,
     color: '#333333',
   },
   arrowContainer: {
