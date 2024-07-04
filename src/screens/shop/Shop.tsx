@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 8,
-    paddingBottom: 50,
+    paddingBottom: 20,
   },
   navbar: {
     flexDirection: 'row',

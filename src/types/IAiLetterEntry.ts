@@ -10,4 +10,5 @@ export interface IAiLetterEntry {
   summary?: string;
   content?: string;
   isPlaceholder?: boolean;
+  replyStatus?: string;
 }
