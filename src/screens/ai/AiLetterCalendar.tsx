@@ -1,4 +1,3 @@
-// src/screens/ai/AiLetterCalendar.tsx
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
@@ -62,6 +61,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
         onDateChanged={() => {}}
         onMonthChange={handleMonthChange}
         showTodayButton
+        todayButtonStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.47)' }}
         theme={todayBtnTheme.current}
       >
         <AiLetterCalendarHeader
