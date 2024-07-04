@@ -1,142 +1,158 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { IAiLetterEntry } from '@type/IAiLetterEntry';
-import { generateDateRange, fillDatesWithData } from '@utils/dateUtils';
-import { fetchNextAiLetter, fetchTodayAiLetters } from '@api/ai/get';
-import { postAiLetters } from '@api/ai/post';
+import { IAiLetterEntry, IID } from '@type/IAiLetterEntry';
+import { fetchAiLettersMonthSummary, fetchAiLettersViaID } from '@api/ai/get';
 
-export const useAiLetterData = (todayDateStr: string) => {
+export const useAiLetterData = (initialDateStr: string) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [currentDateStr, setCurrentDateStr] = useState(initialDateStr);
   const flatListRef = useRef<FlatList>(null);
-
-  const startDate = useRef(new Date());
-  const endDate = useRef(new Date());
 
   const queryClient = useQueryClient();
 
+  const fetchMonthSummary = (year: string, month: string): Promise<IAiLetterEntry[]> => {
+    return fetchAiLettersMonthSummary({ year: parseInt(year), month: parseInt(month) });
+  };
+
+  const isCurrentMonth = (dateStr: string): boolean => {
+    const [year, month] = dateStr.split('-');
+    const now = new Date();
+    return now.getFullYear() === parseInt(year) && now.getMonth() + 1 === parseInt(month);
+  };
+
   const {
-    data: initialData,
-    error: initialError,
-    isLoading: initialLoading,
+    data: monthSummaryData,
+    error: monthSummaryError,
+    isLoading: monthSummaryLoading,
+    refetch: refetchMonthSummary,
   } = useQuery({
-    queryKey: ['fetchTodayAiLetters', todayDateStr],
-    queryFn: () => fetchTodayAiLetters(5),
-    onSuccess: (data) => {
-      if (data.length > 0) {
-        startDate.current = new Date(data[0].date);
-        endDate.current = new Date(data[data.length - 1].date);
+    queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
+    queryFn: async () => {
+      const [year, month] = currentDateStr.split('-');
+      const result = await fetchMonthSummary(year, month);
+      console.log('fetchMonthSummary result: ', result);
+      return result;
+    },
+    staleTime: isCurrentMonth(currentDateStr) ? 0 : Infinity,
+    gcTime: isCurrentMonth(currentDateStr) ? 0 : Infinity,
+  });
+
+  const fetchContentForID = async (id: IID) => {
+    console.log('fetchContentForID called with id: ', id);
+
+    const cachedData = queryClient.getQueryData(['fetchAiLetterByID', id]);
+    if (cachedData && cachedData.content) {
+      console.log('Using cached data for ID: ', id);
+      setAiLetterEntries((prevEntries) => {
+        const updatedEntries = prevEntries.map((entry) =>
+          entry.id === id ? { ...entry, content: cachedData.content } : entry,
+        );
+        console.log('Updated aiLetterEntries from cache: ', updatedEntries);
+        return updatedEntries;
+      });
+      return;
+    }
+
+    try {
+      const response = await fetchAiLettersViaID({ id });
+      console.log('fetchAiLettersViaID response: ', response);
+      if (response && response.content) {
+        setAiLetterEntries((prevEntries) => {
+          const updatedEntries = prevEntries.map((entry) =>
+            entry.id === id ? { ...entry, content: response.content, replyStatus: 'Y' } : entry,
+          );
+          console.log('Updated aiLetterEntries after fetchContentForID: ', updatedEntries);
+          queryClient.setQueryData(['fetchAiLetterByID', id], response);
+          return updatedEntries;
+        });
+      } else {
+        console.log('No content found for the given ID');
       }
+    } catch (error) {
+      console.error('Error fetching content for ID: ', error);
+    }
+  };
 
-      const initialEntries = fillDatesWithData(
-        generateDateRange(startDate.current, endDate.current),
-        data,
-      );
+  const handleAccordionChange = useCallback(
+    async (section: IAiLetterEntry) => {
+      const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
+      if (index !== -1) {
+        if (!section.content) {
+          await fetchContentForID(section.id);
+        }
 
-      setAiLetterEntries(initialEntries);
+        setActiveSections((prevSections) => {
+          if (prevSections.includes(index)) {
+            return prevSections.filter((i) => i !== index);
+          } else {
+            return [index];
+          }
+        });
 
-      const todayIndex = initialEntries.findIndex((entry) => entry.date === todayDateStr);
-      if (todayIndex !== -1) {
-        setActiveSections([todayIndex]);
-        setTimeout(() => {
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index, animated: true });
+        }
+      }
+    },
+    [aiLetterEntries, fetchContentForID, queryClient],
+  );
+
+  const onScrollToIndexFailed = (info) => {
+    if (info.index < 0 || info.index >= aiLetterEntries.length) {
+      console.warn(`Invalid index: ${info.index}`);
+      return;
+    }
+    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    wait.then(() => {
+      flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+    });
+  };
+
+  useEffect(() => {
+    const updateActiveSections = async () => {
+      if (monthSummaryData) {
+        setAiLetterEntries(monthSummaryData);
+        console.log('monthSummaryData: ', monthSummaryData);
+
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const todayIndex = monthSummaryData.findIndex((entry) => entry.date === todayStr);
+        if (todayIndex !== -1) {
+          const section = monthSummaryData[todayIndex];
+          if (!section.content) {
+            await fetchContentForID(section.id);
+          }
+          setActiveSections([todayIndex]);
+
           if (flatListRef.current) {
             flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
           }
-        }, 0);
+        }
       }
+    };
 
-      // fetch postAiLetters only after fetchTodayAiLetters is successful
-      queryClient.prefetchQuery({
-        queryKey: ['postAiLetters', todayDateStr],
-        queryFn: () => postAiLetters({ targetDate: todayDateStr }),
-      });
+    updateActiveSections();
+  }, [monthSummaryData]);
+
+  const refetchMonthData = useCallback(
+    (newDateStr: string) => {
+      setCurrentDateStr(newDateStr);
+      refetchMonthSummary();
+      setActiveSections([]);
     },
-  });
-
-  const {
-    data: postData,
-    error: postError,
-    isLoading: postLoading,
-  } = useQuery({
-    queryKey: ['postAiLetters', todayDateStr],
-    queryFn: () => postAiLetters({ targetDate: todayDateStr }),
-    enabled: !!initialData,
-    onSuccess: (data) => {
-      if (data && data.length > 0) {
-        const newEntries = fillDatesWithData(
-          generateDateRange(startDate.current, endDate.current),
-          data,
-        );
-        setAiLetterEntries((prevEntries) => [
-          ...prevEntries,
-          ...newEntries.filter(
-            (newEntry) => !prevEntries.some((entry) => entry.date === newEntry.date),
-          ),
-        ]);
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (initialData) {
-      queryClient.invalidateQueries(['postAiLetters', todayDateStr]);
-    }
-  }, [initialData, todayDateStr, queryClient]);
-
-  const loadMoreData = useCallback(async () => {
-    try {
-      const firstEntryWithId = aiLetterEntries.find((entry) => !entry.isPlaceholder);
-      const firstEntryId = firstEntryWithId?.id;
-
-      if (firstEntryId) {
-        const additionalEntries = await fetchNextAiLetter(firstEntryId, 5);
-        const newEntries = [...additionalEntries, ...aiLetterEntries];
-
-        const firstNewEntryDate = new Date(newEntries[0].date);
-        const updatedStartDate = new Date(
-          Math.min(startDate.current.getTime(), firstNewEntryDate.getTime()),
-        );
-        const updatedEndDate = new Date();
-        setAiLetterEntries(
-          fillDatesWithData(generateDateRange(updatedStartDate, updatedEndDate), newEntries),
-        );
-      }
-    } catch (error) {
-      console.error('Error loading more data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [aiLetterEntries]);
-
-  const handleLoadMore = useCallback(() => {
-    if (!loading) {
-      setLoading(true);
-      loadMoreData();
-    }
-  }, [loading, loadMoreData]);
-
-  const handleAccordionChange = useCallback(
-    (section: IAiLetterEntry) => {
-      const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
-      setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
-      if (flatListRef.current) {
-        flatListRef.current.scrollToIndex({ index, animated: true });
-      }
-    },
-    [aiLetterEntries],
+    [refetchMonthSummary],
   );
 
   return {
     aiLetterEntries,
     activeSections,
     setActiveSections,
-    loading,
     flatListRef,
-    handleLoadMore,
     handleAccordionChange,
-    isLoading: initialLoading || postLoading,
-    error: initialError || postError,
+    onScrollToIndexFailed,
+    isLoading: monthSummaryLoading,
+    error: monthSummaryError,
+    refetchMonthSummary: refetchMonthData,
   };
 };

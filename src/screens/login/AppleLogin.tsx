@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Pressable, View } from 'react-native';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
@@ -39,12 +39,12 @@ const AppleLogin = ({ handleLoginPress }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
+    <Pressable style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
       <View style={styles.iconAndText}>
         <Icon name="apple" size={20} color="#000" style={styles.icon} />
         <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

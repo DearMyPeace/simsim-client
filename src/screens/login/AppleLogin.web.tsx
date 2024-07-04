@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Pressable, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
@@ -22,12 +22,12 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
 
   return (
     <View>
-      <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
+      <Pressable style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
         <View style={styles.iconAndText}>
           <Icon name="apple" size={20} color="#000" style={styles.icon} />
           <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
       <AppleSignin
         authOptions={{
@@ -56,12 +56,12 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
         render={(props) => {
           appleSignInRef.current = props.onClick;
           return (
-            <TouchableOpacity style={styles.hiddenLoginButton} onPress={props.onClick}>
+            <Pressable style={styles.hiddenLoginButton} onPress={props.onClick}>
               <View style={styles.iconAndText}>
                 <Icon name="apple" size={20} color="#000" style={styles.icon} />
                 <MyText style={styles.loginButtonText}>Apple로 계속</MyText>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           );
         }}
       />

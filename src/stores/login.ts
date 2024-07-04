@@ -17,7 +17,7 @@ export const userInfoState = atom<IUserInfo>({
     personaName: '',
     bgImage: null,
     userStatus: 'N',
-    replyStatus: 'N',
+    replyStatus: 'R',
   },
 });
 

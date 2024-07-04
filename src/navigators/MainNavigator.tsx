@@ -29,9 +29,11 @@ const MainNavigator = () => {
     checkToken();
   }, [setIsLoggedIn]);
 
-  if (data) {
-    setUserInfo(data); // todo: 필요한 정보만 저장하기
-  }
+  useEffect(() => {
+    if (data) {
+      setUserInfo(data);
+    }
+  }, [data, setUserInfo]);
 
   return (
     <Stack.Navigator

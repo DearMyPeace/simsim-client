@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Image, View, StyleSheet, Platform, Modal, TouchableOpacity, Animated } from 'react-native';
+import { Image, View, StyleSheet, Platform, Modal, Pressable, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import CheckBox from '@react-native-community/checkbox';
 import { CheckBox as WebCheckBox } from 'react-native-web';
@@ -120,12 +120,12 @@ const LoginScreen = () => {
               boxType="square"
             />
           )}
-          <TouchableOpacity onPress={handleCheckboxPress} style={styles.termsWrapper}>
+          <Pressable onPress={handleCheckboxPress} style={styles.termsWrapper}>
             <MyText style={styles.termsText}>이용약관</MyText>
             <MyText style={styles.termsTextNoLine}> 및 </MyText>
             <MyText style={styles.termsText}>개인정보처리방침</MyText>
             <MyText style={styles.termsTextNoLine}> 동의</MyText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Animated.View>
       <Modal
@@ -142,12 +142,12 @@ const LoginScreen = () => {
               </ScrollView>
             </View>
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.agreeButton} onPress={handleAgree}>
+              <Pressable style={styles.agreeButton} onPress={handleAgree}>
                 <MyText style={styles.buttonText}>동의</MyText>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+              </Pressable>
+              <Pressable style={styles.cancelButton} onPress={handleCancel}>
                 <MyText style={styles.buttonText}>취소</MyText>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </Animated.View>
         </Animated.View>
