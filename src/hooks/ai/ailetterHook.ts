@@ -2,12 +2,17 @@
 import { useState, useRef, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { IAiLetterEntry } from '@type/IAiLetterEntry';
-import { fetchAiLettersMonthSummary, fetchAiLettersViaDate } from '@api/ai/get';
+import { IAiLetterEntry, IID } from '@type/IAiLetterEntry';
+import {
+  fetchAiLettersMonthSummary,
+  fetchAiLettersViaDate,
+  fetchAiLettersViaID,
+} from '@api/ai/get';
 
 export const useAiLetterData = (initialDateStr: string) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
+  const [currentDateStr, setCurrentDateStr] = useState(initialDateStr);
   const flatListRef = useRef<FlatList>(null);
 
   const queryClient = useQueryClient();
@@ -22,9 +27,9 @@ export const useAiLetterData = (initialDateStr: string) => {
     isLoading: monthSummaryLoading,
     refetch: refetchMonthSummary,
   } = useQuery({
-    queryKey: ['fetchAiLettersMonthSummary', initialDateStr],
+    queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
     queryFn: () => {
-      const [year, month] = initialDateStr.split('-');
+      const [year, month] = currentDateStr.split('-');
       return fetchMonthSummary(year, month);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -50,13 +55,24 @@ export const useAiLetterData = (initialDateStr: string) => {
     }
   };
 
+  const fetchContentForID = async (id: string) => {
+    const response = await fetchAiLettersViaID({ id });
+    if (response.length > 0) {
+      setAiLetterEntries((prevEntries) =>
+        prevEntries.map((entry) =>
+          entry.id === id ? { ...entry, content: response[0].content } : entry,
+        ),
+      );
+    }
+  };
+
   const handleAccordionChange = useCallback(
     async (section: IAiLetterEntry) => {
       const index = aiLetterEntries.findIndex((entry) => entry.date === section.date);
       setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
 
       if (!section.content) {
-        await fetchContentForDate(section.date);
+        await fetchAiLettersViaID(section.id);
       }
 
       if (flatListRef.current) {
@@ -64,6 +80,14 @@ export const useAiLetterData = (initialDateStr: string) => {
       }
     },
     [aiLetterEntries],
+  );
+
+  const refetchMonthData = useCallback(
+    (newDateStr: string) => {
+      setCurrentDateStr(newDateStr);
+      refetchMonthSummary();
+    },
+    [refetchMonthSummary],
   );
 
   return {
@@ -74,6 +98,6 @@ export const useAiLetterData = (initialDateStr: string) => {
     handleAccordionChange,
     isLoading: monthSummaryLoading,
     error: monthSummaryError,
-    refetchMonthSummary,
+    refetchMonthSummary: refetchMonthData,
   };
 };
