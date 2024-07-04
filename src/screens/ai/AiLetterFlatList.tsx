@@ -6,6 +6,7 @@ import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import NotUsingDay from '@components/ai/NotUsingDay';
 import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
 import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
+import MyText from '@components/common/MyText';
 
 interface AiLetterFlatListProps {
   aiLetterEntries: IAiLetterEntry[];
@@ -23,6 +24,8 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   onScrollToIndexFailed,
 }) => {
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
+    console.log('render item ~~~~~~~~~~~~~~~~ ', aiLetterEntries);
+
     let consecutiveNotUsingDayCount = 0;
 
     for (let i = index; i < aiLetterEntries.length; i++) {
@@ -38,7 +41,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
     }
 
     return (
-      <View>
+      <View key={item.id.toString()}>
         {item.isPlaceholder ? (
           <View style={styles.notusingItem}>
             <NotUsingDay date={item.date} />
@@ -67,9 +70,10 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
       ref={flatListRef}
       data={aiLetterEntries}
       renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item) => item.id.toString()}
       onScrollToIndexFailed={onScrollToIndexFailed}
       showsVerticalScrollIndicator={false}
+      ListEmptyComponent={<MyText>No entries available</MyText>}
     />
   );
 };

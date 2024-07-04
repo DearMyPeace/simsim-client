@@ -1,3 +1,4 @@
+import { AiLetterEntries } from '@api/mock/AiLetterEntries';
 // src/hooks/ai/useAiLetterData.ts
 import { useState, useRef, useCallback } from 'react';
 import { FlatList } from 'react-native';
@@ -28,14 +29,17 @@ export const useAiLetterData = (initialDateStr: string) => {
     refetch: refetchMonthSummary,
   } = useQuery({
     queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
-    queryFn: () => {
+    queryFn: async () => {
       const [year, month] = currentDateStr.split('-');
-      return fetchMonthSummary(year, month);
+      const result = await fetchMonthSummary(year, month);
+      console.log('fetchMonthSummary result: ', result);
+      return result;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    cacheTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 5,
     onSuccess: (monthSummaryData) => {
       setAiLetterEntries(monthSummaryData);
+      console.log('monthSummaryData: ', monthSummaryData);
+      console.log('activeSections: ', activeSections);
     },
   });
 
@@ -72,7 +76,7 @@ export const useAiLetterData = (initialDateStr: string) => {
       setActiveSections((prevSections) => (prevSections.includes(index) ? [] : [index]));
 
       if (!section.content) {
-        await fetchAiLettersViaID(section.id);
+        await fetchContentForID(section.id);
       }
 
       if (flatListRef.current) {

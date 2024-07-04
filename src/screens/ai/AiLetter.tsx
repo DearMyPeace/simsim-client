@@ -20,6 +20,8 @@ const AiLetter: React.FC = () => {
     refetchMonthSummary,
   } = useAiLetterData(todayDateStr);
 
+  console.log('AiLetter entries: ', aiLetterEntries);
+
   const onScrollToIndexFailed = (info) => {
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
     wait.then(() => {
