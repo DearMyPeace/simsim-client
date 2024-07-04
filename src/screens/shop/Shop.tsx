@@ -8,7 +8,7 @@ import MyText from '@components/common/MyText';
 import { fontBasic } from '@utils/Sizing';
 
 export default function Shop() {
-  const [selectedTab, setSelectedTab] = useState('구입내역');
+  const [selectedTab, setSelectedTab] = useState('조각충전');
 
   const renderContent = () => {
     switch (selectedTab) {
