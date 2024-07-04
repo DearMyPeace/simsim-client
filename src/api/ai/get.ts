@@ -1,14 +1,39 @@
 // src/api/ai/get.ts
 import instance from '@api/axios';
 import { IAiPersonaData } from '@type/AiPersona';
+import { IDate } from '@type/Diary';
+import { IDay } from '@type/Diary';
 
-export const fetchTodayAiLetters = async (total) => {
-  const response = await instance.get(`/aiLetters?total=${total}`);
+interface IID {
+  id: number;
+}
+interface IAiLettersContent {
+  id: number;
+  date: string;
+  content: string;
+}
+
+export const fetchAiLettersViaID = async ({ id }: IID): Promise<IAiLettersContent[]> => {
+  const response = await instance.get(`/aiLetters?id=${id}`);
   return response.data;
 };
 
-export const fetchNextAiLetter = async (offset, total) => {
-  const response = await instance.get(`/aiLetters?offset=${offset}&total=${total}`);
+export const fetchAiLettersViaDate = async ({ date }: IDay): Promise<IAiLettersContent[]> => {
+  const response = await instance.get(`/aiLetters?${date.year}/${date.month}/${date.day}`);
+  return response.data;
+};
+
+interface IAiLettersMonthSummary {
+  id: number;
+  date: string;
+  summary: string;
+}
+
+export const fetchAiLettersMonthSummary = async ({
+  year,
+  month,
+}: IDate): Promise<IAiLettersMonthSummary[]> => {
+  const response = await instance.get(`/aiLetters/${year}/${month}`);
   return response.data;
 };
 
