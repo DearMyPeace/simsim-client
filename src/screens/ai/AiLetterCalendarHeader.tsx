@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
 import { IDay } from '@type/Diary';
 import { fontLarge } from '@utils/Sizing';
@@ -37,12 +37,12 @@ const AiLetterCalendarHeader = ({
         selectedDate.year
       }`}</MyText>
       <View style={styles.arrowContainer}>
-        <TouchableOpacity onPress={onLeftPress}>
+        <Pressable onPress={onLeftPress}>
           <CalendarArrow direction="left" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onRightPress}>
+        </Pressable>
+        <Pressable onPress={onRightPress}>
           <CalendarArrow direction="right" />
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
