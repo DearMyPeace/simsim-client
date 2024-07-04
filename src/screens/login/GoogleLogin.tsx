@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
@@ -36,15 +36,12 @@ const GoogleLogin = ({ handleLoginPress }) => {
 
   return (
     <View>
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => handleLoginPress(signInWithGoogle)}
-      >
+      <Pressable style={styles.loginButton} onPress={() => handleLoginPress(signInWithGoogle)}>
         <View style={styles.iconAndText}>
           <Image source={googleLogo} style={styles.icon} />
           <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

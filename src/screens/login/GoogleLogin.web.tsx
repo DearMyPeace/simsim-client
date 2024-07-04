@@ -1,7 +1,7 @@
 // GoogleLoginWeb.tsx
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
-import { Image, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
 import useSendUserToken from '@hooks/login/useSendUserToken';
@@ -22,12 +22,12 @@ const GoogleLoginWeb = ({ handleLoginPress }) => {
 
   return (
     <View>
-      <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginPress(login)}>
+      <Pressable style={styles.loginButton} onPress={() => handleLoginPress(login)}>
         <View style={styles.iconAndText}>
           <Image source={googleLogo} style={styles.icon} />
           <MyText style={styles.loginButtonText}>Google로 계속하기</MyText>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

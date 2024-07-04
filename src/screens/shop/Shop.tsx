@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import PieceShop from '@screens/shop/PieceShop';
 import PurchaseHistory from '@screens/shop/PurchaseHistory';
 import PsychologicalConsulting from '@screens/shop/PsychologicalConsulting';
@@ -28,38 +28,38 @@ export default function Shop() {
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
-        <TouchableOpacity
+        <Pressable
           style={[styles.navItem, selectedTab === '조각충전' && styles.selectedItem]}
           onPress={() => setSelectedTab('조각충전')}
         >
           <MyText style={selectedTab === '조각충전' ? styles.selectedText : styles.navText}>
             조각충전
           </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={[styles.navItem, selectedTab === '구입내역' && styles.selectedItem]}
           onPress={() => setSelectedTab('구입내역')}
         >
           <MyText style={selectedTab === '구입내역' ? styles.selectedText : styles.navText}>
             구입내역
           </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={[styles.navItem, selectedTab === '마음휴식' && styles.selectedItem]}
           onPress={() => setSelectedTab('마음휴식')}
         >
           <MyText style={selectedTab === '마음휴식' ? styles.selectedText : styles.navText}>
             마음휴식
           </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={[styles.navItem, selectedTab === '작품상점' && styles.selectedItem]}
           onPress={() => setSelectedTab('작품상점')}
         >
           <MyText style={selectedTab === '작품상점' ? styles.selectedText : styles.navText}>
             작품상점
           </MyText>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={styles.content}>{renderContent()}</View>
     </View>
