@@ -54,7 +54,8 @@ const useAxiosInterceptors = () => {
         .then(async (res) => {
           await saveToken(res.data.accessToken);
           originalRequest.headers.Authorization = res.data.accessToken;
-          return instance.request(originalRequest);
+          // queryClient retry 옵션 동작
+          // return instance.request(originalRequest);
         })
         .catch((err) => {
           console.log('토큰 재발급 실패', err);
