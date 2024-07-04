@@ -7,15 +7,19 @@ import AiLetter from '@navigators/AiLetterStackNavigator';
 import Piece from '@navigators/PieceStackNavigator';
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
-import { AiLetterIcon, CalendarIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
+import { CalendarIcon, AiLetterIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
 import { appColor3 } from '@utils/colors';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '@stores/login';
+
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const Tab = createBottomTabNavigator();
+  const userInfo = useRecoilValue(userInfoState);
 
   return (
     <Tab.Navigator
-      // initialRouteName="Piece"
+      initialRouteName="AiLetter"
       theme={{
         colors: {
           background: 'transparent',
@@ -42,7 +46,7 @@ const TabNavigator = () => {
         component={Diary}
         options={{
           tabBarLabel: '기록',
-          tabBarIcon: CalendarIcon,
+          tabBarIcon: ({ color }) => <CalendarIcon color={color} />,
           tabBarHideOnKeyboard: true,
         }}
       />
@@ -51,7 +55,7 @@ const TabNavigator = () => {
         component={AiLetter}
         options={{
           tabBarLabel: '편지',
-          tabBarIcon: AiLetterIcon,
+          tabBarIcon: ({ color }) => <AiLetterIcon color={color} userInfo={userInfo} />,
           tabBarIconStyle: { marginTop: 5 },
         }}
       />
@@ -60,7 +64,7 @@ const TabNavigator = () => {
         component={Piece}
         options={{
           tabBarLabel: '조각',
-          tabBarIcon: PieceIcon,
+          tabBarIcon: ({ color }) => <PieceIcon color={color} />,
         }}
       />
       <Tab.Screen
@@ -68,7 +72,7 @@ const TabNavigator = () => {
         component={Shop}
         options={{
           tabBarLabel: '상점',
-          tabBarIcon: ShopIcon,
+          tabBarIcon: ({ color }) => <ShopIcon color={color} />,
         }}
       />
     </Tab.Navigator>
