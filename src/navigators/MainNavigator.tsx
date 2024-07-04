@@ -31,7 +31,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     if (data) {
-      setUserInfo(data); // todo: 필요한 정보만 저장하기
+      setUserInfo(data);
     }
   }, [data, setUserInfo]);
 

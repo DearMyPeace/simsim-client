@@ -37,7 +37,7 @@ const App = () => {
         <GoogleOAuthProviderWrapper>
           <QueryClientProvider client={queryClient}>
             <SafeAreaProvider>
-              <SafeAreaView style={styles.safeArea} edges={['bottom', 'left', 'right']}>
+              <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
                 {isLoading ? (
                   <SplashScreen onFinish={() => setIsLoading(false)} />
                 ) : (

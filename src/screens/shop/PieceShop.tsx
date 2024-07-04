@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, StyleSheet, Pressable, Image } from 'react-native';
 import MyText from '@components/common/MyText';
 import { useRecoilState } from 'recoil';
 import { pieces } from '@stores/pieces';
@@ -35,9 +35,9 @@ const PieceShop: React.FC = () => {
             <Image source={p5} style={styles.image} />
             <MyText style={styles.pieceText}>5개</MyText>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleAdReward}>
+          <Pressable style={styles.button} onPress={handleAdReward}>
             <MyText style={styles.buttonText}>광고 보기</MyText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <MyText style={styles.header}>구매하기</MyText>
@@ -47,9 +47,9 @@ const PieceShop: React.FC = () => {
             <Image source={p100} style={styles.image} />
             <MyText style={styles.pieceText}>100개</MyText>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => handlePurchase(100)}>
+          <Pressable style={styles.button} onPress={() => handlePurchase(100)}>
             <MyText style={styles.buttonText}>1,000 원</MyText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.itemContainer}>
@@ -57,9 +57,9 @@ const PieceShop: React.FC = () => {
             <Image source={p200} style={styles.image} />
             <MyText style={styles.pieceText}>200개</MyText>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => handlePurchase(200)}>
+          <Pressable style={styles.button} onPress={() => handlePurchase(200)}>
             <MyText style={styles.buttonText}>2,000 원</MyText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.itemContainer}>
@@ -67,9 +67,9 @@ const PieceShop: React.FC = () => {
             <Image source={p500} style={styles.image} />
             <MyText style={styles.pieceText}>500개</MyText>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => handlePurchase(500)}>
+          <Pressable style={styles.button} onPress={() => handlePurchase(500)}>
             <MyText style={styles.buttonText}>9,999 원</MyText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </ScrollView>
