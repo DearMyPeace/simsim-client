@@ -34,6 +34,7 @@ const MyIconButton = ({
   size = 24,
   color = 'black',
   style,
+  disabled,
   ...props
 }: IOcticonsButtonProps) => {
   const IconComponent = iconMap[iconSet];
@@ -42,9 +43,10 @@ const MyIconButton = ({
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
+      disabled={disabled}
       {...props}
     >
-      <IconComponent name={name} size={size} color={color} />
+      <IconComponent name={name} size={size} color={disabled ? '#666666' : color} />
     </Pressable>
   );
 };
