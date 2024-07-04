@@ -11,14 +11,23 @@ const BasicConfirmModal = ({
   onConfirm,
   content,
   confirmText = '확인',
+  children = null,
+  containerStyle,
 }: IBasicModalProps) => {
   const onCancel = () => {
     setIsVisible(false);
   };
 
   return (
-    <MyModal visible={visible} setIsVisible={setIsVisible} transparent={true} animationType="fade">
+    <MyModal
+      visible={visible}
+      setIsVisible={setIsVisible}
+      transparent={true}
+      animationType="fade"
+      containerStyle={containerStyle}
+    >
       <View style={styles.modalContent}>
+        {children}
         <MyText style={{ textAlign: 'center' }}>{content}</MyText>
       </View>
       <View style={styles.modalButtons}>
