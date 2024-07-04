@@ -10,7 +10,6 @@ import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
 interface AiLetterFlatListProps {
   aiLetterEntries: IAiLetterEntry[];
   activeSections: number[];
-  loading: boolean;
   flatListRef: React.RefObject<FlatList>;
   handleAccordionChange: (section: IAiLetterEntry) => void;
   onScrollToIndexFailed: (info: any) => void;
@@ -19,7 +18,6 @@ interface AiLetterFlatListProps {
 const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   aiLetterEntries,
   activeSections,
-  loading,
   flatListRef,
   handleAccordionChange,
   onScrollToIndexFailed,
@@ -71,6 +69,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
       onScrollToIndexFailed={onScrollToIndexFailed}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
