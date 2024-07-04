@@ -19,7 +19,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="AiLetter"
+      // initialRouteName="AiLetter"
       theme={{
         colors: {
           background: 'transparent',
