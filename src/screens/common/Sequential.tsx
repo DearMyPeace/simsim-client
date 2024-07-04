@@ -1,8 +1,8 @@
 import { appColor4 } from '@utils/colors';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, StyleProp, TextStyle } from 'react-native';
 
-const shuffleArray = (array) => {
+const shuffleArray = (array: string[]) => {
   let shuffledArray = array.slice();
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -11,7 +11,14 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-const SequentialText = ({ words, stop, duration = 300 }) => {
+interface ISequentialTextProps {
+  words: string[];
+  stop: boolean;
+  duration?: number;
+  textStyles?: StyleProp<TextStyle>;
+}
+
+const SequentialText = ({ words, stop, duration = 300, textStyles }: ISequentialTextProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shuffledWords, setShuffledWords] = useState(shuffleArray(words));
 
@@ -30,7 +37,7 @@ const SequentialText = ({ words, stop, duration = 300 }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{shuffledWords[currentIndex]}</Text>
+      <Text style={[styles.text, textStyles]}>{shuffledWords[currentIndex]}</Text>
     </View>
   );
 };
