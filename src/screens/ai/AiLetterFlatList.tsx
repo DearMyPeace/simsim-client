@@ -1,12 +1,11 @@
-// src/components/ai/AiLetterFlatList.tsx
-import React from 'react';
-import { View, FlatList, StyleSheet, ListRenderItem, RefreshControl } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet, ListRenderItem } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import NotUsingDay from '@components/ai/NotUsingDay';
 import AiLetterEntryHeader from '@components/ai/AiLetterEntryHeader';
 import AiLetterEntryContent from '@components/ai/AiLetterEntryContent';
-import MyText from '@components/common/MyText';
+import AiLetterEmptyView from '@screens/ai/AiLetterEmptyView';
 
 interface AiLetterFlatListProps {
   aiLetterEntries: IAiLetterEntry[];
@@ -23,6 +22,12 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   handleAccordionChange,
   onScrollToIndexFailed,
 }) => {
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsEmpty(aiLetterEntries.length === 0);
+  }, [aiLetterEntries]);
+
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
     let consecutiveNotUsingDayCount = 0;
 
@@ -63,6 +68,16 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
     );
   };
 
+  if (isEmpty) {
+    return <AiLetterEmptyView />;
+  }
+
+  const getItemLayout = (_, index) => ({
+    length: 70,
+    offset: 70 * index,
+    index,
+  });
+
   return (
     <FlatList
       ref={flatListRef}
@@ -71,7 +86,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
       keyExtractor={(item) => item.id.toString()}
       onScrollToIndexFailed={onScrollToIndexFailed}
       showsVerticalScrollIndicator={false}
-      ListEmptyComponent={<MyText>No entries available</MyText>}
+      getItemLayout={getItemLayout}
     />
   );
 };
