@@ -1,8 +1,7 @@
 // src/api/ai/get.ts
 import instance from '@api/axios';
 import { IAiPersonaData } from '@type/AiPersona';
-import { IDate } from '@type/Diary';
-import { IDay } from '@type/Diary';
+import { IDate, IDay } from '@type/Diary';
 import { IID } from '@type/IAiLetterEntry';
 
 interface IAiLettersContent {
@@ -16,8 +15,12 @@ export const fetchAiLettersViaID = async ({ id }: IID): Promise<IAiLettersConten
   return response.data;
 };
 
-export const fetchAiLettersViaDate = async ({ date }: IDay): Promise<IAiLettersContent[]> => {
-  const response = await instance.get(`/aiLetters/${date.year}/${date.month}/${date.day}`);
+export const fetchAiLettersViaDate = async ({
+  year,
+  month,
+  day,
+}: IDay): Promise<IAiLettersContent[]> => {
+  const response = await instance.get(`/aiLetters/${year}/${month}/${day}`);
   return response.data;
 };
 
