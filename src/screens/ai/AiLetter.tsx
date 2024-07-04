@@ -1,10 +1,11 @@
 // src/screens/ai/AiLetter.tsx
-import React, { useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { useAiLetterData } from '@hooks/ai/ailetterHook';
 import AiLetterCalendar from '@screens/ai/AiLetterCalendar';
-import MockTestAiLetter from './test/MockTestAiLetter';
 import AiLetterFlatList from '@screens/ai/AiLetterFlatList';
+import AiLetterLoadingView from '@screens/ai/AiLetterLoadingView';
+import AiLetterErrorView from '@screens/ai/AiLetterErrorView';
 
 const AiLetter: React.FC = () => {
   const todayDateStr = new Date().toISOString().slice(0, 10);
@@ -26,34 +27,26 @@ const AiLetter: React.FC = () => {
     });
   };
 
-  const handleMonthChange = (date) => {
-    refetchMonthSummary();
+  const handleMonthChange = (newDateStr: string) => {
+    refetchMonthSummary(newDateStr);
   };
-
-  useEffect(() => {
-    if (error) {
-      // 오류 처리 로직 추가
-    }
-  }, [error]);
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="small" color="gray" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
       <AiLetterCalendar onMonthChange={handleMonthChange}>
-        <AiLetterFlatList
-          aiLetterEntries={aiLetterEntries}
-          activeSections={activeSections}
-          flatListRef={flatListRef}
-          handleAccordionChange={handleAccordionChange}
-          onScrollToIndexFailed={onScrollToIndexFailed}
-        />
+        {isLoading ? (
+          <AiLetterLoadingView />
+        ) : error ? (
+          <AiLetterErrorView />
+        ) : (
+          <AiLetterFlatList
+            aiLetterEntries={aiLetterEntries}
+            activeSections={activeSections}
+            flatListRef={flatListRef}
+            handleAccordionChange={handleAccordionChange}
+            onScrollToIndexFailed={onScrollToIndexFailed}
+          />
+        )}
       </AiLetterCalendar>
     </View>
   );
