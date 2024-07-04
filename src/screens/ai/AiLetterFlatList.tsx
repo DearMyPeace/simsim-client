@@ -24,8 +24,6 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   onScrollToIndexFailed,
 }) => {
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
-    console.log('render item ~~~~~~~~~~~~~~~~ ', aiLetterEntries);
-
     let consecutiveNotUsingDayCount = 0;
 
     for (let i = index; i < aiLetterEntries.length; i++) {
