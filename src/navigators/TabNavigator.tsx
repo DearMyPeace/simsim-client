@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Diary from '@navigators/DiaryStackNavigator';
 import Shop from '@navigators/ShopStackNavigator';
@@ -52,6 +52,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: '편지',
           tabBarIcon: AiLetterIcon,
+          tabBarIconStyle: { marginTop: 5 },
         }}
       />
       <Tab.Screen
@@ -77,8 +78,8 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabbarStyle: {
     backgroundColor: 'rgba(255, 255, 255, 0.47)',
-    paddingBottom: 5,
-    paddingTop: 10,
+    paddingBottom: Platform.OS === 'web' ? 5 : 20,
+    paddingTop: Platform.OS === 'web' ? 0 : 10,
     borderColor: 'transparent',
   },
 });
