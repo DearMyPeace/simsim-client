@@ -40,7 +40,7 @@ const DiaryCard = ({
 
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['diary'] });
       setSnackbar('저장이 완료되었습니다.');
       setTimeStartWriting('');
@@ -134,7 +134,8 @@ const DiaryCard = ({
       }
       return;
     }
-    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
+    const formattedTime = `${targetDate}T${timeStartWriting.split('T')[1]}`;
+    const cretatedDate = id === NEW_DIARY ? formattedTime : createdTime;
     const data = {
       content: diaryInput,
       createdDate: cretatedDate,

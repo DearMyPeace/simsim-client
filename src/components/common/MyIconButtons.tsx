@@ -4,9 +4,17 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // 필요한 아이콘 세트 추가
-type IconSet = 'Octicons' | 'MaterialIcons' | 'MaterialCommunityIcons' | 'Feather';
+type IconSet =
+  | 'Octicons'
+  | 'MaterialIcons'
+  | 'MaterialCommunityIcons'
+  | 'Feather'
+  | 'FontAwesome'
+  | 'AntDesign';
 
 interface IOcticonsButtonProps extends PressableProps {
   name: string;
@@ -25,6 +33,8 @@ const iconMap: IconMapType = {
   MaterialIcons,
   MaterialCommunityIcons,
   Feather,
+  FontAwesome,
+  AntDesign,
 };
 
 const MyIconButton = ({

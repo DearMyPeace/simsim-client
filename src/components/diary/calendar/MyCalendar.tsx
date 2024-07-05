@@ -6,6 +6,7 @@ import setLocaleConfig from '@utils/localeConfig';
 import { IDiaryCount, IMarkedDates } from '@type/Diary';
 import { dotColors } from '@utils/colors';
 import { fontLarge } from '@utils/Sizing';
+import { getToday } from '@utils/dateUtils';
 
 setLocaleConfig();
 interface IMyCalendarProps {
@@ -28,7 +29,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
   return (
     <View style={styles.container}>
       <Calendar
-        maxDate={new Date()}
+        maxDate={getToday()}
         style={styles.calendar}
         theme={{
           textDayFontFamily: 'GowunBatang-Regular',
