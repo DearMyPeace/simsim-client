@@ -25,10 +25,12 @@ const SettingSection = ({
     <View style={styles.container}>
       <View style={styles.content}>
         {onLabelPress ? (
-          <Pressable onPress={onLabelPress} style={({ pressed }) => [pressed && { opacity: 0.3 }]}>
-            <MyText bold size={fontLarge}>
-              {label}
-            </MyText>
+          <Pressable onPress={onLabelPress}>
+            {({ pressed }) => (
+              <MyText bold size={fontLarge} style={[pressed && styles.pressed]}>
+                {label}
+              </MyText>
+            )}
           </Pressable>
         ) : (
           <MyText bold size={fontLarge}>
