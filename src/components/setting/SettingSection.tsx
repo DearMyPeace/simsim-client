@@ -1,22 +1,31 @@
 import React from 'react';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { fontLarge } from '@utils/Sizing';
 
 interface ISectionProps {
   label: string;
-  content: string;
+  content?: string;
   onPress?: () => void;
+  onLabelPress?: () => void;
 }
 
-const SettingSection = ({ label, content, onPress }: ISectionProps) => {
+const SettingSection = ({ label, content = '', onPress, onLabelPress }: ISectionProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <MyText bold size={fontLarge}>
-          {label}
-        </MyText>
+        {onLabelPress ? (
+          <Pressable onPress={onLabelPress} style={({ pressed }) => [pressed && { opacity: 0.3 }]}>
+            <MyText bold size={fontLarge}>
+              {label}
+            </MyText>
+          </Pressable>
+        ) : (
+          <MyText bold size={fontLarge}>
+            {label}
+          </MyText>
+        )}
         {onPress ? (
           <TextButton onPress={onPress}>{content}</TextButton>
         ) : (
