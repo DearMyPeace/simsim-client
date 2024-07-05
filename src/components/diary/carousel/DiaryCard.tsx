@@ -120,7 +120,7 @@ const DiaryCard = ({
   const onConfirmEdit = () => {
     setIsEditing(false);
     setDiaryInput(content);
-    setSnackbar('수정이 취소되었습니다.');
+    // setSnackbar('수정이 취소되었습니다.');
     setEditModalVisible(false);
   };
 
