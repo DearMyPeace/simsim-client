@@ -1,46 +1,50 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import AiLetter from '@screens/ai/AiLetter';
+import useUserSetup from '@hooks/user/useUserSetup';
 
 const Stack = createStackNavigator();
 
-const AiLetterStackNavigator = () => (
-  <Stack.Navigator
-    initialRouteName="Details"
-    screenOptions={{
-      ...TransitionPresets.SlideFromRightIOS,
-      headerShown: false,
-      cardStyleInterpolator: ({ current }) => ({
-        cardStyle: {
-          opacity: current.progress,
-          backgroundColor: 'transparent',
-        },
-      }),
-    }}
-  >
-    <Stack.Screen
-      options={{
-        transitionSpec: {
-          open: {
-            animation: 'spring',
-            config: {
-              stiffness: 2000,
-              damping: 1000,
-            },
+const AiLetterStackNavigator = () => {
+  useUserSetup();
+  return (
+    <Stack.Navigator
+      initialRouteName="Details"
+      screenOptions={{
+        ...TransitionPresets.SlideFromRightIOS,
+        headerShown: false,
+        cardStyleInterpolator: ({ current }) => ({
+          cardStyle: {
+            opacity: current.progress,
+            backgroundColor: 'transparent',
           },
-          close: {
-            animation: 'spring',
-            config: {
-              stiffness: 1000,
-              damping: 500,
-            },
-          },
-        },
+        }),
       }}
-      name="Details"
-      component={AiLetter}
-    />
-  </Stack.Navigator>
-);
+    >
+      <Stack.Screen
+        options={{
+          transitionSpec: {
+            open: {
+              animation: 'spring',
+              config: {
+                stiffness: 2000,
+                damping: 1000,
+              },
+            },
+            close: {
+              animation: 'spring',
+              config: {
+                stiffness: 1000,
+                damping: 500,
+              },
+            },
+          },
+        }}
+        name="Details"
+        component={AiLetter}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export default AiLetterStackNavigator;

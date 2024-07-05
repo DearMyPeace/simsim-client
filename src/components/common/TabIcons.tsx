@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { View, StyleSheet, Platform, Image } from 'react-native';
 import { ITabBarIconProps } from '@type/ITabBarIconProps';
 import CalendarIconSVG from '@assets/images/diary.svg';
@@ -6,6 +6,8 @@ import PieceIconSVG from '@assets/images/piece.svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MyIconButtons from '@components/common/MyIconButtons';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '@stores/login';
 
 export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
   if (Platform.OS === 'web') {
@@ -14,17 +16,18 @@ export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
   return <CalendarIconSVG style={{ color: color }} width={24} height={24} />;
 });
 
-export const AiLetterIcon = memo(({ color, userInfo }: ITabBarIconProps & { userInfo: any }) => {
+export const AiLetterIcon = ({ focused, color, size }: ITabBarIconProps) => {
+  const userInfo = useRecoilValue(userInfoState);
   const iconName = userInfo.replyStatus === 'C' ? 'mail-open-outline' : 'mail-outline';
   const showBadge = userInfo.replyStatus === 'R';
 
   return (
     <View>
-      <Ionicons name={iconName} color={color} size={26} />
+      <Ionicons name={focused ? 'mail-open-outline' : iconName} color={color} size={26} />
       {showBadge && <View style={styles.badge} />}
     </View>
   );
-});
+};
 
 export const ShopIcon = memo(({ color }: ITabBarIconProps) => (
   <AntDesign name="isv" color={color} size={24.5} />

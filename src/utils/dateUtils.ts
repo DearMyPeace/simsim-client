@@ -1,6 +1,6 @@
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 
-export const generateDateRange = (startDate: Date, endDate: Date): Date[] => {
+export const generateDateRangeTypeDate = (startDate: Date, endDate: Date): Date[] => {
   const dates = [];
   let currentDate = new Date(startDate);
 
@@ -27,4 +27,17 @@ export const fillDatesWithData = (dates: Date[], entries: IAiLetterEntry[]): IAi
     const dateStr = date.toISOString().slice(0, 10);
     return entriesByDate[dateStr] || { date: dateStr, isPlaceholder: true };
   });
+};
+
+export const generateDateRange = (startDateStr: string, endDateStr: string): Date[] => {
+  const dates = [];
+  let currentDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
 };
