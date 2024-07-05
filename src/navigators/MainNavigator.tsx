@@ -40,7 +40,6 @@ const MainNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="Settings"
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         cardStyle: { backgroundColor: 'transparent' },
@@ -89,14 +88,14 @@ const MainNavigator = () => {
               name="SettingUserInfo"
               component={SettingUserInfoScreen}
               options={{
-                title: '나의 정보',
+                title: '정보',
               }}
             />
             <Stack.Screen
               name="SettingTerms"
               component={SettingTermsScreen}
               options={{
-                title: '심심조각 방침',
+                title: '방침',
               }}
             />
           </Stack.Group>

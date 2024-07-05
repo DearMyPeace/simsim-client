@@ -9,12 +9,14 @@ interface ISettingContainerProps {
   children: React.ReactNode;
   alarmSection?: React.ReactNode;
   modals?: React.ReactNode;
+  footerText?: string;
 }
 
 const SettingContainer = ({
   children,
   alarmSection = null,
   modals = null,
+  footerText = '심심조각 초판',
 }: ISettingContainerProps) => {
   const snackbarText = useRecoilValue(snackMessage);
   return (
@@ -25,7 +27,7 @@ const SettingContainer = ({
       </ScrollView>
       {modals}
       <View style={styles.footer}>
-        <MyText size={11}>심심조각 초판</MyText>
+        <MyText size={11}>{footerText}</MyText>
       </View>
       <MySnackbar visible={snackbarText !== ''} style={styles.snackbar} />
     </SafeAreaView>

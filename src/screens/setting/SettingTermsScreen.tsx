@@ -5,18 +5,18 @@ import MyModal from '@components/common/MyModal';
 import terms from '@stores/terms';
 import MarkDownView from '@components/common/MarkDownView';
 import policy from '@stores/policy';
+import openSourceInfo from '@stores/openSourceInfo';
 
-type SettingModalType = 'terms' | 'policy' | 'openSource' | 'business';
+type SettingModalType = 'terms' | 'policy' | 'openSource';
 
 const modalContents: Record<SettingModalType, string> = {
   terms: terms,
   policy: policy,
-  openSource: 'open source',
-  business: 'business',
+  openSource: openSourceInfo,
 };
 
 const SettingTermsScreen = () => {
-  const [modalName, setModalName] = useState<SettingModalType | ''>('terms');
+  const [modalName, setModalName] = useState<SettingModalType | ''>('');
 
   const setIsVisible = (visible: boolean) => {
     if (!visible) {
@@ -30,7 +30,7 @@ const SettingTermsScreen = () => {
       setIsVisible={setIsVisible}
       presentationStyle="overFullScreen"
       transparent={true}
-      containerStyle={{ width: '80%' }}
+      containerStyle={{ maxWidth: '80%' }}
     >
       {modalName !== '' && (
         <MarkDownView containerStyle={{ flex: 1, padding: 10, maxHeight: 500 }}>
@@ -41,14 +41,14 @@ const SettingTermsScreen = () => {
   );
 
   return (
-    <SettingContainer modals={modals}>
+    <SettingContainer modals={modals} footerText="SimSim.Co">
       <SettingSection label="개인정보 처리방침" onLabelPress={() => setModalName('terms')} />
       <SettingSection label="이용약관" onLabelPress={() => setModalName('policy')} />
       <SettingSection
         label="오픈 소스 라이브러리"
         onLabelPress={() => setModalName('openSource')}
       />
-      <SettingSection label="사업자 정보" onLabelPress={() => setModalName('business')} />
+      {/* <SettingSection label="사업자 정보" onLabelPress={() => setModalName('business')} /> */}
     </SettingContainer>
   );
 };
