@@ -3,11 +3,14 @@ import { FlatList } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IAiLetterEntry, IID } from '@type/IAiLetterEntry';
 import { fetchAiLettersMonthSummary, fetchAiLettersViaID } from '@api/ai/get';
+import { fillDatesWithData, generateDateRange } from '@utils/dateUtils';
+import { isEmpty } from 'lodash';
 
 export const useAiLetterData = (initialDateStr: string) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [aiLetterEntries, setAiLetterEntries] = useState<IAiLetterEntry[]>([]);
   const [currentDateStr, setCurrentDateStr] = useState(initialDateStr);
+  const [refreshing, setRefreshing] = useState(false);
   const flatListRef = useRef<FlatList>(null);
 
   const queryClient = useQueryClient();
@@ -112,14 +115,20 @@ export const useAiLetterData = (initialDateStr: string) => {
 
   useEffect(() => {
     const updateActiveSections = async () => {
-      if (monthSummaryData) {
-        setAiLetterEntries(monthSummaryData);
-        console.log('monthSummaryData: ', monthSummaryData);
+      if (!isEmpty(monthSummaryData)) {
+        monthSummaryData.sort((a, b) => (a.date < b.date ? 1 : -1));
+        const dateRange = generateDateRange(
+          monthSummaryData[monthSummaryData.length - 1].date,
+          monthSummaryData[0].date,
+        );
+        const filledData = fillDatesWithData(dateRange, monthSummaryData);
+        setAiLetterEntries(filledData);
+        console.log('filledData: ', filledData);
 
         const todayStr = new Date().toISOString().slice(0, 10);
-        const todayIndex = monthSummaryData.findIndex((entry) => entry.date === todayStr);
+        const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
         if (todayIndex !== -1) {
-          const section = monthSummaryData[todayIndex];
+          const section = filledData[todayIndex];
           if (!section.content) {
             await fetchContentForID(section.id);
           }
@@ -129,6 +138,8 @@ export const useAiLetterData = (initialDateStr: string) => {
             flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
           }
         }
+      } else {
+        setAiLetterEntries([]);
       }
     };
 
@@ -136,9 +147,13 @@ export const useAiLetterData = (initialDateStr: string) => {
   }, [monthSummaryData]);
 
   const refetchMonthData = useCallback(
-    (newDateStr: string) => {
-      setCurrentDateStr(newDateStr);
-      refetchMonthSummary();
+    async (newDateStr?: string) => {
+      setRefreshing(true);
+      if (newDateStr) {
+        setCurrentDateStr(newDateStr);
+      }
+      await refetchMonthSummary();
+      setRefreshing(false);
       setActiveSections([]);
     },
     [refetchMonthSummary],
@@ -154,5 +169,6 @@ export const useAiLetterData = (initialDateStr: string) => {
     isLoading: monthSummaryLoading,
     error: monthSummaryError,
     refetchMonthSummary: refetchMonthData,
+    refreshing,
   };
 };

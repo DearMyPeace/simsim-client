@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isLoggedInState, userInfoState } from '@stores/login';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState } from '@stores/login';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
-import { getToken } from '@components/login/AuthService';
 import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
-import { useUserInfo } from '@api/user/get';
 import useAxiosInterceptors from '@hooks/useAxiosInterceptors';
+import useUserSetup from '@hooks/user/useUserSetup';
 import { fontLarge } from '@utils/Sizing';
 import SettingUserInfoScreen from '@screens/setting/SettingUserInfoScreen';
 import SettingTermsScreen from '@screens/setting/SettingTermsScreen';
@@ -16,27 +15,9 @@ import SettingTermsScreen from '@screens/setting/SettingTermsScreen';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const isLoggedIn = useRecoilValue(isLoggedInState);
-  const setUserInfo = useSetRecoilState(userInfoState);
-  const { data } = useUserInfo(isLoggedIn);
+  useUserSetup();
   useAxiosInterceptors();
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const token = await getToken();
-      if (token) {
-        setIsLoggedIn(true);
-      }
-    };
-    checkToken();
-  }, [setIsLoggedIn]);
-
-  useEffect(() => {
-    if (data) {
-      setUserInfo(data);
-    }
-  }, [data, setUserInfo]);
 
   return (
     <Stack.Navigator
