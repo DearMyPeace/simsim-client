@@ -13,12 +13,6 @@ const useLogout = () => {
 
   const logoutMutation = useMutation({
     mutationFn: logoutRequest,
-    onSuccess: () => {
-      console.log('Logout Success');
-    },
-    onError: (e) => {
-      console.log(e, 'Logout Error');
-    },
     onSettled: () => {
       handleLogout();
     },
@@ -27,12 +21,10 @@ const useLogout = () => {
     mutationFn: deleteAccountRequest,
     onSuccess: () => {
       setSnackbar('회원 탈퇴가 완료되었습니다');
-      console.log('Delete Account Success');
       handleLogout();
     },
     onError: (e) => {
       setSnackbar('회원 탈퇴 중 오류가 발생했습니다');
-      console.log(e, 'Delete Account Error');
     },
   });
 
