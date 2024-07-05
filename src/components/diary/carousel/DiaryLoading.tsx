@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Modal, StyleSheet, Animated, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import SequentialText from '@screens/common/Sequential';
 import { fontLarge, fontMedium } from '@utils/Sizing';
 import Logo from '@screens/common/Logo';
 import MyText from '@components/common/MyText';
 import MyModal from '@components/common/MyModal';
+import { manual } from '@utils/manual';
 
 // todo: 무료, 유료 유저 구분
 const DiaryLoading = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const words = [
-    `오늘의 기록은\n하루 3장까지 쓸 수 있어요`,
-    `오늘의 기록만\n작성할 수 있어요`,
-    `편지는 날짜마다\n하나씩 받을 수 있어요`,
-  ];
 
   return (
     <MyModal
@@ -27,7 +23,7 @@ const DiaryLoading = () => {
       </View>
       <Logo />
       <View style={styles.textContainer}>
-        <SequentialText words={words} stop={false} duration={3000} textStyles={styles.text} />
+        <SequentialText words={manual} stop={false} duration={3000} textStyles={styles.text} />
       </View>
     </MyModal>
   );
