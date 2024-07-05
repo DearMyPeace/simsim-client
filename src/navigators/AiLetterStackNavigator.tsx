@@ -36,6 +36,7 @@ const AiLetterStackNavigator = () => (
             },
           },
         },
+        title: '조각편지',
       }}
       name="Details"
       component={AiLetter}

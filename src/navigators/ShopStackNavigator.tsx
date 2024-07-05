@@ -6,7 +6,7 @@ const Stack = createStackNavigator();
 
 const ShopStackNavigator = () => (
   <Stack.Navigator
-    initialRouteName="Details"
+    initialRouteName="Shop"
     screenOptions={{
       ...TransitionPresets.SlideFromRightIOS,
       headerShown: false,
@@ -36,8 +36,9 @@ const ShopStackNavigator = () => (
             },
           },
         },
+        title: '조각상점',
       }}
-      name="Details"
+      name="Shop"
       component={Shop}
     />
   </Stack.Navigator>
