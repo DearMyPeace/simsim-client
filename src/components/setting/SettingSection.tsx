@@ -9,9 +9,18 @@ interface ISectionProps {
   content?: string;
   onPress?: () => void;
   onLabelPress?: () => void;
+  textColor?: string;
+  icon?: React.ReactNode;
 }
 
-const SettingSection = ({ label, content = '', onPress, onLabelPress }: ISectionProps) => {
+const SettingSection = ({
+  label,
+  content = '',
+  onPress,
+  onLabelPress,
+  textColor = 'black',
+  icon,
+}: ISectionProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -27,9 +36,14 @@ const SettingSection = ({ label, content = '', onPress, onLabelPress }: ISection
           </MyText>
         )}
         {onPress ? (
-          <TextButton onPress={onPress}>{content}</TextButton>
+          <TextButton textColor={textColor} onPress={onPress}>
+            {content}
+          </TextButton>
         ) : (
-          <MyText>{content}</MyText>
+          <View style={styles.contentContainer}>
+            {icon}
+            <MyText style={{ color: textColor }}>{content}</MyText>
+          </View>
         )}
       </View>
     </View>
@@ -51,6 +65,10 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.5,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
   },
 });
 

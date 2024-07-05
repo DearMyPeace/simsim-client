@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import SettingSection from '@components/setting/SettingSection';
 import useSetting from '@hooks/setting/settingHook';
-import { userInfoState } from '@stores/login';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
-import { useRecoilValue } from 'recoil';
 import SettingContainer from '@components/setting/SettingContainer';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SettingUserInfoScreen = () => {
   const {
@@ -14,8 +13,9 @@ const SettingUserInfoScreen = () => {
     onConfirmDeleteAccount,
     onLogout,
     onDeleteAccount,
+    userEmail,
+    userProvider,
   } = useSetting();
-  const userInfo = useRecoilValue(userInfoState);
 
   const modals = (
     <BasicConfirmModal
@@ -26,16 +26,44 @@ const SettingUserInfoScreen = () => {
     />
   );
 
+  const googleIcon = (
+    <Image
+      source={require('@assets/logo/google.png')}
+      style={styles.googleIcon}
+      resizeMode="contain"
+    />
+  );
+
+  const appleIcon = <Icon name="apple" size={20} color="#000" style={styles.appleIcon} />;
+
+  const icon = userProvider === 'Google' ? googleIcon : appleIcon;
+
   return (
     <SettingContainer modals={modals}>
-      <SettingSection label="나의 정보" content={userInfo.email} />
-      <SettingSection label="연동 계정" content={userInfo.providerName} />
+      <SettingSection label="나의 정보" content={userEmail} />
+      <SettingSection label="연동 계정" content={userProvider} icon={icon} />
       <SettingSection label="로그아웃" content="나가기" onPress={onLogout} />
-      <SettingSection label="회원탈퇴" content="탈퇴하기" onPress={onDeleteAccount} />
+      <SettingSection
+        label="회원탈퇴"
+        content="탈퇴하기"
+        onPress={onDeleteAccount}
+        textColor="#EB6D52"
+      />
     </SettingContainer>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  googleIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 8,
+  },
+  appleIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 5,
+  },
+});
 
 export default SettingUserInfoScreen;
