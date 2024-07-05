@@ -1,4 +1,3 @@
-// src/screens/ai/AiLetter.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useAiLetterData } from '@hooks/ai/ailetterHook';
@@ -19,7 +18,9 @@ const AiLetter: React.FC = () => {
     isLoading,
     error,
     refetchMonthSummary,
+    refreshing,
   } = useAiLetterData(todayDateStr);
+
   const handleMonthChange = (newDateStr: string) => {
     refetchMonthSummary(newDateStr);
   };
@@ -38,6 +39,8 @@ const AiLetter: React.FC = () => {
             flatListRef={flatListRef}
             handleAccordionChange={handleAccordionChange}
             onScrollToIndexFailed={onScrollToIndexFailed}
+            onRefresh={() => refetchMonthSummary()}
+            refreshing={refreshing}
           />
         )}
       </AiLetterCalendar>
