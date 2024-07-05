@@ -90,13 +90,11 @@ const DiaryCard = ({
       console.log(data);
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+      queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
       // setSnackbar('편지가 도착했습니다');
     },
     onError: (error) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
-    },
-    onSettled: () => {
-      setSendModalVisible(false);
     },
   });
 
@@ -125,6 +123,7 @@ const DiaryCard = ({
   };
 
   const onConfirmSend = () => {
+    setSendModalVisible(false);
     sendDiary.mutate({ targetDate });
   };
 
