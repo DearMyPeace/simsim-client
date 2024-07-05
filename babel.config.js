@@ -43,6 +43,7 @@ module.exports = {
       ? ['react-native-web', { commonjs: true }]
       : ['@babel/plugin-transform-private-methods', { loose: true }],
     moduleResolver,
+    '@babel/plugin-proposal-export-namespace-from',
     'react-native-reanimated/plugin',
     [
       'module:react-native-dotenv',
