@@ -12,6 +12,7 @@ export interface IBasicModalProps {
   visible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onConfirm: () => void;
+  onCancel?: () => void;
   content?: string;
   confirmText?: string;
   children?: React.ReactNode;

@@ -9,19 +9,16 @@ const BasicConfirmModal = ({
   visible,
   setIsVisible,
   onConfirm,
+  onCancel = () => setIsVisible(false),
   content,
   confirmText = '확인',
   children = null,
   containerStyle,
 }: IBasicModalProps) => {
-  const onCancel = () => {
-    setIsVisible(false);
-  };
-
   return (
     <MyModal
       visible={visible}
-      setIsVisible={setIsVisible}
+      setIsVisible={onCancel}
       transparent={true}
       animationType="fade"
       containerStyle={containerStyle}
@@ -50,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 6,
-    width: '75%',
+    width: '60%',
   },
 });
 
