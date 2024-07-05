@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, StyleSheet, Dimensions, PanResponder, Animated as RNAnimated } from 'react-native';
+import { View, StyleSheet, PanResponder, Animated as RNAnimated } from 'react-native';
 import { format } from 'date-fns';
 import { IDate, IDay } from '@type/Diary';
 import { CalendarProvider } from 'react-native-calendars';
@@ -13,7 +13,7 @@ const getDay = () => format(new Date(), 'dd');
 
 const AiLetterCalendar = ({ children, onMonthChange }) => {
   const [isToday, setIsToday] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
+  const [, setIsDragging] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const DRAG_THRESHOLD = 10;
 
@@ -47,7 +47,6 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
 
   const handleMonthChange = useCallback(
     (date) => {
-      console.log('ExpandableCalendarScreen onMonthChange: ', date);
       const year = date.year.toString();
       const month = date.month.toString().padStart(2, '0') as IDate['month'];
       const day = getDay();
@@ -76,7 +75,6 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   };
 
   const handleTodayPress = () => {
-    console.log('press today');
     const year = getYear();
     const month = getMonth();
     const day = getDay();
@@ -106,7 +104,6 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
       onPanResponderRelease: (evt, gestureState) => {
         position.flattenOffset();
         const distance = Math.sqrt(Math.pow(gestureState.dx, 2) + Math.pow(gestureState.dy, 2));
-        console.log('distance ', distance);
         if (distance <= DRAG_THRESHOLD) {
           handleTodayPress();
         } else {
