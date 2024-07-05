@@ -4,6 +4,7 @@ import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import MyText from '@components/common/MyText';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { fontBasic, fontMedium } from '@utils/Sizing';
+import { alertColor } from '@utils/colors';
 
 interface AiLetterEntryHeaderProps {
   section: IAiLetterEntry;
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 1,
     right: -4,
-    backgroundColor: '#EB6D52',
+    backgroundColor: alertColor,
     borderRadius: 4,
     width: 4,
     height: 4,
