@@ -21,8 +21,6 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
       selected: date.markedDate === selectedDate,
       marked: date.markedDate !== selectedDate,
       dotColor: dotColors[date.diaryCount] || dotColors[3],
-      disableTouchEvent: false,
-      disabled: false,
     };
     return acc;
   }, {} as IMarkedDates);
@@ -30,8 +28,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
   return (
     <View style={styles.container}>
       <Calendar
-        disabledByDefault
-        disableAllTouchEventsForDisabledDays
+        maxDate={new Date()}
         style={styles.calendar}
         theme={{
           textDayFontFamily: 'GowunBatang-Regular',
@@ -66,7 +63,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
         onDayPress={onDayPress}
         onMonthChange={onMonthChange}
         markedDates={{
-          [selectedDate]: { selected: true, disabled: false, disableTouchEvent: false },
+          [selectedDate]: { selected: true },
           ...markedDatesList,
         }}
         renderArrow={(direction: Direction) => <CalendarArrow direction={direction} />}

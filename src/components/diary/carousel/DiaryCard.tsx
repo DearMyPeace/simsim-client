@@ -3,7 +3,6 @@ import { View, StyleSheet, Platform, Pressable, Keyboard } from 'react-native';
 import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import DiaryInput from '@components/diary/carousel/DiaryInput';
-import DiaryContent from '@components/diary/carousel/DiaryContent';
 import DiaryCardHeader from '@components/diary/carousel/DiaryCardHeader';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postDiary } from '@api/diary/post';
@@ -11,7 +10,7 @@ import { deleteDiary } from '@api/diary/delete';
 import { patchDiary } from '@api/diary/patch';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
-import { selectedDateStatus, tense } from '@stores/tense';
+import { selectedDateStatus } from '@stores/tense';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
 import { postAiLetters } from '@api/ai/post';
 import { IAiLetterRequest } from '@type/IAiLetterRequest';
@@ -27,7 +26,6 @@ const DiaryCard = ({
 }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
-  const dateStatus = useRecoilValue(tense);
   const setSnackbar = useSetRecoilState(snackMessage);
   const queryClient = useQueryClient();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -173,24 +171,17 @@ const DiaryCard = ({
             onDelete={onDelete}
             onSend={onSend}
           />
-          {dateStatus === 'TODAY' ? (
-            <DiaryInput
-              id={id}
-              isNew={id === NEW_DIARY}
-              diaryInput={diaryInput}
-              setDiaryInput={setDiaryInput}
-              timeStartWriting={timeStartWriting}
-              setTimeStartWriting={setTimeStartWriting}
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              placeholder={content}
-            />
-          ) : (
-            <DiaryContent
-              isEmpty={createdTime === ''}
-              content={content || '작성된 일기가 없습니다'}
-            />
-          )}
+          <DiaryInput
+            id={id}
+            isNew={id === NEW_DIARY}
+            diaryInput={diaryInput}
+            setDiaryInput={setDiaryInput}
+            timeStartWriting={timeStartWriting}
+            setTimeStartWriting={setTimeStartWriting}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            placeholder={content}
+          />
         </View>
       </Pressable>
       <BasicConfirmModal

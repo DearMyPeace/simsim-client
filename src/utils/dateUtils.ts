@@ -1,4 +1,6 @@
+import { IDate } from '@type/Diary';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
+import { format } from 'date-fns';
 
 export const generateDateRange = (startDate: Date, endDate: Date): Date[] => {
   const dates = [];
@@ -28,3 +30,9 @@ export const fillDatesWithData = (dates: Date[], entries: IAiLetterEntry[]): IAi
     return entriesByDate[dateStr] || { date: dateStr, isPlaceholder: true };
   });
 };
+
+export const getToday = () => format(new Date(), 'yyyy-MM-dd');
+
+export const getYear = () => format(new Date(), 'yyyy');
+
+export const getMonth = () => format(new Date(), 'MM') as IDate['month'];

@@ -38,8 +38,8 @@ export interface IMarkedDates {
     selected: boolean;
     marked: boolean;
     dotColor: string;
-    disableTouchEvent: boolean;
-    disabled: boolean;
+    disableTouchEvent?: boolean;
+    disabled?: boolean;
   };
 }
 
