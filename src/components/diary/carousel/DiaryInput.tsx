@@ -1,14 +1,10 @@
-import React, { RefObject } from 'react';
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  ScrollView,
-  TextInput,
-  Platform,
-} from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { StyleSheet, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import MyTextInput from '@components/common/MyTextInput';
 import LengthCheckView from '@components/common/LengthCheckView';
+import { useRecoilValue } from 'recoil';
+import { selectedDateStatus } from '@stores/tense';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface IDiaryInputProps {
   id: number;
@@ -34,8 +30,26 @@ const DiaryInput = ({
   setIsEditing,
   placeholder,
 }: IDiaryInputProps) => {
+  const targetDate = useRecoilValue(selectedDateStatus);
+
+  const resetStates = () => {
+    setIsEditing(false);
+    setTimeStartWriting('');
+    setDiaryInput('');
+  };
+
+  useEffect(() => {
+    resetStates();
+  }, [targetDate]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return resetStates;
+    }, []),
+  );
+
   const onChangeText = (text: string) => {
-    if (text.length > 200) return;
+    if (text.length > MAX_LENGTH) return;
     if (text.length === 1 && !timeStartWriting) {
       setTimeStartWriting(new Date().toISOString());
     }
@@ -63,7 +77,7 @@ const DiaryInput = ({
             onChangeText={onChangeText}
             autoCorrect={false}
             autoComplete="off"
-            maxLength={200}
+            maxLength={MAX_LENGTH}
             onFocus={onFocus}
             placeholder={placeholder}
           />
