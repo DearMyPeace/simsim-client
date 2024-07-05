@@ -14,6 +14,9 @@ ios:
 web:
 	npm run start-react
 
+web-cc:
+	npm run start-react --reset-cache
+
 web-build:
 	npm run build
 
@@ -35,15 +38,20 @@ asset:
 cc: 
 	npx react-native start --reset-cache
 
-clean:
-	rm -rf ./node_modules
-	rm -rf ./ios/Pods
-	rm -rf ./ios/Podfile.lock
-	rm -rf ./ios/build
+clean-web:
+	sudo rm -rf node_modules && rm -rf dist
+
+clean-ios:
+	sudo rm -rf ./ios/Pods
+	sudo rm -rf ./ios/Podfile.lock
+	sudo rm -rf ./ios/build
 
 clean-android:
 	cd android && ./gradlew clean
 
-fclean: clean
+fclean-ios: clean-ios
+	sudo rm -rf node_modules
 
 re: fclean all
+
+re-web: clean-web npm web
