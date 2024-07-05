@@ -7,8 +7,6 @@ import { appColor3 } from '@utils/colors';
 import AiLetterCalendarHeader from '@screens/ai/AiLetterCalendarHeader';
 import MyText from '@components/common/MyText';
 
-const { width, height } = Dimensions.get('window');
-
 const getYear = () => format(new Date(), 'yyyy');
 const getMonth = () => format(new Date(), 'MM') as IDate['month'];
 const getDay = () => format(new Date(), 'dd');
@@ -17,6 +15,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   const [isToday, setIsToday] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const DRAG_THRESHOLD = 10;
 
   const [selectedDate, setSelectedDate] = useState<IDay>({
     year: getYear(),
@@ -25,6 +24,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   });
 
   const position = useRef(new RNAnimated.ValueXY({ x: 0, y: 0 })).current;
+  const startPosition = useRef({ x: 0, y: 0 }).current;
 
   useEffect(() => {
     setSelectedDate({ year: getYear(), month: getMonth(), day: getDay() });
@@ -76,40 +76,48 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   };
 
   const handleTodayPress = () => {
-    console.log('press today ');
-    if (!isDragging) {
-      console.log('!is dragging ');
-      const year = getYear();
-      const month = getMonth();
-      const day = getDay();
-      setSelectedDate({ year, month, day });
-      onMonthChange(`${year}-${month}`);
-    }
+    console.log('press today');
+    const year = getYear();
+    const month = getMonth();
+    const day = getDay();
+    setSelectedDate({ year, month, day });
+    onMonthChange(`${year}-${month}`);
   };
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (evt, gestureState) => {
-        setIsDragging(true);
-        position.setValue({ x: gestureState.dx, y: gestureState.dy });
-      },
-      onPanResponderGrant: () => {
+      onPanResponderGrant: (evt) => {
+        startPosition.x = evt.nativeEvent.pageX;
+        startPosition.y = evt.nativeEvent.pageY;
         position.setOffset({
           x: position.x._value,
           y: position.y._value,
         });
         position.setValue({ x: 0, y: 0 });
-        setIsDragging(true);
+        setIsDragging(false);
         if (timerRef.current) {
           clearTimeout(timerRef.current);
         }
       },
-      onPanResponderRelease: () => {
+      onPanResponderMove: (evt, gestureState) => {
+        position.setValue({ x: gestureState.dx, y: gestureState.dy });
+      },
+      onPanResponderRelease: (evt, gestureState) => {
         position.flattenOffset();
+        const distance = Math.sqrt(Math.pow(gestureState.dx, 2) + Math.pow(gestureState.dy, 2));
+        console.log('distance ', distance);
+        if (distance <= DRAG_THRESHOLD) {
+          handleTodayPress();
+        } else {
+          setIsDragging(true);
+        }
         timerRef.current = setTimeout(() => {
           setIsDragging(false);
-        }, 100); // 드래그 상태를 해제하기 전에 잠깐의 딜레이를 추가하여 드래그 완료를 감지합니다.
+        }, 100);
+      },
+      onPanResponderTerminate: () => {
+        setIsDragging(false);
       },
     }),
   ).current;
@@ -137,9 +145,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
             {...panResponder.panHandlers}
             style={[styles.todayButton, animatedStyle]}
           >
-            <MyText style={styles.todayButtonText} onPress={handleTodayPress}>
-              오늘
-            </MyText>
+            <MyText style={styles.todayButtonText}>오늘</MyText>
           </RNAnimated.View>
         )}
       </CalendarProvider>
@@ -166,9 +172,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 5,
+    borderColor: appColor3,
+    borderWidth: 1,
   },
   todayButtonText: {
     color: appColor3,
     userSelect: 'none',
+    fontFamily: 'GowunBatang-Bold',
   },
 });
