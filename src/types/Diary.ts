@@ -48,6 +48,9 @@ export interface IDiariesResponse {
   diaryId: number;
   content: string;
   createdDate: string;
+  uerId: number;
+  deleteYn: 'Y' | 'N';
+  markedDate: string;
   modifiedDate: string;
 }
 export interface IDiaryListResponse {
