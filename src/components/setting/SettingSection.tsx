@@ -6,18 +6,22 @@ import { fontLarge } from '@utils/Sizing';
 
 interface ISectionProps {
   label: string;
-  buttonText: string;
-  onPress: () => void;
+  content: string;
+  onPress?: () => void;
 }
 
-const SettingSection = ({ label, buttonText, onPress }: ISectionProps) => {
+const SettingSection = ({ label, content, onPress }: ISectionProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <MyText bold size={fontLarge}>
           {label}
         </MyText>
-        <TextButton onPress={onPress}>{buttonText}</TextButton>
+        {onPress ? (
+          <TextButton onPress={onPress}>{content}</TextButton>
+        ) : (
+          <MyText>{content}</MyText>
+        )}
       </View>
     </View>
   );
@@ -35,6 +39,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#D5D5D5',
+  },
+  pressed: {
+    opacity: 0.5,
   },
 });
 

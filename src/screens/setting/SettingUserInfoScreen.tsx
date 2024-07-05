@@ -17,7 +17,7 @@ import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userInfoState } from '@stores/login';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
 
-const SettingScreen = ({ navigation }) => {
+const SettingUserInfoScreen = () => {
   const {
     deleteModalVisible,
     setDeleteModalVisible,
@@ -58,27 +58,15 @@ const SettingScreen = ({ navigation }) => {
         )}
         <View style={styles.basicPadding}>
           {/* todo: mobile에서 나의 정보는 알림 위에 위치 */}
-          <SettingSection
-            label="나의 정보"
-            content={userInfo.email}
-            onPress={() => {
-              navigation.navigate('SettingUserInfo');
-            }}
-          />
+          <SettingSection label="나의 정보" content={userInfo.email} onPress={() => {}} />
           <SettingSection
             label="편지 작성자"
             content={userInfo.personaName}
             onPress={aiPickerOpen}
           />
-          <SettingSection label="의견 보내기" content="보내기" onPress={onFeedback} />
+          <SettingSection label="!!!의견 보내기" content="보내기" onPress={onFeedback} />
           {/* <SettingSection label="로그아웃" content="나가기" onPress={onLogout} /> */}
-          <SettingSection
-            label="심심조각 방침"
-            content="방침 보기"
-            onPress={() => {
-              navigation.navigate('SettingTerms');
-            }}
-          />
+          <SettingSection label="심심조각 방침" content="방침 보기" onPress={() => {}} />
           {/* <SettingSection label="회원탈퇴" content="탈퇴하기" onPress={onDeleteAccount} /> */}
         </View>
       </ScrollView>
@@ -139,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingScreen;
+export default SettingUserInfoScreen;
