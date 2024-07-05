@@ -30,7 +30,7 @@ const SettingTermsScreen = () => {
       setIsVisible={setIsVisible}
       presentationStyle="overFullScreen"
       transparent={true}
-      containerStyle={{ minWidth: '50%', maxWidth: '80%' }}
+      containerStyle={{ width: '80%' }}
     >
       {modalName !== '' && (
         <MarkDownView containerStyle={{ flex: 1, padding: 10, maxHeight: 500 }}>
