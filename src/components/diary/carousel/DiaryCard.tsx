@@ -31,6 +31,7 @@ const DiaryCard = ({
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isSendModalVisible, setSendModalVisible] = useState(false);
   const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [isInformModalVisible, setInformModalVisible] = useState(false);
   const targetDate = useRecoilValue(selectedDateStatus);
 
   useEffect(() => {
@@ -125,6 +126,17 @@ const DiaryCard = ({
     sendDiary.mutate({ targetDate });
   };
 
+  const sendDiaryData = () => {
+    const formattedTime = `${targetDate}T${timeStartWriting.split('T')[1]}`;
+    const cretatedDate = id === NEW_DIARY ? formattedTime : createdTime;
+    const data = {
+      content: diaryInput,
+      createdDate: cretatedDate,
+      modifiedDate: cretatedDate,
+    };
+    id === NEW_DIARY ? addNewDiary.mutate(data) : editDiary.mutate({ diaryId: id, data });
+  };
+
   const onSave = () => {
     if (diaryInput === '') {
       setSnackbar('입력된 내용이 없습니다.');
@@ -134,18 +146,21 @@ const DiaryCard = ({
       }
       return;
     }
-    const formattedTime = `${targetDate}T${timeStartWriting.split('T')[1]}`;
-    const cretatedDate = id === NEW_DIARY ? formattedTime : createdTime;
-    const data = {
-      content: diaryInput,
-      createdDate: cretatedDate,
-      modifiedDate: cretatedDate,
-    };
-    if (id === NEW_DIARY) {
-      addNewDiary.mutate(data);
-    } else {
-      editDiary.mutate({ diaryId: id, data });
+    if (diaryInput === content) {
+      // setSnackbar('변경된 내용이 없습니다.');
+      setIsEditing(false);
+      return;
     }
+    if (isLetterSent) {
+      setInformModalVisible(true);
+      return;
+    }
+    sendDiaryData();
+  };
+
+  const onConfirmSaveEdit = () => {
+    setInformModalVisible(false);
+    sendDiaryData();
   };
 
   const onKeyboardDismiss = () => {
@@ -203,6 +218,13 @@ const DiaryCard = ({
         onConfirm={onConfirmSend}
         content="기록을 보내시겠습니까?"
         confirmText="보내기"
+      />
+      <BasicConfirmModal
+        visible={isInformModalVisible}
+        setIsVisible={setInformModalVisible}
+        onConfirm={onConfirmSaveEdit}
+        content={`기록을 수정해도\n편지의 내용은 바뀌지 않아요.`}
+        confirmText="저장"
       />
       {sendDiary.isPending && <DiaryLoading />}
     </>
