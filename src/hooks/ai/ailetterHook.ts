@@ -20,12 +20,6 @@ export const useAiLetterData = (initialDateStr: string) => {
     return fetchAiLettersMonthSummary({ year: parseInt(year), month: parseInt(month) });
   };
 
-  const isCurrentMonth = (dateStr: string): boolean => {
-    const [year, month] = dateStr.split('-');
-    const now = new Date();
-    return now.getFullYear() === parseInt(year) && now.getMonth() + 1 === parseInt(month);
-  };
-
   const fetchContentForID = useCallback(
     async (id: IID) => {
       console.log('fetchContentForID called with id: ', id);
@@ -100,16 +94,24 @@ export const useAiLetterData = (initialDateStr: string) => {
     });
   };
 
-  const { refetch: refetchMonthSummary } = useQuery({
+  const {
+    data: monthSummaryData,
+    error: monthSummaryError,
+    isLoading: monthSummaryLoading,
+    refetch: refetchMonthSummary,
+  } = useQuery({
     queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
-    queryFn: async () => {
-      const result = await fetchMonthSummary(currentDateStr);
-      console.log('fetchMonthSummary result: ', result);
-      return result;
-    },
-    onSuccess: (data) => {
-      const dateRange = generateDateRange(data[0].date, data[data.length - 1].date);
-      const filledData = fillDatesWithData(dateRange, data);
+    queryFn: () => fetchMonthSummary(currentDateStr),
+    enabled: !!currentDateStr,
+  });
+
+  useEffect(() => {
+    if (monthSummaryData && monthSummaryData.length > 0) {
+      const dateRange = generateDateRange(
+        monthSummaryData[0].date,
+        monthSummaryData[monthSummaryData.length - 1].date,
+      );
+      const filledData = fillDatesWithData(dateRange, monthSummaryData);
       setAiLetterEntries(filledData);
 
       const todayStr = new Date().toISOString().slice(0, 10);
@@ -121,12 +123,15 @@ export const useAiLetterData = (initialDateStr: string) => {
         }
         setActiveSections([todayIndex]);
 
-        if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
-        }
+        // if (flatListRef.current && filledData.length > 0) {
+        //   flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
+        // }
       }
-    },
-  });
+    } else {
+      setAiLetterEntries([]);
+      setActiveSections([]);
+    }
+  }, [monthSummaryData, fetchContentForID]);
 
   const refetchMonthData = useCallback(
     async (newDateStr?: string) => {
@@ -143,7 +148,9 @@ export const useAiLetterData = (initialDateStr: string) => {
   );
 
   useEffect(() => {
-    refetchMonthData(currentDateStr);
+    if (currentDateStr) {
+      refetchMonthData(currentDateStr);
+    }
   }, [currentDateStr, refetchMonthData]);
 
   return {
@@ -153,8 +160,8 @@ export const useAiLetterData = (initialDateStr: string) => {
     flatListRef,
     handleAccordionChange,
     onScrollToIndexFailed,
-    isLoading: false, // Set loading state appropriately
-    error: null, // Set error state appropriately
+    isLoading: monthSummaryLoading,
+    error: monthSummaryError,
     refetchMonthSummary: refetchMonthData,
     refreshing,
   };
