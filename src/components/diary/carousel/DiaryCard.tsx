@@ -127,8 +127,7 @@ const DiaryCard = ({
   };
 
   const sendDiaryData = () => {
-    const formattedTime = `${targetDate}T${timeStartWriting.split('T')[1]}`;
-    const cretatedDate = id === NEW_DIARY ? formattedTime : createdTime;
+    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
       content: diaryInput,
       createdDate: cretatedDate,
