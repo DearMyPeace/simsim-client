@@ -2,12 +2,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, FlatList, ListRenderItem, ViewToken } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryPagination from '@components/diary/carousel/DiaryPagination';
-import { IDiary, IDiaryCarouselProps, NEW_DIARY } from '@type/Diary';
+import { IDiary, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import CenterViewText from '@components/common/CenterViewText';
+import { useRecoilValue } from 'recoil';
+import { selectedDateStatus } from '@stores/tense';
 
-const DiaryCarousel = ({ selectedDate }: IDiaryCarouselProps) => {
+const DiaryCarousel = () => {
+  const selectedDate = useRecoilValue(selectedDateStatus);
   const { data, isPending, isError, sendStatus } = useDiaryHook(selectedDate);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);

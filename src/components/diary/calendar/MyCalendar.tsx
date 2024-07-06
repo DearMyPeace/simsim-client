@@ -12,15 +12,12 @@ import CalendarSelectModal from './CalendarSelectModal';
 import { useRecoilState } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
 import useDate from '@hooks/diary/useDate';
+import useCalendarHook from '@hooks/diary/calendarHook';
 
 setLocaleConfig();
-interface IMyCalendarProps {
-  markedDates: IDiaryCount[];
-  onDayPress: (date: DateData) => void;
-  onMonthChange: (date: DateData) => void;
-}
 
-const MyCalendar = ({ markedDates, onDayPress, onMonthChange }: IMyCalendarProps) => {
+const MyCalendar = () => {
+  const { onDayPress, onMonthChange, markedDates } = useCalendarHook();
   const saveDateStatus = useDate();
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateStatus);

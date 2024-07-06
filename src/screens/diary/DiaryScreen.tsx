@@ -2,22 +2,18 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import MyCalendar from '@components/diary/calendar/MyCalendar';
 import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
-import useCalendarHook from '@hooks/diary/calendarHook';
 import MySnackbar from '@components/common/MySnackbar';
 import { paddingLarge } from '@utils/Sizing';
+import { useRecoilValue } from 'recoil';
+import { snackMessage } from '@stores/snackMessage';
 
 const DiaryScreen = () => {
-  const { selectedDate, onDayPress, onMonthChange, markedDates, snackbarText } = useCalendarHook();
-
+  const snackbarText = useRecoilValue(snackMessage);
   return (
     <>
       <View style={styles.container}>
-        <MyCalendar
-          markedDates={markedDates}
-          onDayPress={onDayPress}
-          onMonthChange={onMonthChange}
-        />
-        <DiaryCarousel selectedDate={selectedDate} />
+        <MyCalendar />
+        <DiaryCarousel />
       </View>
       <MySnackbar visible={snackbarText !== ''} />
     </>
