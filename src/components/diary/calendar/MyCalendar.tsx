@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
 import { StyleSheet, View } from 'react-native';
-import { Calendar, DateData } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import setLocaleConfig, { kMonth } from '@utils/localeConfig';
-import { IDiaryCount, IMarkedDates } from '@type/Diary';
+import { IDate, IMarkedDates } from '@type/Diary';
 import { dotColors } from '@utils/colors';
 import { fontLarge } from '@utils/Sizing';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import CalendarSelectModal from './CalendarSelectModal';
-import { useRecoilState } from 'recoil';
-import { selectedDateStatus } from '@stores/tense';
-import useDate from '@hooks/diary/useDate';
 import useCalendarHook from '@hooks/diary/calendarHook';
 
 setLocaleConfig();
 
 const MyCalendar = () => {
-  const { onDayPress, onMonthChange, markedDates } = useCalendarHook();
-  const saveDateStatus = useDate();
+  const {
+    onDayPress,
+    onMonthChange,
+    markedDates,
+    selectedDate,
+    setSelectedDate,
+    saveDateStatus,
+    setTargetMonth,
+  } = useCalendarHook();
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateStatus);
   const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.slice(5, 7), 10));
   const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.slice(0, 4), 10));
   const markedDatesList: IMarkedDates = markedDates.reduce((acc, date) => {
@@ -40,6 +43,10 @@ const MyCalendar = () => {
 
   const handleModalDismiss = () => {
     setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
+    setTargetMonth({
+      year: selectedYear.toString(),
+      month: selectedMonth.toString().padStart(2, '0') as IDate['month'],
+    });
     setModalVisible(false);
   };
 
