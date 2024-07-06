@@ -38,15 +38,15 @@ const MyCalendar = () => {
   useEffect(() => {
     setSelectedMonth(parseInt(selectedDate.slice(5, 7), 10));
     setSelectedYear(parseInt(selectedDate.slice(0, 4), 10));
+    setTargetMonth({
+      year: selectedYear.toString(),
+      month: selectedMonth.toString().padStart(2, '0') as IDate['month'],
+    });
     saveDateStatus(selectedDate);
   }, [selectedDate]);
 
   const handleModalDismiss = () => {
     setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
-    setTargetMonth({
-      year: selectedYear.toString(),
-      month: selectedMonth.toString().padStart(2, '0') as IDate['month'],
-    });
     setModalVisible(false);
   };
 
