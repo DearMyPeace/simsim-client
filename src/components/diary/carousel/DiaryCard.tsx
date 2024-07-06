@@ -163,6 +163,12 @@ const DiaryCard = ({
     sendDiaryData();
   };
 
+  const onCancelSaveEdit = () => {
+    setInformModalVisible(false);
+    setIsEditing(false);
+    setDiaryInput(content);
+  };
+
   const onKeyboardDismiss = () => {
     setIsEditing(false);
     Keyboard.dismiss();
@@ -223,6 +229,7 @@ const DiaryCard = ({
         visible={isInformModalVisible}
         setIsVisible={setInformModalVisible}
         onConfirm={onConfirmSaveEdit}
+        onCancel={onCancelSaveEdit}
         content={`기록을 수정해도\n편지의 내용은 바뀌지 않아요.`}
         confirmText="저장"
       />
