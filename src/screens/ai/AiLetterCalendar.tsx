@@ -37,12 +37,7 @@ const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
     const checkIfToday = () => {
       const todayYear = format(new Date(), 'yyyy');
       const todayMonth = format(new Date(), 'MM') as IDate['month'];
-      const todayDay = format(new Date(), 'dd');
-      setIsToday(
-        selectedDate.year === todayYear &&
-          selectedDate.month === todayMonth &&
-          selectedDate.day === todayDay,
-      );
+      setIsToday(selectedDate.year === todayYear && selectedDate.month === todayMonth);
     };
 
     checkIfToday();
