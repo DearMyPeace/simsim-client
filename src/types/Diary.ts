@@ -12,6 +12,12 @@ export interface IDiaryList {
 
 export const NEW_DIARY = -1;
 
+export const newDiary = {
+  id: NEW_DIARY,
+  content: '이 날의 심심기록을 남겨보세요',
+  createdTime: '',
+};
+
 export type DateStatus = 'TODAY' | 'PAST' | 'FUTURE';
 
 export interface IDiaryCarouselProps {

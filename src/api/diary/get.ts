@@ -1,6 +1,6 @@
 import React from 'react';
 import instance from '@api/axios';
-import { IDate, IDiaryCount, IDiaryListResponse, NEW_DIARY } from '@type/Diary';
+import { IDate, IDiaryCount, IDiaryListResponse, newDiary } from '@type/Diary';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 export const fetchDiaryList = async (targetDate: string): Promise<IDiaryListResponse> => {
@@ -20,12 +20,7 @@ export const useDiaryList = (targetDate: string, isMarked: boolean) => {
         content: item.content,
         createdTime: item.createdDate,
       }));
-      diaryList.length < 3 &&
-        diaryList.push({
-          id: NEW_DIARY,
-          content: '이 날의 심심기록을 남겨보세요',
-          createdTime: '',
-        });
+      diaryList.length < 3 && diaryList.push(newDiary);
       return { sendStatus: data.sendStatus, diaryList };
     },
   });

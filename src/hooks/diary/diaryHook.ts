@@ -1,7 +1,6 @@
 import { useDiaryList } from '@api/diary/get';
 import { markedDateStatus } from '@stores/tense';
-import { NEW_DIARY } from '@type/Diary';
-import { useEffect } from 'react';
+import { newDiary } from '@type/Diary';
 import { useRecoilValue } from 'recoil';
 
 const useDiaryHook = (selectedDate: string) => {
@@ -10,16 +9,10 @@ const useDiaryHook = (selectedDate: string) => {
     selectedDate,
     markedDateSet.has(selectedDate),
   );
-  const newDiary = [
-    {
-      id: NEW_DIARY,
-      content: '이 날의 심심기록을 남겨보세요',
-      createdTime: '',
-    },
-  ];
+  const newDiaryData = [newDiary];
 
   return {
-    data: markedDateSet.has(selectedDate) ? data?.diaryList || [] : newDiary,
+    data: markedDateSet.has(selectedDate) ? data?.diaryList || newDiaryData : newDiaryData,
     isPending,
     isError,
     isSuccess,
