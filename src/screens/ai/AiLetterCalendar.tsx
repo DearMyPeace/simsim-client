@@ -56,14 +56,10 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
     [onMonthChange],
   );
 
-  const handleMonthSelect = (month: number) => {
-    setSelectedDate((prevState) => ({ ...prevState, month }));
-    onMonthChange(`${selectedDate.year}-${month.toString().padStart(2, '0')}`);
-  };
-
-  const handleYearSelect = (year: number) => {
-    setSelectedDate((prevState) => ({ ...prevState, year }));
-    onMonthChange(`${year}-${selectedDate.month.toString().padStart(2, '0')}`);
+  const handleMonthYearSelect = (month: number, year: number) => {
+    setSelectedDate((prevState) => ({ ...prevState, month: month.toString().padStart(2, '0') }));
+    setSelectedDate((prevState) => ({ ...prevState, year: year.toString() }));
+    onMonthChange(`${year}-${month.toString().padStart(2, '0')}`);
   };
 
   const onLeftPress = () => {
@@ -144,8 +140,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
           selectedDate={selectedDate}
           onLeftPress={onLeftPress}
           onRightPress={onRightPress}
-          onMonthSelect={handleMonthSelect}
-          onYearSelect={handleYearSelect}
+          onMonthYearSelect={handleMonthYearSelect}
         />
         {children}
 
