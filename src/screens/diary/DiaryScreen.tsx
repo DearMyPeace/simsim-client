@@ -13,7 +13,6 @@ const DiaryScreen = () => {
     <>
       <View style={styles.container}>
         <MyCalendar
-          selectedDate={selectedDate}
           markedDates={markedDates}
           onDayPress={onDayPress}
           onMonthChange={onMonthChange}

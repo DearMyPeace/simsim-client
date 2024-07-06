@@ -12,7 +12,7 @@ export interface IDiaryList {
 
 export const NEW_DIARY = -1;
 
-export type DateStatus = 'TODAY' | 'PAST';
+export type DateStatus = 'TODAY' | 'PAST' | 'FUTURE';
 
 export interface IDiaryCarouselProps {
   selectedDate: string;
