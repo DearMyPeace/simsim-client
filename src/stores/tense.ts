@@ -14,5 +14,5 @@ export const selectedDateStatus = atom<string>({
 
 export const markedDateStatus = atom<Set<string>>({
   key: 'markedDateStatus',
-  default: new Set(),
+  default: new Set([format(new Date(), 'yyyy-MM-dd')]),
 });
