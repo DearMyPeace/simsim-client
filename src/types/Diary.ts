@@ -38,8 +38,8 @@ export interface IMarkedDates {
     selected: boolean;
     marked: boolean;
     dotColor: string;
-    disableTouchEvent: boolean;
-    disabled: boolean;
+    disableTouchEvent?: boolean;
+    disabled?: boolean;
   };
 }
 
@@ -48,6 +48,9 @@ export interface IDiariesResponse {
   diaryId: number;
   content: string;
   createdDate: string;
+  uerId: number;
+  deleteYn: 'Y' | 'N';
+  markedDate: string;
   modifiedDate: string;
 }
 export interface IDiaryListResponse {

@@ -1,23 +1,52 @@
 import React from 'react';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { fontLarge } from '@utils/Sizing';
 
 interface ISectionProps {
   label: string;
-  buttonText: string;
-  onPress: () => void;
+  content?: string;
+  onPress?: () => void;
+  onLabelPress?: () => void;
+  textColor?: string;
+  icon?: React.ReactNode;
 }
 
-const SettingSection = ({ label, buttonText, onPress }: ISectionProps) => {
+const SettingSection = ({
+  label,
+  content = '',
+  onPress,
+  onLabelPress,
+  textColor = 'black',
+  icon,
+}: ISectionProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <MyText bold size={fontLarge}>
-          {label}
-        </MyText>
-        <TextButton onPress={onPress}>{buttonText}</TextButton>
+        {onLabelPress ? (
+          <Pressable onPress={onLabelPress}>
+            {({ pressed }) => (
+              <MyText bold size={fontLarge} style={[pressed && styles.pressed]}>
+                {label}
+              </MyText>
+            )}
+          </Pressable>
+        ) : (
+          <MyText bold size={fontLarge}>
+            {label}
+          </MyText>
+        )}
+        {onPress ? (
+          <TextButton textColor={textColor} onPress={onPress}>
+            {content}
+          </TextButton>
+        ) : (
+          <View style={styles.contentContainer}>
+            {icon}
+            <MyText style={{ color: textColor }}>{content}</MyText>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -35,6 +64,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#D5D5D5',
+  },
+  pressed: {
+    opacity: 0.5,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
   },
 });
 

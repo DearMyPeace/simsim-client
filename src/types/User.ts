@@ -10,4 +10,5 @@ interface IUserInfo {
   bgImage: string | null;
   userStatus: 'Y' | 'N';
   replyStatus: 'R' | 'C' | 'D'; // R: recieve, C: check, D: default
+  providerName: 'GOOGLE' | 'APPLE' | '';
 }

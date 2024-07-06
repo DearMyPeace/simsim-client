@@ -20,11 +20,10 @@ export const useDiaryList = (targetDate: string, dateStatus: DateStatus) => {
         content: item.content,
         createdTime: item.createdDate,
       }));
-      dateStatus === 'TODAY' &&
-        diaryList.length < 3 &&
+      diaryList.length < 3 &&
         diaryList.push({
           id: NEW_DIARY,
-          content: '오늘의 심심기록을 남겨보세요',
+          content: '이 날의 심심기록을 남겨보세요',
           createdTime: '',
         });
       return { sendStatus: data.sendStatus, diaryList };

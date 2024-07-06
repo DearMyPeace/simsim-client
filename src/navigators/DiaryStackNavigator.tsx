@@ -9,7 +9,7 @@ const DiaryStackNavigator = () => {
   useUserSetup();
   return (
     <Stack.Navigator
-      initialRouteName="Details"
+      initialRouteName="Diary"
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         headerShown: false,
@@ -39,8 +39,9 @@ const DiaryStackNavigator = () => {
               },
             },
           },
+          title: '심심기록',
         }}
-        name="Details"
+        name="Diary"
         component={DiaryScreen}
       />
     </Stack.Navigator>

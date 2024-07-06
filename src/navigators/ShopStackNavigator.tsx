@@ -9,7 +9,7 @@ const ShopStackNavigator = () => {
   useUserSetup();
   return (
     <Stack.Navigator
-      initialRouteName="Details"
+      initialRouteName="Shop"
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         headerShown: false,
@@ -23,6 +23,7 @@ const ShopStackNavigator = () => {
     >
       <Stack.Screen
         options={{
+          title: '조각상점',
           transitionSpec: {
             open: {
               animation: 'spring',
@@ -40,7 +41,7 @@ const ShopStackNavigator = () => {
             },
           },
         }}
-        name="Details"
+        name="Shop"
         component={Shop}
       />
     </Stack.Navigator>

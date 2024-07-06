@@ -8,7 +8,7 @@ const PieceStackNavigator = () => {
   useUserSetup();
   return (
     <Stack.Navigator
-      initialRouteName="Details"
+      initialRouteName="Piece"
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         headerShown: false,
@@ -38,8 +38,9 @@ const PieceStackNavigator = () => {
               },
             },
           },
+          title: '마음조각',
         }}
-        name="Details"
+        name="Piece"
         component={Piece}
       />
     </Stack.Navigator>

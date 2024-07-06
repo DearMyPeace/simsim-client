@@ -18,6 +18,7 @@ export const userInfoState = atom<IUserInfo>({
     bgImage: null,
     userStatus: 'N',
     replyStatus: 'D',
+    providerName: '',
   },
 });
 

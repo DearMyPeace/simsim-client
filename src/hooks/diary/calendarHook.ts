@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { format, isSameDay } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { DateData } from 'react-native-calendars';
 import { IDate } from '@type/Diary';
 import { useDiaryCounts } from '@api/diary/get';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
 import { selectedDateStatus, tense } from '@stores/tense';
-
-const getToday = () => format(new Date(), 'yyyy-MM-dd');
-const getYear = () => format(new Date(), 'yyyy');
-const getMonth = () => format(new Date(), 'MM') as IDate['month'];
+import { getToday, getYear, getMonth } from '@utils/dateUtils';
 
 const useCalendarHook = () => {
   const [today] = useState(getToday);

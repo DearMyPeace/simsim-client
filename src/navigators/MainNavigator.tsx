@@ -8,6 +8,9 @@ import SettingScreen from '@screens/setting/SettingScreen';
 import { CloseIcon } from '@components/common/TabIcons';
 import useAxiosInterceptors from '@hooks/useAxiosInterceptors';
 import useUserSetup from '@hooks/user/useUserSetup';
+import { fontLarge } from '@utils/Sizing';
+import SettingUserInfoScreen from '@screens/setting/SettingUserInfoScreen';
+import SettingTermsScreen from '@screens/setting/SettingTermsScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,7 @@ const MainNavigator = () => {
             backgroundColor: 'transparent',
           },
         }),
+        animationEnabled: true,
       }}
     >
       {isLoggedIn ? (
@@ -38,12 +42,14 @@ const MainNavigator = () => {
               headerShown: false,
             }}
           />
-          <Stack.Screen
-            name="Settings"
-            component={SettingScreen}
-            options={({ navigation }) => ({
-              title: '',
+          <Stack.Group
+            screenOptions={({ navigation }) => ({
               headerStyle: { backgroundColor: 'white' },
+              headerTitleStyle: {
+                fontFamily: 'GowunBatang-Regular',
+                fontSize: fontLarge,
+                paddingHorizontal: 10,
+              },
               headerShadowVisible: false,
               headerBackTitleVisible: false,
               headerTintColor: 'black',
@@ -51,7 +57,29 @@ const MainNavigator = () => {
               headerLeft: () => null,
               headerRight: () => <CloseIcon onPress={navigation.goBack} />,
             })}
-          />
+          >
+            <Stack.Screen
+              name="Settings"
+              component={SettingScreen}
+              options={{
+                title: '설정',
+              }}
+            />
+            <Stack.Screen
+              name="SettingUserInfo"
+              component={SettingUserInfoScreen}
+              options={{
+                title: '정보',
+              }}
+            />
+            <Stack.Screen
+              name="SettingTerms"
+              component={SettingTermsScreen}
+              options={{
+                title: '방침',
+              }}
+            />
+          </Stack.Group>
         </>
       ) : (
         <Stack.Screen

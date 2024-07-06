@@ -9,7 +9,7 @@ const AiLetterStackNavigator = () => {
   useUserSetup();
   return (
     <Stack.Navigator
-      initialRouteName="Details"
+      initialRouteName="AiLetter"
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         headerShown: false,
@@ -39,8 +39,9 @@ const AiLetterStackNavigator = () => {
               },
             },
           },
+          title: '조각편지',
         }}
-        name="Details"
+        name="AiLetter"
         component={AiLetter}
       />
     </Stack.Navigator>
