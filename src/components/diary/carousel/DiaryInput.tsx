@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import MyTextInput from '@components/common/MyTextInput';
 import LengthCheckView from '@components/common/LengthCheckView';
 import { useRecoilValue } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
-import { useFocusEffect } from '@react-navigation/native';
+import { set } from 'date-fns';
 
 interface IDiaryInputProps {
   id: number;
@@ -32,26 +32,13 @@ const DiaryInput = ({
 }: IDiaryInputProps) => {
   const targetDate = useRecoilValue(selectedDateStatus);
 
-  const resetStates = () => {
-    setIsEditing(false);
-    setTimeStartWriting('');
-    setDiaryInput('');
-  };
-
-  useEffect(() => {
-    resetStates();
-  }, [targetDate]);
-
-  useFocusEffect(
-    useCallback(() => {
-      return resetStates;
-    }, []),
-  );
-
   const onChangeText = (text: string) => {
     if (text.length > MAX_LENGTH) return;
     if (text.length === 1 && !timeStartWriting) {
-      setTimeStartWriting(new Date().toISOString());
+      const now = new Date();
+      const [year, month, date] = targetDate.split('-').map(Number);
+      const newDate = set(now, { year, month: month - 1, date });
+      setTimeStartWriting(newDate.toISOString());
     }
     if (text.length === 0 && timeStartWriting) {
       setTimeStartWriting('');
