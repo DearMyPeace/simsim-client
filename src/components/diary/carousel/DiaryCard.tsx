@@ -37,6 +37,7 @@ const DiaryCard = ({
   useEffect(() => {
     setDiaryInput(id === NEW_DIARY ? '' : content);
     setIsEditing(false);
+    setTimeStartWriting('');
   }, [id, content]);
 
   const addNewDiary = useMutation({
@@ -86,7 +87,6 @@ const DiaryCard = ({
   const sendDiary = useMutation({
     mutationFn: (data: IAiLetterRequest) => postAiLetters(data),
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
