@@ -15,66 +15,49 @@ export const useAiLetterData = (initialDateStr: string) => {
 
   const queryClient = useQueryClient();
 
-  const fetchMonthSummary = (year: string, month: string): Promise<IAiLetterEntry[]> => {
+  const fetchMonthSummary = async (dateStr: string): Promise<IAiLetterEntry[]> => {
+    const [year, month] = dateStr.split('-');
     return fetchAiLettersMonthSummary({ year: parseInt(year), month: parseInt(month) });
   };
 
-  const isCurrentMonth = (dateStr: string): boolean => {
-    const [year, month] = dateStr.split('-');
-    const now = new Date();
-    return now.getFullYear() === parseInt(year) && now.getMonth() + 1 === parseInt(month);
-  };
+  const fetchContentForID = useCallback(
+    async (id: IID) => {
+      console.log('fetchContentForID called with id: ', id);
 
-  const {
-    data: monthSummaryData,
-    error: monthSummaryError,
-    isLoading: monthSummaryLoading,
-    refetch: refetchMonthSummary,
-  } = useQuery({
-    queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
-    queryFn: async () => {
-      const [year, month] = currentDateStr.split('-');
-      const result = await fetchMonthSummary(year, month);
-      console.log('fetchMonthSummary result: ', result);
-      return result;
-    },
-  });
-
-  const fetchContentForID = async (id: IID) => {
-    console.log('fetchContentForID called with id: ', id);
-
-    const cachedData = queryClient.getQueryData(['fetchAiLetterByID', id]);
-    if (cachedData && cachedData.content) {
-      console.log('Using cached data for ID: ', id);
-      setAiLetterEntries((prevEntries) => {
-        const updatedEntries = prevEntries.map((entry) =>
-          entry.id === id ? { ...entry, content: cachedData.content } : entry,
-        );
-        console.log('Updated aiLetterEntries from cache: ', updatedEntries);
-        return updatedEntries;
-      });
-      return;
-    }
-
-    try {
-      const response = await fetchAiLettersViaID({ id });
-      console.log('fetchAiLettersViaID response: ', response);
-      if (response && response.content) {
+      const cachedData = queryClient.getQueryData(['fetchAiLetterByID', id]);
+      if (cachedData && cachedData.content) {
+        console.log('Using cached data for ID: ', id);
         setAiLetterEntries((prevEntries) => {
           const updatedEntries = prevEntries.map((entry) =>
-            entry.id === id ? { ...entry, content: response.content, replyStatus: 'Y' } : entry,
+            entry.id === id ? { ...entry, content: cachedData.content } : entry,
           );
-          console.log('Updated aiLetterEntries after fetchContentForID: ', updatedEntries);
-          queryClient.setQueryData(['fetchAiLetterByID', id], response);
+          console.log('Updated aiLetterEntries from cache: ', updatedEntries);
           return updatedEntries;
         });
-      } else {
-        console.log('No content found for the given ID');
+        return;
       }
-    } catch (error) {
-      console.error('Error fetching content for ID: ', error);
-    }
-  };
+
+      try {
+        const response = await fetchAiLettersViaID({ id });
+        console.log('fetchAiLettersViaID response: ', response);
+        if (response && response.content) {
+          setAiLetterEntries((prevEntries) => {
+            const updatedEntries = prevEntries.map((entry) =>
+              entry.id === id ? { ...entry, content: response.content, replyStatus: 'Y' } : entry,
+            );
+            console.log('Updated aiLetterEntries after fetchContentForID: ', updatedEntries);
+            queryClient.setQueryData(['fetchAiLetterByID', id], response);
+            return updatedEntries;
+          });
+        } else {
+          console.log('No content found for the given ID');
+        }
+      } catch (error) {
+        console.error('Error fetching content for ID: ', error);
+      }
+    },
+    [queryClient],
+  );
 
   const handleAccordionChange = useCallback(
     async (section: IAiLetterEntry) => {
@@ -97,7 +80,7 @@ export const useAiLetterData = (initialDateStr: string) => {
         }
       }
     },
-    [aiLetterEntries, fetchContentForID, queryClient],
+    [aiLetterEntries, fetchContentForID],
   );
 
   const onScrollToIndexFailed = (info) => {
@@ -111,51 +94,64 @@ export const useAiLetterData = (initialDateStr: string) => {
     });
   };
 
+  const {
+    data: monthSummaryData,
+    error: monthSummaryError,
+    isLoading: monthSummaryLoading,
+    refetch: refetchMonthSummary,
+  } = useQuery({
+    queryKey: ['fetchAiLettersMonthSummary', currentDateStr],
+    queryFn: () => fetchMonthSummary(currentDateStr),
+    enabled: !!currentDateStr,
+  });
+
   useEffect(() => {
-    const updateActiveSections = async () => {
-      if (!isEmpty(monthSummaryData)) {
-        monthSummaryData.sort((a, b) => (a.date < b.date ? 1 : -1));
-        const dateRange = generateDateRange(
-          monthSummaryData[monthSummaryData.length - 1].date,
-          monthSummaryData[0].date,
-        );
-        const filledData = fillDatesWithData(dateRange, monthSummaryData);
-        setAiLetterEntries(filledData);
-        console.log('filledData: ', filledData);
+    if (monthSummaryData && monthSummaryData.length > 0) {
+      const dateRange = generateDateRange(
+        monthSummaryData[0].date,
+        monthSummaryData[monthSummaryData.length - 1].date,
+      );
+      const filledData = fillDatesWithData(dateRange, monthSummaryData);
+      setAiLetterEntries(filledData);
 
-        const todayStr = new Date().toISOString().slice(0, 10);
-        const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
-        if (todayIndex !== -1) {
-          const section = filledData[todayIndex];
-          if (!section.content) {
-            await fetchContentForID(section.id);
-          }
-          setActiveSections([todayIndex]);
-
-          if (flatListRef.current) {
-            flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
-          }
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
+      if (todayIndex !== -1) {
+        const section = filledData[todayIndex];
+        if (!section.content) {
+          fetchContentForID(section.id);
         }
-      } else {
-        setAiLetterEntries([]);
-      }
-    };
+        setActiveSections([todayIndex]);
 
-    updateActiveSections();
-  }, [monthSummaryData]);
+        if (flatListRef.current && filledData.length > 0 && todayIndex > 0) {
+          flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
+        }
+      }
+    } else {
+      setAiLetterEntries([]);
+      setActiveSections([]);
+    }
+  }, [monthSummaryData, fetchContentForID]);
 
   const refetchMonthData = useCallback(
     async (newDateStr?: string) => {
       setRefreshing(true);
       if (newDateStr) {
         setCurrentDateStr(newDateStr);
+      } else {
+        await refetchMonthSummary();
       }
-      await refetchMonthSummary();
       setRefreshing(false);
       setActiveSections([]);
     },
     [refetchMonthSummary],
   );
+
+  useEffect(() => {
+    if (currentDateStr) {
+      refetchMonthData(currentDateStr);
+    }
+  }, [currentDateStr, refetchMonthData]);
 
   return {
     aiLetterEntries,

@@ -57,27 +57,30 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   );
 
   const handleMonthYearSelect = (month: number, year: number) => {
-    setSelectedDate((prevState) => ({ ...prevState, month: month.toString().padStart(2, '0') }));
-    setSelectedDate((prevState) => ({ ...prevState, year: year.toString() }));
-    onMonthChange(`${year}-${month.toString().padStart(2, '0')}`);
+    const formattedMonth = month.toString().padStart(2, '0') as IDate['month'];
+    setSelectedDate((prevState) => ({
+      ...prevState,
+      month: formattedMonth,
+      year: year.toString(),
+    }));
+    onMonthChange(`${year}-${formattedMonth}`);
+  };
+
+  const changeMonth = (increment: number) => {
+    const newDate = new Date(Number(selectedDate.year), Number(selectedDate.month) - 1 + increment);
+    const year = format(newDate, 'yyyy');
+    const month = format(newDate, 'MM') as IDate['month'];
+    const day = getDay();
+    setSelectedDate({ year, month, day });
+    onMonthChange(`${year}-${month}`);
   };
 
   const onLeftPress = () => {
-    const newDate = new Date(Number(selectedDate.year), Number(selectedDate.month) - 2);
-    const year = format(newDate, 'yyyy');
-    const month = format(newDate, 'MM') as IDate['month'];
-    const day = getDay();
-    setSelectedDate({ year, month, day });
-    onMonthChange(`${year}-${month}`);
+    changeMonth(-1);
   };
 
   const onRightPress = () => {
-    const newDate = new Date(Number(selectedDate.year), Number(selectedDate.month));
-    const year = format(newDate, 'yyyy');
-    const month = format(newDate, 'MM') as IDate['month'];
-    const day = getDay();
-    setSelectedDate({ year, month, day });
-    onMonthChange(`${year}-${month}`);
+    changeMonth(1);
   };
 
   const handleTodayPress = () => {
