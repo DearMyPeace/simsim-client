@@ -123,9 +123,9 @@ export const useAiLetterData = (initialDateStr: string) => {
         }
         setActiveSections([todayIndex]);
 
-        // if (flatListRef.current && filledData.length > 0) {
-        //   flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
-        // }
+        if (flatListRef.current && filledData.length > 0 && todayIndex > 0) {
+          flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
+        }
       }
     } else {
       setAiLetterEntries([]);
