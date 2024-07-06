@@ -42,7 +42,6 @@ const DiaryInput = ({
     if (text.length === 0) {
       setTimeStartWriting('');
     }
-    console.log('timeStartWriting', timeStartWriting);
     setDiaryInput(text);
   };
 
