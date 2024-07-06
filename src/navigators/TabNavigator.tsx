@@ -9,14 +9,10 @@ import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
 import { CalendarIcon, AiLetterIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
 import { appColor3 } from '@utils/colors';
-import { useRecoilValue } from 'recoil';
-import { userInfoState } from '@stores/login';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const userInfo = useRecoilValue(userInfoState);
-
   return (
     <Tab.Navigator
       // initialRouteName="AiLetter"
@@ -55,7 +51,9 @@ const TabNavigator = () => {
         component={AiLetter}
         options={{
           tabBarLabel: '편지',
-          tabBarIcon: ({ color }) => <AiLetterIcon color={color} userInfo={userInfo} />,
+          tabBarIcon: ({ focused, color, size }) => (
+            <AiLetterIcon focused={focused} color={color} size={size} />
+          ),
           tabBarIconStyle: { marginTop: 5 },
         }}
       />

@@ -5,6 +5,7 @@ interface MyTextProps extends TextProps {
   font?: string;
   size?: number;
   bold?: boolean;
+  style?: any;
 }
 
 // android 호환성 문제로 fontweight은 사용 불가

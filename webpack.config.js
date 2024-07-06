@@ -16,16 +16,16 @@ const uncompiled = [
   'react-native-paper',
   'react-native-element-dropdown',
   '@invertase/react-native-apple-authentication',
-  'react-native-encrypted-storage',
   'react-native-chart-kit',
-  'react-native-gesture-handler',
-  'react-native-reanimated',
   'react-native-date-picker',
-  'react-native-encrypted-storage',
   'react-native-markdown-display',
   'react-apple-signin-auth',
   'react-native-svg',
   'react-native-svg-transformer',
+  'react-native-gesture-handler',
+  'react-native-reanimated',
+  '@react-native-async-storage/async-storage',
+  'react-native-encrypted-storage',
 ];
 
 const babelLoaderConfiguration = {
@@ -86,7 +86,7 @@ module.exports = {
       resourceRegExp: /^@invertase\/react-native-apple-authentication$/,
     }),
     new webpack.IgnorePlugin({
-      resourceRegExp: /react-native-reanimated/,
+      resourceRegExp: /^@react-native-async-storage\/async-storage$/,
     }),
     new webpack.IgnorePlugin({
       resourceRegExp: /react-native-encrypted-storage/,

@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MyIconButtons from '@components/common/MyIconButtons';
 import { useRecoilValue } from 'recoil';
 import { userInfoState } from '@stores/login';
+import { alertColor } from '@utils/colors';
 
 export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
   if (Platform.OS === 'web') {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -1,
     top: 1,
-    backgroundColor: '#EB6D52',
+    backgroundColor: alertColor,
     borderRadius: 8,
     width: 7,
     height: 7,

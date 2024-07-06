@@ -38,8 +38,6 @@ export const useAiLetterData = (initialDateStr: string) => {
       console.log('fetchMonthSummary result: ', result);
       return result;
     },
-    staleTime: isCurrentMonth(currentDateStr) ? 0 : Infinity,
-    gcTime: isCurrentMonth(currentDateStr) ? 0 : Infinity,
   });
 
   const fetchContentForID = async (id: IID) => {
