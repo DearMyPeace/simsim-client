@@ -110,10 +110,17 @@ export const useAiLetterData = (initialDateStr: string) => {
         const filledData = generateDateRangeEntry(monthSummaryData);
         setAiLetterEntries(filledData);
 
-        const todayStr = currentDateStr;
+        const todayStr = new Date().toISOString().slice(0, 10);
         const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
+        const currentDayIndex = filledData.findIndex((entry) => entry.date === currentDateStr);
 
-        if (todayIndex !== -1) {
+        if (currentDayIndex !== -1) {
+          const section = filledData[currentDayIndex];
+          if (!section.content) {
+            fetchContentForID(section.id);
+          }
+          setActiveSections([currentDayIndex]);
+        } else if (todayIndex !== -1) {
           const section = filledData[todayIndex];
           if (!section.content) {
             fetchContentForID(section.id);
