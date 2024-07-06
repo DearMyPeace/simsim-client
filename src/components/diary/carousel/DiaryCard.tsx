@@ -47,7 +47,7 @@ const DiaryCard = ({
       setSnackbar('저장이 완료되었습니다.');
       setTimeStartWriting('');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -60,7 +60,7 @@ const DiaryCard = ({
       queryClient.invalidateQueries({ queryKey: ['diary'] });
       setSnackbar('삭제가 완료되었습니다.');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -76,7 +76,7 @@ const DiaryCard = ({
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       setSnackbar('수정이 완료되었습니다.');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -92,7 +92,7 @@ const DiaryCard = ({
       queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
       // setSnackbar('편지가 도착했습니다');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
   });
