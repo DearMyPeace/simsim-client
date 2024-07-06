@@ -16,8 +16,8 @@ const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
-  useUserSetup();
   useAxiosInterceptors();
+  useUserSetup();
 
   return (
     <Stack.Navigator
