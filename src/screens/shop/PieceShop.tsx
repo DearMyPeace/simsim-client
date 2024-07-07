@@ -57,7 +57,7 @@ const PieceShop: React.FC = () => {
             <Image source={p200} style={styles.image} />
             <MyText style={styles.pieceText}>200개</MyText>
           </View>
-          <Pressable style={styles.button} onPress={() => handlePurchase(200)}>
+          <Pressable style={styles.button} onPress={() => handlePurchase(220)}>
             <MyText style={styles.buttonText}>2,000 원</MyText>
           </Pressable>
         </View>
@@ -65,10 +65,10 @@ const PieceShop: React.FC = () => {
         <View style={styles.itemContainer}>
           <View style={styles.pieceContainer}>
             <Image source={p500} style={styles.image} />
-            <MyText style={styles.pieceText}>500개</MyText>
+            <MyText style={styles.pieceText}>월간 구독</MyText>
           </View>
           <Pressable style={styles.button} onPress={() => handlePurchase(500)}>
-            <MyText style={styles.buttonText}>9,999 원</MyText>
+            <MyText style={styles.buttonText}>4,900 원</MyText>
           </Pressable>
         </View>
       </View>
