@@ -46,7 +46,15 @@ const MyCalendar = () => {
   }, [selectedDate]);
 
   const handleModalDismiss = () => {
-    setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
+    const day = selectedDate.slice(8, 10);
+    const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+    // console.log(`day : ${day}, lastDay : ${lastDay}`);
+    if (parseInt(day, 10) > lastDay) {
+      setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`);
+    } else {
+      setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${day}`);
+    }
+    // setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
     setModalVisible(false);
   };
 

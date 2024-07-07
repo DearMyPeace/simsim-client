@@ -39,7 +39,7 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
           usePopup: true,
         }}
         onSuccess={async (response) => {
-          console.log('Apple login response:', response);
+          // console.log('Apple login response:', response);
           try {
             const token = {
               authorization: response.authorization,

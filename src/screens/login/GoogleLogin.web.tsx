@@ -12,7 +12,7 @@ const GoogleLoginWeb = ({ handleLoginPress }) => {
   const login = useGoogleLogin({
     scope: 'email profile',
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
+      // console.log(tokenResponse);
       sendUserToken.mutate({ access_token: tokenResponse.access_token });
     },
     onError: (error) => {
