@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    marginHorizontal: 8,
+    marginVertical: 9,
   },
 });
 
