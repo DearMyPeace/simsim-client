@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CalendarArrow, { Direction } from '@components/diary/calendar/CalendarArrow';
-import { StyleSheet, View, Platform } from 'react-native';
-import { Calendar, DateData } from 'react-native-calendars';
-import setLocaleConfig from '@utils/localeConfig';
-import { IDiaryCount, IMarkedDates } from '@type/Diary';
+import { StyleSheet, View } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import setLocaleConfig, { kMonth } from '@utils/localeConfig';
+import { IDate, IMarkedDates } from '@type/Diary';
 import { dotColors } from '@utils/colors';
 import { fontLarge } from '@utils/Sizing';
-import { getToday } from '@utils/dateUtils';
+import MyText from '@components/common/MyText';
+import TextButton from '@components/common/TextButton';
+import CalendarSelectModal from './CalendarSelectModal';
+import useCalendarHook from '@hooks/diary/calendarHook';
 
 setLocaleConfig();
-interface IMyCalendarProps {
-  selectedDate: string;
-  markedDates: IDiaryCount[];
-  onDayPress: (date: DateData) => void;
-  onMonthChange: (date: DateData) => void;
-}
 
-const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IMyCalendarProps) => {
+const MyCalendar = () => {
+  const {
+    onDayPress,
+    onMonthChange,
+    markedDates,
+    selectedDate,
+    setSelectedDate,
+    saveDateStatus,
+    setTargetMonth,
+  } = useCalendarHook();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.slice(5, 7), 10));
+  const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.slice(0, 4), 10));
   const markedDatesList: IMarkedDates = markedDates.reduce((acc, date) => {
     acc[date.markedDate] = {
       selected: date.markedDate === selectedDate,
@@ -26,10 +35,36 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
     return acc;
   }, {} as IMarkedDates);
 
+  useEffect(() => {
+    setSelectedMonth(parseInt(selectedDate.slice(5, 7), 10));
+    setSelectedYear(parseInt(selectedDate.slice(0, 4), 10));
+    setTargetMonth({
+      year: selectedYear.toString(),
+      month: selectedMonth.toString().padStart(2, '0') as IDate['month'],
+    });
+    saveDateStatus(selectedDate);
+  }, [selectedDate]);
+
+  const handleModalDismiss = () => {
+    setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
+    setModalVisible(false);
+  };
+
+  const onHeaderPress = () => {
+    setModalVisible(true);
+  };
+
+  const getDisplayDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return `${kMonth[month]} ${year}`;
+  };
+
   return (
     <View style={styles.container}>
       <Calendar
-        maxDate={getToday()}
+        key={selectedDate}
+        current={selectedDate}
         style={styles.calendar}
         theme={{
           textDayFontFamily: 'GowunBatang-Regular',
@@ -58,6 +93,7 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
             },
           },
         }}
+        webAriaLevel={1}
         hideExtraDays
         enableSwipeMonths
         firstDay={1}
@@ -68,6 +104,21 @@ const MyCalendar = ({ selectedDate, markedDates, onDayPress, onMonthChange }: IM
           ...markedDatesList,
         }}
         renderArrow={(direction: Direction) => <CalendarArrow direction={direction} />}
+        renderHeader={(date: string) => (
+          <>
+            <TextButton onPress={onHeaderPress}>
+              <MyText size={fontLarge}>{getDisplayDate(new Date(date))}</MyText>
+            </TextButton>
+            <CalendarSelectModal
+              isModalVisible={isModalVisible}
+              handleModalDismiss={handleModalDismiss}
+              selectedMonth={selectedMonth}
+              selectedYear={selectedYear}
+              setSelectedMonth={setSelectedMonth}
+              setSelectedYear={setSelectedYear}
+            />
+          </>
+        )}
       />
     </View>
   );

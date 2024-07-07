@@ -38,7 +38,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Diary"
+        name="DiaryTab"
         component={Diary}
         options={{
           tabBarLabel: '기록',
@@ -47,7 +47,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="AiLetter"
+        name="AiLetterTab"
         component={AiLetter}
         options={{
           tabBarLabel: '편지',
@@ -58,7 +58,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Piece"
+        name="PieceTab"
         component={Piece}
         options={{
           tabBarLabel: '조각',
@@ -66,7 +66,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Shop"
+        name="ShopTab"
         component={Shop}
         options={{
           tabBarLabel: '상점',

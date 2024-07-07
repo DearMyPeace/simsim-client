@@ -37,6 +37,7 @@ const DiaryCard = ({
   useEffect(() => {
     setDiaryInput(id === NEW_DIARY ? '' : content);
     setIsEditing(false);
+    setTimeStartWriting('');
   }, [id, content]);
 
   const addNewDiary = useMutation({
@@ -46,7 +47,7 @@ const DiaryCard = ({
       setSnackbar('저장이 완료되었습니다.');
       setTimeStartWriting('');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -59,7 +60,7 @@ const DiaryCard = ({
       queryClient.invalidateQueries({ queryKey: ['diary'] });
       setSnackbar('삭제가 완료되었습니다.');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -75,7 +76,7 @@ const DiaryCard = ({
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       setSnackbar('수정이 완료되었습니다.');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
     onSettled: () => {
@@ -86,13 +87,12 @@ const DiaryCard = ({
   const sendDiary = useMutation({
     mutationFn: (data: IAiLetterRequest) => postAiLetters(data),
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
       // setSnackbar('편지가 도착했습니다');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
     },
   });
@@ -127,8 +127,7 @@ const DiaryCard = ({
   };
 
   const sendDiaryData = () => {
-    const formattedTime = `${targetDate}T${timeStartWriting.split('T')[1]}`;
-    const cretatedDate = id === NEW_DIARY ? formattedTime : createdTime;
+    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
       content: diaryInput,
       createdDate: cretatedDate,
@@ -161,6 +160,12 @@ const DiaryCard = ({
   const onConfirmSaveEdit = () => {
     setInformModalVisible(false);
     sendDiaryData();
+  };
+
+  const onCancelSaveEdit = () => {
+    setInformModalVisible(false);
+    setIsEditing(false);
+    setDiaryInput(content);
   };
 
   const onKeyboardDismiss = () => {
@@ -216,13 +221,14 @@ const DiaryCard = ({
         visible={isSendModalVisible}
         setIsVisible={setSendModalVisible}
         onConfirm={onConfirmSend}
-        content="기록을 보내시겠습니까?"
+        content={`이 날의 기록을 모두 보내시겠습니까?\n편지는 하루에 한 번만 받을 수 있어요.`}
         confirmText="보내기"
       />
       <BasicConfirmModal
         visible={isInformModalVisible}
         setIsVisible={setInformModalVisible}
         onConfirm={onConfirmSaveEdit}
+        onCancel={onCancelSaveEdit}
         content={`기록을 수정해도\n편지의 내용은 바뀌지 않아요.`}
         confirmText="저장"
       />

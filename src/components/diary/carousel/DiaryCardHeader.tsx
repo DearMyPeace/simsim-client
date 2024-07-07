@@ -6,6 +6,8 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 // import MyIconButton from '@components/common/MyIconButtons';
 import TextButton from '@components/common/TextButton';
+import { useRecoilValue } from 'recoil';
+import { tense } from '@stores/tense';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
@@ -35,6 +37,8 @@ const DiaryCardHeader = ({
   onDelete,
   onSend,
 }: DiaryCardHeaderProps) => {
+  const dateStatus = useRecoilValue(tense);
+
   return (
     <View style={styles.header}>
       <MyText>{formatTime(createdTime) || formatTime(timeStartWriting)}</MyText>
@@ -63,13 +67,15 @@ const DiaryCardHeader = ({
           ) : (
             // <IconButton icon="close" size={16} onPress={onClose} style={styles.icon} />
             <>
-              <TextButton
-                onPress={onSend}
-                labelStyle={styles.iconLabelStyle}
-                disabled={isLetterSent}
-              >
-                보내기
-              </TextButton>
+              {dateStatus !== 'FUTURE' && (
+                <TextButton
+                  onPress={onSend}
+                  labelStyle={styles.iconLabelStyle}
+                  disabled={isLetterSent}
+                >
+                  보내기
+                </TextButton>
+              )}
               <TextButton onPress={onDelete} labelStyle={styles.iconLabelStyle}>
                 삭제
               </TextButton>

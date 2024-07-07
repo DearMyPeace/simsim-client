@@ -4,7 +4,6 @@ import MyTextInput from '@components/common/MyTextInput';
 import LengthCheckView from '@components/common/LengthCheckView';
 import { useRecoilValue } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
-import { set } from 'date-fns';
 
 interface IDiaryInputProps {
   id: number;
@@ -34,13 +33,13 @@ const DiaryInput = ({
 
   const onChangeText = (text: string) => {
     if (text.length > MAX_LENGTH) return;
-    if (text.length === 1 && !timeStartWriting) {
+    if (!timeStartWriting) {
       const now = new Date();
       const [year, month, date] = targetDate.split('-').map(Number);
-      const newDate = set(now, { year, month: month - 1, date });
-      setTimeStartWriting(newDate.toISOString());
+      now.setFullYear(year, month - 1, date);
+      setTimeStartWriting(now.toISOString());
     }
-    if (text.length === 0 && timeStartWriting) {
+    if (text.length === 0) {
       setTimeStartWriting('');
     }
     setDiaryInput(text);

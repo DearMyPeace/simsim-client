@@ -1,17 +1,22 @@
 import { useDiaryList } from '@api/diary/get';
-import { tense } from '@stores/tense';
+import { markedDateStatus } from '@stores/tense';
+import { newDiary } from '@type/Diary';
 import { useRecoilValue } from 'recoil';
 
 const useDiaryHook = (selectedDate: string) => {
-  const dateStatus = useRecoilValue(tense);
-  const { data, isPending, isError, isSuccess } = useDiaryList(selectedDate, dateStatus);
+  const markedDateSet = useRecoilValue(markedDateStatus);
+  const { data, isPending, isError, isSuccess } = useDiaryList(
+    selectedDate,
+    markedDateSet.has(selectedDate),
+  );
+  const newDiaryData = [newDiary];
 
   return {
-    data: data?.diaryList || [],
+    data: markedDateSet.has(selectedDate) ? data?.diaryList || newDiaryData : newDiaryData,
     isPending,
     isError,
     isSuccess,
-    sendStatus: data?.sendStatus || false,
+    sendStatus: markedDateSet.has(selectedDate) ? data?.sendStatus || false : false,
   };
 };
 
