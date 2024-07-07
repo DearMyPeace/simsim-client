@@ -2,18 +2,6 @@ import { IDate } from '@type/Diary';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import { format } from 'date-fns';
 
-export const generateDateRangeTypeDate = (startDate: Date, endDate: Date): Date[] => {
-  const dates = [];
-  let currentDate = new Date(startDate);
-
-  while (currentDate <= endDate) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return dates;
-};
-
 export const fillDatesWithData = (dates: Date[], entries: IAiLetterEntry[]): IAiLetterEntry[] => {
   const entriesByDate = entries.reduce<Record<string, IAiLetterEntry>>((acc, entry) => {
     const entryDate = new Date(entry.date);
@@ -42,6 +30,21 @@ export const generateDateRange = (startDateStr: string, endDateStr: string): Dat
   }
 
   return dates;
+};
+
+export const generateDateRangeEntry = (entries: IAiLetterEntry[]): IAiLetterEntry[] => {
+  const sortedEntries = entries
+    .slice()
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  if (sortedEntries.length === 0) return [];
+
+  const startDate = sortedEntries[0].date;
+  const endDate = sortedEntries[sortedEntries.length - 1].date;
+
+  const dateRange = generateDateRange(startDate, endDate);
+
+  return fillDatesWithData(dateRange, sortedEntries);
 };
 
 export const getToday = () => format(new Date(), 'yyyy-MM-dd');

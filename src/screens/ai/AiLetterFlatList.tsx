@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-  ListRenderItem,
-  RefreshControl,
-  Platform,
-} from 'react-native';
+import { View, FlatList, StyleSheet, ListRenderItem, RefreshControl, Platform } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import NotUsingDay from '@components/ai/NotUsingDay';
@@ -21,7 +13,6 @@ interface AiLetterFlatListProps {
   activeSections: number[];
   flatListRef: React.RefObject<FlatList>;
   handleAccordionChange: (section: IAiLetterEntry) => void;
-  onScrollToIndexFailed: (info: any) => void;
   onRefresh: () => void;
   refreshing: boolean;
 }
@@ -31,16 +22,20 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   activeSections,
   flatListRef,
   handleAccordionChange,
-  onScrollToIndexFailed,
   onRefresh,
   refreshing,
 }) => {
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
-  const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     setIsEmpty(aiLetterEntries.length === 0);
   }, [aiLetterEntries]);
+
+  useEffect(() => {
+    if (flatListRef.current && activeSections.length > 0) {
+      flatListRef.current.scrollToIndex({ index: activeSections[0], animated: true });
+    }
+  }, [activeSections, flatListRef]);
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
     let consecutiveNotUsingDayCount = 0;
@@ -71,7 +66,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
               <AiLetterEntryHeader
                 section={section}
                 isActive={isActive}
-                handleAccordionChange={handleAccordionChange}
+                handleAccordionChange={() => handleAccordionChange(section)}
               />
             )}
             renderContent={(section) => <AiLetterEntryContent section={section} />}
@@ -87,44 +82,29 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   }
 
   const getItemLayout = (_, index) => ({
-    length: 70,
-    offset: 70 * index,
+    length: 40,
+    offset: 40 * index,
     index,
   });
 
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      refreshControl={
-        <RefreshControl
-          style={styles.hideComponent}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor="transparent"
-          colors={['transparent']}
-        />
-      }
-    >
-      {Platform.OS !== 'web' && <CustomRefreshControlWrapper />}
+    <View style={{ flex: 1 }}>
       <FlatList
         ref={flatListRef}
         data={aiLetterEntries}
         renderItem={renderItem}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : `${item.date}-${index}`)}
-        onScrollToIndexFailed={onScrollToIndexFailed}
         showsVerticalScrollIndicator={false}
         getItemLayout={getItemLayout}
       />
-    </ScrollView>
+      {/* <CustomRefreshControlWrapper /> */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   notusingItem: {
     alignItems: 'center',
-  },
-  hideComponent: {
-    display: 'none',
   },
 });
 

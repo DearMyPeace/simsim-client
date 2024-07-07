@@ -1,10 +1,10 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IAiLetterEntry, IID } from '@type/IAiLetterEntry';
 import { fetchAiLettersMonthSummary, fetchAiLettersViaID } from '@api/ai/get';
-import { fillDatesWithData, generateDateRange } from '@utils/dateUtils';
-import { isEmpty } from 'lodash';
+import { generateDateRangeEntry } from '@utils/dateUtils';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const useAiLetterData = (initialDateStr: string) => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
@@ -14,6 +14,11 @@ export const useAiLetterData = (initialDateStr: string) => {
   const flatListRef = useRef<FlatList>(null);
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setCurrentDateStr(initialDateStr);
+    console.log('initialDateStr');
+  }, [initialDateStr]);
 
   const fetchMonthSummary = async (dateStr: string): Promise<IAiLetterEntry[]> => {
     const [year, month] = dateStr.split('-');
@@ -75,24 +80,18 @@ export const useAiLetterData = (initialDateStr: string) => {
           }
         });
 
-        if (flatListRef.current) {
+        if (
+          flatListRef.current &&
+          aiLetterEntries.length > 0 &&
+          index >= 0 &&
+          index < aiLetterEntries.length
+        ) {
           flatListRef.current.scrollToIndex({ index, animated: true });
         }
       }
     },
-    [aiLetterEntries, fetchContentForID],
+    [aiLetterEntries, fetchContentForID, flatListRef],
   );
-
-  const onScrollToIndexFailed = (info) => {
-    if (info.index < 0 || info.index >= aiLetterEntries.length) {
-      console.warn(`Invalid index: ${info.index}`);
-      return;
-    }
-    const wait = new Promise((resolve) => setTimeout(resolve, 500));
-    wait.then(() => {
-      flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
-    });
-  };
 
   const {
     data: monthSummaryData,
@@ -105,33 +104,37 @@ export const useAiLetterData = (initialDateStr: string) => {
     enabled: !!currentDateStr,
   });
 
-  useEffect(() => {
-    if (monthSummaryData && monthSummaryData.length > 0) {
-      const dateRange = generateDateRange(
-        monthSummaryData[0].date,
-        monthSummaryData[monthSummaryData.length - 1].date,
-      );
-      const filledData = fillDatesWithData(dateRange, monthSummaryData);
-      setAiLetterEntries(filledData);
+  useFocusEffect(
+    useCallback(() => {
+      if (monthSummaryData && monthSummaryData.length > 0) {
+        const filledData = generateDateRangeEntry(monthSummaryData);
+        setAiLetterEntries(filledData);
 
-      const todayStr = new Date().toISOString().slice(0, 10);
-      const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
-      if (todayIndex !== -1) {
-        const section = filledData[todayIndex];
-        if (!section.content) {
-          fetchContentForID(section.id);
-        }
-        setActiveSections([todayIndex]);
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const todayIndex = filledData.findIndex((entry) => entry.date === todayStr);
+        const currentDayIndex = filledData.findIndex((entry) => entry.date === currentDateStr);
 
-        if (flatListRef.current && filledData.length > 0 && todayIndex > 0) {
-          flatListRef.current.scrollToIndex({ index: todayIndex, animated: true });
+        if (currentDayIndex !== -1) {
+          const section = filledData[currentDayIndex];
+          if (!section.content) {
+            fetchContentForID(section.id);
+          }
+          setActiveSections([currentDayIndex]);
+        } else if (todayIndex !== -1) {
+          const section = filledData[todayIndex];
+          if (!section.content) {
+            fetchContentForID(section.id);
+          }
+          setActiveSections([todayIndex]);
+        } else {
+          setActiveSections([]);
         }
+      } else {
+        setAiLetterEntries([]);
+        setActiveSections([]);
       }
-    } else {
-      setAiLetterEntries([]);
-      setActiveSections([]);
-    }
-  }, [monthSummaryData, fetchContentForID]);
+    }, [monthSummaryData, fetchContentForID, currentDateStr]),
+  );
 
   const refetchMonthData = useCallback(
     async (newDateStr?: string) => {
@@ -159,7 +162,6 @@ export const useAiLetterData = (initialDateStr: string) => {
     setActiveSections,
     flatListRef,
     handleAccordionChange,
-    onScrollToIndexFailed,
     isLoading: monthSummaryLoading,
     error: monthSummaryError,
     refetchMonthSummary: refetchMonthData,

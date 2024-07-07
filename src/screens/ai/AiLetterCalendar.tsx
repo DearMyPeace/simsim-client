@@ -7,39 +7,37 @@ import { appColor3 } from '@utils/colors';
 import AiLetterCalendarHeader from '@screens/ai/AiLetterCalendarHeader';
 import MyText from '@components/common/MyText';
 
-const getYear = () => format(new Date(), 'yyyy');
-const getMonth = () => format(new Date(), 'MM') as IDate['month'];
-const getDay = () => format(new Date(), 'dd');
+const parseDateStr = (dateStr: string): IDay => {
+  const [year, month, day] = dateStr.split('-');
+  return {
+    year,
+    month: month.padStart(2, '0') as IDate['month'],
+    day: day.padStart(2, '0'),
+  };
+};
 
-const AiLetterCalendar = ({ children, onMonthChange }) => {
+const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
   const [isToday, setIsToday] = useState(true);
   const [, setIsDragging] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const DRAG_THRESHOLD = 10;
 
-  const [selectedDate, setSelectedDate] = useState<IDay>({
-    year: getYear(),
-    month: getMonth(),
-    day: getDay(),
-  });
+  const initialDate = parseDateStr(targetDateStr);
+  const [selectedDate, setSelectedDate] = useState<IDay>(initialDate);
 
   const position = useRef(new RNAnimated.ValueXY({ x: 0, y: 0 })).current;
   const startPosition = useRef({ x: 0, y: 0 }).current;
 
   useEffect(() => {
-    setSelectedDate({ year: getYear(), month: getMonth(), day: getDay() });
-  }, []);
+    setSelectedDate(parseDateStr(targetDateStr));
+    console.log('Initial render or targetDateStr changed');
+  }, [targetDateStr]);
 
   useEffect(() => {
     const checkIfToday = () => {
-      const todayYear = getYear();
-      const todayMonth = getMonth();
-      const todayDay = getDay();
-      setIsToday(
-        selectedDate.year === todayYear &&
-          selectedDate.month === todayMonth &&
-          selectedDate.day === todayDay,
-      );
+      const todayYear = format(new Date(), 'yyyy');
+      const todayMonth = format(new Date(), 'MM') as IDate['month'];
+      setIsToday(selectedDate.year === todayYear && selectedDate.month === todayMonth);
     };
 
     checkIfToday();
@@ -49,7 +47,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
     (date) => {
       const year = date.year.toString();
       const month = date.month.toString().padStart(2, '0') as IDate['month'];
-      const day = getDay();
+      const day = format(new Date(), 'dd');
       setSelectedDate({ year, month, day });
       onMonthChange(`${year}-${month}`);
     },
@@ -70,7 +68,7 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
     const newDate = new Date(Number(selectedDate.year), Number(selectedDate.month) - 1 + increment);
     const year = format(newDate, 'yyyy');
     const month = format(newDate, 'MM') as IDate['month'];
-    const day = getDay();
+    const day = format(new Date(), 'dd');
     setSelectedDate({ year, month, day });
     onMonthChange(`${year}-${month}`);
   };
@@ -84,9 +82,9 @@ const AiLetterCalendar = ({ children, onMonthChange }) => {
   };
 
   const handleTodayPress = () => {
-    const year = getYear();
-    const month = getMonth();
-    const day = getDay();
+    const year = format(new Date(), 'yyyy');
+    const month = format(new Date(), 'MM') as IDate['month'];
+    const day = format(new Date(), 'dd');
     setSelectedDate({ year, month, day });
     onMonthChange(`${year}-${month}`);
   };

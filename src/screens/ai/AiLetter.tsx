@@ -5,21 +5,23 @@ import AiLetterCalendar from '@screens/ai/AiLetterCalendar';
 import AiLetterFlatList from '@screens/ai/AiLetterFlatList';
 import AiLetterLoadingView from '@screens/ai/AiLetterLoadingView';
 import AiLetterErrorView from '@screens/ai/AiLetterErrorView';
+import { useSelectedDate } from '@hooks/common/useSelectedDate';
 
 const AiLetter: React.FC = () => {
-  const todayDateStr = new Date().toISOString().slice(0, 10);
+  const { tense } = useSelectedDate();
+  const targetDateStr = new Date(tense).toISOString().slice(0, 10);
+  console.log('target Date Str', targetDateStr);
 
   const {
     aiLetterEntries,
     activeSections,
     flatListRef,
     handleAccordionChange,
-    onScrollToIndexFailed,
     isLoading,
     error,
     refetchMonthSummary,
     refreshing,
-  } = useAiLetterData(todayDateStr);
+  } = useAiLetterData(targetDateStr);
 
   const handleMonthChange = (newDateStr: string) => {
     refetchMonthSummary(newDateStr);
@@ -27,7 +29,7 @@ const AiLetter: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <AiLetterCalendar onMonthChange={handleMonthChange}>
+      <AiLetterCalendar targetDateStr={targetDateStr} onMonthChange={handleMonthChange}>
         {isLoading ? (
           <AiLetterLoadingView />
         ) : error ? (
@@ -38,7 +40,6 @@ const AiLetter: React.FC = () => {
             activeSections={activeSections}
             flatListRef={flatListRef}
             handleAccordionChange={handleAccordionChange}
-            onScrollToIndexFailed={onScrollToIndexFailed}
             onRefresh={() => refetchMonthSummary()}
             refreshing={refreshing}
           />
