@@ -28,6 +28,7 @@ interface IAiLettersMonthSummary {
   id: number;
   date: string;
   summary: string;
+  replyStatus: string;
 }
 
 export const fetchAiLettersMonthSummary = async ({
