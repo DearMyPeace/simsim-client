@@ -75,7 +75,7 @@ export const useAiLetterData = (initialDateStr: string) => {
           }
         });
 
-        if (flatListRef.current) {
+        if (flatListRef.current && aiLetterEntries.length > 0) {
           flatListRef.current.scrollToIndex({ index, animated: true });
         }
       }
@@ -90,7 +90,8 @@ export const useAiLetterData = (initialDateStr: string) => {
     }
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
     wait.then(() => {
-      flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+      if (flatListRef.current && aiLetterEntries.length > 0)
+        flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
     });
   };
 
