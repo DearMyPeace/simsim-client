@@ -36,11 +36,13 @@ const MyCalendar = () => {
   }, {} as IMarkedDates);
 
   useEffect(() => {
-    setSelectedMonth(parseInt(selectedDate.slice(5, 7), 10));
-    setSelectedYear(parseInt(selectedDate.slice(0, 4), 10));
+    const year = new Date(selectedDate).getFullYear();
+    const month = new Date(selectedDate).getMonth() + 1;
+    setSelectedMonth(month);
+    setSelectedYear(year);
     setTargetMonth({
-      year: selectedYear.toString(),
-      month: selectedMonth.toString().padStart(2, '0') as IDate['month'],
+      year: year.toString() as IDate['year'],
+      month: month.toString().padStart(2, '0') as IDate['month'],
     });
     saveDateStatus(selectedDate);
   }, [selectedDate]);
@@ -48,13 +50,12 @@ const MyCalendar = () => {
   const handleModalDismiss = () => {
     const day = selectedDate.slice(8, 10);
     const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
-    // console.log(`day : ${day}, lastDay : ${lastDay}`);
+    const month = selectedMonth.toString().padStart(2, '0');
     if (parseInt(day, 10) > lastDay) {
-      setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`);
+      setSelectedDate(`${selectedYear}-${month}-${lastDay}`);
     } else {
-      setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${day}`);
+      setSelectedDate(`${selectedYear}-${month}-${day}`);
     }
-    // setSelectedDate(`${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`);
     setModalVisible(false);
   };
 
