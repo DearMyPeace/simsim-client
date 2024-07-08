@@ -101,6 +101,10 @@ module.exports = {
           from: path.resolve(appDirectory, 'public/favicon'),
           to: path.resolve(appDirectory, 'dist/favicon'),
         },
+        {
+          from: path.resolve(appDirectory, 'public/logo'),
+          to: path.resolve(appDirectory, 'dist/logo'),
+        },
       ],
     }),
   ],
