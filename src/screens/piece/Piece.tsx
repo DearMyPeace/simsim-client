@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Animated, Image, TouchableWithoutFeedback } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MyText from '@components/common/MyText';
-import stainedglassTranparent from '@assets/images/staindglass_NON.png';
-import stainedglassFrame from '@assets/images/staindglass_frame.png';
+import stainedglassTranparent from '@assets/images/stainedglass_NON.png';
+import stainedglassFrame from '@assets/images/stainedglass_frame.png';
 import { fontBasic } from '@utils/Sizing';
 import Report from '@screens/report/ReportView';
 
