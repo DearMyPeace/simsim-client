@@ -26,6 +26,9 @@ const uncompiled = [
   'react-native-reanimated',
   '@react-native-async-storage/async-storage',
   'react-native-encrypted-storage',
+  'react-chartjs-2',
+  'chart.js',
+  'chartjs-plugin-datalabels',
 ];
 
 const babelLoaderConfiguration = {
