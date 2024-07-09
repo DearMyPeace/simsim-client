@@ -3,8 +3,9 @@ import { View, StyleSheet, Animated, Image, TouchableWithoutFeedback } from 'rea
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MyText from '@components/common/MyText';
 import stainedglassTranparent from '@assets/images/staindglass_NON.png';
-import stainedglass from '@assets/images/staindglass.png';
+import stainedglassFrame from '@assets/images/staindglass_frame.png';
 import { fontBasic } from '@utils/Sizing';
+import Report from '@screens/report/ReportView';
 
 const Piece = () => {
   const flipAnim = useRef(new Animated.Value(0)).current;
@@ -43,12 +44,15 @@ const Piece = () => {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>
         <View style={styles.imageWrapper}>
           <TouchableWithoutFeedback onPress={handleImagePress}>
             <Animated.View style={[styles.imageContainer, frontAnimatedStyle]}>
-              <Image source={stainedglass} style={styles.image} resizeMode="contain" />
+              <Image source={stainedglassFrame} style={styles.image} resizeMode="contain" />
+              <View style={styles.overlay}>
+                <Report />
+              </View>
             </Animated.View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={handleImagePress}>
@@ -59,10 +63,10 @@ const Piece = () => {
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={styles.reportContainer}>
+        {/* <View style={styles.reportContainer}>
           <MyText style={styles.reportHeader}>리포트</MyText>
           <MyText style={styles.reportText}>2주의 기록이 쌓이면 리포트가 제공됩니다. </MyText>
-        </View>
+        </View> */}
       </View>
     </GestureHandlerRootView>
   );
@@ -77,18 +81,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
+    paddingBottom: 20,
   },
   imageContainer: {
     width: '100%',
     height: '100%',
     backfaceVisibility: 'hidden',
+    position: 'relative',
+    backgroundColor: 'transparent',
   },
   backImageContainer: {
     position: 'absolute',
+    backgroundColor: 'transparent',
   },
   image: {
     width: '100%',
     height: '100%',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   reportContainer: {
     padding: 20,
