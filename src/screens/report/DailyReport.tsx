@@ -3,7 +3,7 @@ import React from 'react';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
 
-const Dailyreport = (date, summary) => {
+const Dailyreport = ({ date, summary }) => {
   return (
     <View style={styles.container}>
       <MyText style={styles.title}>{date}</MyText>

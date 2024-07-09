@@ -7,6 +7,7 @@ import ChartWrapper from '@screens/report/ChartWrapper';
 import { fetchWeekReport, fetchReportPNN } from '@api/report/get';
 import ReportLoadingView from './ReportLoadingView';
 import ReportErrorView from './ReportErrorView';
+import { DayEmotionData, EmotionData } from '@type/IReport';
 
 const Report = () => {
   const targetDate = new Date().toISOString().slice(0, 10);
@@ -15,7 +16,7 @@ const Report = () => {
     data: emotionData,
     isLoading: isLoadingEmotionData,
     error: emotionDataError,
-  } = useQuery({
+  } = useQuery<EmotionData>({
     queryKey: ['weekReport', targetDate],
     queryFn: () => fetchWeekReport(targetDate),
   });
@@ -24,7 +25,7 @@ const Report = () => {
     data: dayEmotionData,
     isLoading: isLoadingDayEmotionData,
     error: dayEmotionDataError,
-  } = useQuery({
+  } = useQuery<DayEmotionData>({
     queryKey: ['reportPNN', targetDate],
     queryFn: () => fetchReportPNN(targetDate),
   });
