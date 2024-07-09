@@ -5,17 +5,47 @@ import { fontBasic } from '@utils/Sizing';
 import ChartView from '@screens/report/ChartView';
 import Dailyreport from '@screens/report/DailyReport';
 
-const ReportWrapper = ({ emotionData, dayEmotionData }) => {
+const ChartWrapper = ({ emotionData, dayEmotionData }) => {
   const [selectedTab, setSelectedTab] = useState('긍정적');
 
   const renderContent = () => {
     switch (selectedTab) {
       case '긍정적':
-        return <ChartView emotionData={emotionData} labels={['즐거움', '사랑', '행복']} />;
+        return (
+          <View style={styles.content}>
+            <ChartView emotionData={emotionData} labels={['즐거움', '사랑', '행복']} />
+            <View style={styles.dailyReportContainer}>
+              <Dailyreport
+                date={dayEmotionData.positiveDate}
+                summary={dayEmotionData.positiveSummary}
+              />
+            </View>
+          </View>
+        );
       case '중립적':
-        return <ChartView emotionData={emotionData} labels={['평온', '호기심', '놀람', '중립']} />;
+        return (
+          <View style={styles.content}>
+            <ChartView emotionData={emotionData} labels={['평온', '호기심', '놀람', '중립']} />
+            <View style={styles.dailyReportContainer}>
+              <Dailyreport
+                date={dayEmotionData.neutralDate}
+                summary={dayEmotionData.neutralSummary}
+              />
+            </View>
+          </View>
+        );
       case '부정적':
-        return <ChartView emotionData={emotionData} labels={['슬픔', '분노', '두려움', '부정']} />;
+        return (
+          <View style={styles.content}>
+            <ChartView emotionData={emotionData} labels={['슬픔', '분노', '두려움', '부정']} />
+            <View style={styles.dailyReportContainer}>
+              <Dailyreport
+                date={dayEmotionData.negativeDate}
+                summary={dayEmotionData.negativeSummary}
+              />
+            </View>
+          </View>
+        );
       default:
         return null;
     }
@@ -49,12 +79,7 @@ const ReportWrapper = ({ emotionData, dayEmotionData }) => {
           </MyText>
         </Pressable>
       </View>
-      <View style={styles.content}>
-        {renderContent()}
-        <View style={styles.dailyReportContainer}>
-          <Dailyreport />
-        </View>
-      </View>
+      {renderContent()}
     </View>
   );
 };
@@ -126,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReportWrapper;
+export default ChartWrapper;
