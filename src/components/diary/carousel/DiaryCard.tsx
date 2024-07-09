@@ -46,7 +46,7 @@ const DiaryCard = ({
     setDiaryInput(id === NEW_DIARY ? '' : content);
     setIsEditing(false);
     setTimeStartWriting('');
-  }, [id, content]);
+  }, [id, content, targetDate]);
 
   useEffect(() => {
     if (addNewDiary.isPending || editDiary.isPending) {
