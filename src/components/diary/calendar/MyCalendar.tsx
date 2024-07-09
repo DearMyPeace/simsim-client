@@ -104,7 +104,6 @@ const MyCalendar = () => {
         }}
         webAriaLevel={1}
         hideExtraDays
-        enableSwipeMonths
         firstDay={1}
         onDayPress={onDayPress}
         onMonthChange={onMonthChange}
