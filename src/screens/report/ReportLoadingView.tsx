@@ -4,16 +4,16 @@ import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
 import CustomLoadingControlWrapper from '@screens/common/CustomLoadingControlWrapper';
 
-const AiLetterLoadingView = () => {
+const ReportLoadingView = () => {
   return (
     <View style={styles.container}>
       <CustomLoadingControlWrapper />
-      <MyText style={styles.text}> 편지를 가져오고 있어요. </MyText>
+      <MyText style={styles.text}> 조각을 가져오고 있어요. </MyText>
     </View>
   );
 };
 
-export default AiLetterLoadingView;
+export default ReportLoadingView;
 
 const styles = StyleSheet.create({
   container: {
