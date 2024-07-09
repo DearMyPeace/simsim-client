@@ -8,12 +8,22 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Doughnut } from 'react-chartjs-2';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { appColor1, appColor2, appColor3, appColor4 } from '@utils/colors';
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+  ArcElement,
+  ChartDataLabels,
+);
 
 const emotionDicData = {
   즐거움: 'appreciationCnt',
@@ -44,12 +54,26 @@ const ChartView = ({ emotionData, labels }) => {
   const doughnutChartOptions = {
     cutout: '50%',
     plugins: {
-      legend: {
-        labels: {
-          font: {
-            family: 'GowunBatang-Regular',
-          },
+      datalabels: {
+        display: true,
+        formatter: (val, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
         },
+        color: '#fff',
+        backgroundColor: 'transparent',
+        borderRadius: 4,
+        font: {
+          family: 'GowunBatang-Bold',
+          size: 14,
+        },
+        padding: {
+          top: 6,
+          bottom: 6,
+        },
+      },
+      legend: {
+        display: false,
       },
     },
   };
