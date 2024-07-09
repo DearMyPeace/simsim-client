@@ -11,7 +11,11 @@ const DiaryScreen = () => {
   const snackbarText = useRecoilValue(snackMessage);
   return (
     <>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
         <MyCalendar />
         <DiaryCarousel />
       </ScrollView>
