@@ -12,11 +12,11 @@ const useDiaryHook = (selectedDate: string) => {
   const newDiaryData = [newDiary];
 
   return {
-    data: markedDateSet.has(selectedDate) ? data?.diaryList || newDiaryData : newDiaryData,
+    data: data?.diaryList || newDiaryData,
     isPending,
     isError,
     isSuccess,
-    sendStatus: markedDateSet.has(selectedDate) ? data?.sendStatus || false : false,
+    sendStatus: data?.sendStatus || false,
   };
 };
 
