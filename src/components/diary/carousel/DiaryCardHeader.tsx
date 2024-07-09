@@ -8,6 +8,7 @@ import { ko } from 'date-fns/locale';
 import TextButton from '@components/common/TextButton';
 import { useRecoilValue } from 'recoil';
 import { tense } from '@stores/tense';
+import { DiaryButtonType } from '@type/Diary';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
@@ -15,6 +16,7 @@ interface DiaryCardHeaderProps {
   timeStartWriting: string;
   isEditing: boolean;
   isLetterSent: boolean;
+  loadingButton: DiaryButtonType | '';
   onSave: () => void;
   onClose: () => void;
   onDelete: () => void;
@@ -32,6 +34,7 @@ const DiaryCardHeader = ({
   timeStartWriting,
   isEditing,
   isLetterSent,
+  loadingButton,
   onSave,
   onClose,
   onDelete,
@@ -48,6 +51,7 @@ const DiaryCardHeader = ({
             compact
             onPress={onSave}
             labelStyle={{ textDecorationLine: 'underline', fontSize: 11 }}
+            loading={loadingButton === 'SAVE'}
           >
             저장
           </TextButton>
@@ -72,11 +76,16 @@ const DiaryCardHeader = ({
                   onPress={onSend}
                   labelStyle={styles.iconLabelStyle}
                   disabled={isLetterSent}
+                  loading={loadingButton === 'SEND'}
                 >
                   보내기
                 </TextButton>
               )}
-              <TextButton onPress={onDelete} labelStyle={styles.iconLabelStyle}>
+              <TextButton
+                onPress={onDelete}
+                labelStyle={styles.iconLabelStyle}
+                loading={loadingButton === 'DELETE'}
+              >
                 삭제
               </TextButton>
               {/* <MyIconButton

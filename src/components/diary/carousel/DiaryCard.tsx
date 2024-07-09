@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, Pressable, Keyboard } from 'react-native';
-import { IDiaryCardProps, IDiaryPatchRequest, IDiaryPostRequest, NEW_DIARY } from '@type/Diary';
+import { DiaryButtonType, IDiaryCardProps, NEW_DIARY } from '@type/Diary';
 import { CARD_WIDTH } from '@utils/Sizing';
 import DiaryInput from '@components/diary/carousel/DiaryInput';
 import DiaryCardHeader from '@components/diary/carousel/DiaryCardHeader';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postDiary } from '@api/diary/post';
-import { deleteDiary } from '@api/diary/delete';
-import { patchDiary } from '@api/diary/patch';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { snackMessage } from '@stores/snackMessage';
+import { useRecoilValue } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
-import { postAiLetters } from '@api/ai/post';
-import { IAiLetterRequest } from '@type/IAiLetterRequest';
 import DiaryLoading from '@components/diary/carousel/DiaryLoading';
+import { useDiaryActions } from '@hooks/diary/useDiaryActions';
 
 const DiaryCard = ({
   id,
@@ -26,76 +20,45 @@ const DiaryCard = ({
 }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
-  const setSnackbar = useSetRecoilState(snackMessage);
-  const queryClient = useQueryClient();
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isSendModalVisible, setSendModalVisible] = useState(false);
-  const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const [isInformModalVisible, setInformModalVisible] = useState(false);
+  const {
+    isDeleteModalVisible,
+    setIsDeleteModalVisible,
+    isSendModalVisible,
+    setSendModalVisible,
+    isEditModalVisible,
+    setEditModalVisible,
+    isInformModalVisible,
+    setInformModalVisible,
+    setSnackbar,
+    addNewDiary,
+    removeDiary,
+    editDiary,
+    sendDiary,
+  } = useDiaryActions({
+    setIsEditing,
+    setDiaryInput,
+    setTimeStartWriting,
+  });
   const targetDate = useRecoilValue(selectedDateStatus);
+  const [loagindButton, setLoadingButton] = useState<DiaryButtonType | ''>('');
 
   useEffect(() => {
     setDiaryInput(id === NEW_DIARY ? '' : content);
     setIsEditing(false);
     setTimeStartWriting('');
-  }, [id, content]);
+  }, [id, content, targetDate]);
 
-  const addNewDiary = useMutation({
-    mutationFn: (data: IDiaryPostRequest) => postDiary(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['diary'] });
-      setSnackbar('저장이 완료되었습니다.');
-      setTimeStartWriting('');
-    },
-    onError: (error: any) => {
-      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
-    },
-    onSettled: () => {
-      setIsEditing(false);
-    },
-  });
-  const removeDiary = useMutation({
-    mutationFn: (id: number) => deleteDiary(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['diary'] });
-      setSnackbar('삭제가 완료되었습니다.');
-    },
-    onError: (error: any) => {
-      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
-    },
-    onSettled: () => {
-      setIsEditing(false);
-      setDiaryInput('');
-      setIsDeleteModalVisible(false);
-    },
-  });
-  const editDiary = useMutation({
-    mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
-    onSuccess: (data) => {
-      setTimeStartWriting(data.createdDate);
-      queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
-      setSnackbar('수정이 완료되었습니다.');
-    },
-    onError: (error: any) => {
-      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
-    },
-    onSettled: () => {
-      setIsEditing(false);
-    },
-  });
-
-  const sendDiary = useMutation({
-    mutationFn: (data: IAiLetterRequest) => postAiLetters(data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
-      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
-      queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
-      // setSnackbar('편지가 도착했습니다');
-    },
-    onError: (error: any) => {
-      setSnackbar(error.response.data.message || '오류가 발생했습니다.');
-    },
-  });
+  useEffect(() => {
+    if (addNewDiary.isPending || editDiary.isPending) {
+      setLoadingButton('SAVE');
+    } else if (removeDiary.isPending) {
+      setLoadingButton('DELETE');
+    } else if (sendDiary.isPending) {
+      setLoadingButton('SEND');
+    } else {
+      setLoadingButton('');
+    }
+  }, [addNewDiary.isPending, editDiary.isPending, removeDiary.isPending, sendDiary.isPending]);
 
   const onClose = () => {
     // 변경된 내용이 없을 땐 모달 띄우지 않음
@@ -111,13 +74,13 @@ const DiaryCard = ({
   };
 
   const onConfirmDelete = () => {
+    setIsDeleteModalVisible(false);
     removeDiary.mutate(id);
   };
 
   const onConfirmEdit = () => {
     setIsEditing(false);
     setDiaryInput(content);
-    // setSnackbar('수정이 취소되었습니다.');
     setEditModalVisible(false);
   };
 
@@ -146,7 +109,6 @@ const DiaryCard = ({
       return;
     }
     if (diaryInput === content) {
-      // setSnackbar('변경된 내용이 없습니다.');
       setIsEditing(false);
       return;
     }
@@ -187,10 +149,12 @@ const DiaryCard = ({
             timeStartWriting={timeStartWriting}
             isEditing={isEditing}
             isLetterSent={isLetterSent}
+            loadingButton={loagindButton}
             onClose={onClose}
             onSave={onSave}
             onDelete={onDelete}
             onSend={onSend}
+            // isLoading={sendDiary.isPending || addNewDiary.isPending || editDiary.isPending}
           />
           <DiaryInput
             id={id}

@@ -12,7 +12,8 @@ export const useDiaryList = (targetDate: string, isMarked: boolean) => {
   return useQuery({
     queryKey: ['diary', 'list', targetDate],
     queryFn: () => fetchDiaryList(targetDate),
-    enabled: !!targetDate && isMarked,
+    enabled: !!targetDate,
+    initialData: !isMarked ? { diaries: [], sendStatus: false } : undefined,
     staleTime: Infinity,
     select: (data) => {
       const diaryList = data.diaries.map((item) => ({

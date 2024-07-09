@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    minHeight: 200,
   },
   cardContainer: {
     flexDirection: 'row',

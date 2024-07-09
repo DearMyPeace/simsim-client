@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import MyCalendar from '@components/diary/calendar/MyCalendar';
 import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 import MySnackbar from '@components/common/MySnackbar';
@@ -11,10 +11,10 @@ const DiaryScreen = () => {
   const snackbarText = useRecoilValue(snackMessage);
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <MyCalendar />
         <DiaryCarousel />
-      </View>
+      </ScrollView>
       <MySnackbar visible={snackbarText !== ''} />
     </>
   );
