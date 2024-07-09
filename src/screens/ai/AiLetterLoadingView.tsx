@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
+import CustomLoadingControlWrapper from '@screens/common/CustomLoadingControlWrapper';
 
 const AiLetterLoadingView = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="gray" />
+      <CustomLoadingControlWrapper />
       <MyText style={styles.text}> 편지를 가져오고 있어요. </MyText>
     </View>
   );

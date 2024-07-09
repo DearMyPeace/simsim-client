@@ -1,29 +1,41 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { View, StyleSheet } from 'react-native';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
 import ChartWrapper from '@screens/report/ChartWrapper';
+import { fetchWeekReport, fetchReportPNN } from '@api/report/get';
+import ReportLoadingView from './ReportLoadingView';
+import ReportErrorView from './ReportErrorView';
 
 const Report = () => {
-  const emotionData = {
-    happyCnt: 39,
-    appreciationCnt: 28,
-    loveCnt: 8,
-    tranquilityCnt: 7,
-    curiosityCnt: 28,
-    surpriseCnt: 39,
-    neutralTotalCnt: 15,
-    sadCnt: 10,
-    angryCnt: 5,
-    fearCnt: 20,
-    negativeTotalCnt: 12,
-  };
+  const targetDate = new Date().toISOString().slice(0, 10);
 
-  const dayEmotionData = {
-    positiveMaxCnt: 50,
-    neutralMaxCnt: 30,
-    negativeMaxCnt: 20,
-  };
+  const {
+    data: emotionData,
+    isLoading: isLoadingEmotionData,
+    error: emotionDataError,
+  } = useQuery({
+    queryKey: ['weekReport', targetDate],
+    queryFn: () => fetchWeekReport(targetDate),
+  });
+
+  const {
+    data: dayEmotionData,
+    isLoading: isLoadingDayEmotionData,
+    error: dayEmotionDataError,
+  } = useQuery({
+    queryKey: ['reportPNN', targetDate],
+    queryFn: () => fetchReportPNN(targetDate),
+  });
+
+  if (isLoadingEmotionData || isLoadingDayEmotionData) {
+    return <ReportLoadingView />;
+  }
+
+  if (emotionDataError || dayEmotionDataError) {
+    return <ReportErrorView />;
+  }
 
   return (
     <View style={styles.container}>
@@ -79,6 +91,20 @@ const styles = StyleSheet.create({
   content: {
     textAlign: 'left',
     marginBottom: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
   },
 });
 
