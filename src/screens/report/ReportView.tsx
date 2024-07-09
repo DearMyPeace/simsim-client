@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
 import ChartWrapper from '@screens/report/ChartWrapper';
