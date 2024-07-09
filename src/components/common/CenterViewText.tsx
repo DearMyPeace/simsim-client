@@ -10,7 +10,7 @@ interface ICenterViewText {
 
 const CenterViewText = ({ text, textSize = 14, textStyle }: ICenterViewText) => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
       <MyText size={textSize} style={textStyle}>
         {text}
       </MyText>
