@@ -86,3 +86,5 @@ export interface IDiaryPatchRequest {
   diaryId: number;
   data: IDiaryPostRequest;
 }
+
+export type DiaryButtonType = 'SAVE' | 'CLOSE' | 'DELETE' | 'SEND';
