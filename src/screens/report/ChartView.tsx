@@ -13,6 +13,8 @@ import { Doughnut } from 'react-chartjs-2';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { appColor1, appColor2, appColor3, appColor4 } from '@utils/colors';
+import CustomLoadingControlWrapper from '@screens/common/CustomLoadingControlWrapper';
+import MyText from '@components/common/MyText';
 
 ChartJS.register(
   RadialLinearScale,
@@ -40,12 +42,24 @@ const emotionDicData = {
 };
 
 const ChartView = ({ emotionData, labels }) => {
+  const filteredLabels = labels.filter((label) => emotionData[emotionDicData[label]] > 0);
+
+  if (filteredLabels.length === 0) {
+    return (
+      <View style={styles.chart}>
+        <CustomLoadingControlWrapper />
+        <MyText> 표시할 기록 조각이 없어요. </MyText>
+        <MyText> 기록을 보내 편지를 받아보세요. </MyText>
+      </View>
+    );
+  }
+
   const doughnutChartData = {
-    labels: labels,
+    labels: filteredLabels,
     datasets: [
       {
         label: 'Emotion Data',
-        data: labels.map((label) => emotionData[emotionDicData[label]]),
+        data: filteredLabels.map((label) => emotionData[emotionDicData[label]]),
         backgroundColor: [appColor1, appColor2, appColor3, appColor4],
       },
     ],
