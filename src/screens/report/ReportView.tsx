@@ -1,6 +1,7 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { View, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
 import ChartWrapper from '@screens/report/ChartWrapper';
@@ -11,6 +12,14 @@ import { DayEmotionData, EmotionData } from '@type/IReport';
 
 const Report = () => {
   const targetDate = new Date().toISOString().slice(0, 10);
+  const queryClient = useQueryClient();
+
+  useFocusEffect(
+    useCallback(() => {
+      queryClient.invalidateQueries(['weekReport', targetDate]);
+      queryClient.invalidateQueries(['reportPNN', targetDate]);
+    }, [queryClient, targetDate]),
+  );
 
   const {
     data: emotionData,

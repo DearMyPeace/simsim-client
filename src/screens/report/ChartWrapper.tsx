@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   dailyReportContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     padding: 20,
     width: '100%',
     maxWidth: 300,
