@@ -25,7 +25,7 @@ const ChartWrapper = ({ emotionData, dayEmotionData }) => {
       case '중립적':
         return (
           <View style={styles.content}>
-            <ChartView emotionData={emotionData} labels={['평온', '호기심', '놀람', '중립']} />
+            <ChartView emotionData={emotionData} labels={['평온', '호기심', '놀람']} />
             <View style={styles.dailyReportContainer}>
               <Dailyreport
                 date={dayEmotionData.neutralDate}
@@ -37,7 +37,7 @@ const ChartWrapper = ({ emotionData, dayEmotionData }) => {
       case '부정적':
         return (
           <View style={styles.content}>
-            <ChartView emotionData={emotionData} labels={['슬픔', '분노', '두려움', '부정']} />
+            <ChartView emotionData={emotionData} labels={['슬픔', '분노', '두려움']} />
             <View style={styles.dailyReportContainer}>
               <Dailyreport
                 date={dayEmotionData.negativeDate}

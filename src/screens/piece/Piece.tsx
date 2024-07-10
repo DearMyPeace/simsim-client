@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Animated, Image, TouchableWithoutFeedback } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import MyText from '@components/common/MyText';
-import stainedglassTranparent from '@assets/images/stainedglass_NON.png';
+import stainedglassHalf from '@assets/images/stainedglass_half.png';
 import stainedglassFrame from '@assets/images/stainedglass_frame.png';
 import { fontBasic } from '@utils/Sizing';
 import Report from '@screens/report/ReportView';
@@ -59,7 +58,7 @@ const Piece = () => {
             <Animated.View
               style={[styles.imageContainer, styles.backImageContainer, backAnimatedStyle]}
             >
-              <Image source={stainedglassTranparent} style={styles.image} resizeMode="contain" />
+              <Image source={stainedglassHalf} style={styles.image} resizeMode="contain" />
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>
@@ -92,12 +91,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   backImageContainer: {
+    paddingTop: 10,
     position: 'absolute',
     backgroundColor: 'transparent',
   },
   image: {
     width: '100%',
     height: '100%',
+    aspectRatio: 1,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
