@@ -16,8 +16,8 @@ const Report = () => {
 
   useFocusEffect(
     useCallback(() => {
-      queryClient.invalidateQueries(['weekReport', targetDate]);
-      queryClient.invalidateQueries(['reportPNN', targetDate]);
+      queryClient.invalidateQueries({ queryKey: ['weekReport', targetDate] });
+      queryClient.invalidateQueries({ queryKey: ['reportPNN', targetDate] });
     }, [queryClient, targetDate]),
   );
 

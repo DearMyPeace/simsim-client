@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import MyText from '@components/common/MyText';
 import { fontLarge } from '@utils/Sizing';
-import { kMonth } from '@utils/localeConfig';
 
 const Dailyreport = ({ date, summary }) => {
   const formattedDate = new Date(date);
@@ -10,7 +9,7 @@ const Dailyreport = ({ date, summary }) => {
   const month = formattedDate.getMonth();
   const day = formattedDate.getDate();
 
-  const displayDate = `${year}년 ${kMonth[month]} ${day}일`;
+  const displayDate = `${year}년 ${month}월 ${day}일`;
 
   return (
     <View style={styles.container}>
