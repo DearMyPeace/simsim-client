@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
@@ -7,7 +7,7 @@ import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 
 GoogleSignin.configure({
-  webClientId: process.env.GOOGLE_CLIENT_ID,
+  webClientId: process.env.ANDROID_GOOGLE_CLIENT_ID,
   iosClientId: process.env.IOS_GOOGLE_CLIENT_ID,
 });
 
@@ -16,6 +16,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
 
   const signInWithGoogle = async () => {
     try {
+      await GoogleSignin.hasPlayServices();
       await GoogleSignin.signIn();
       const getToken = await GoogleSignin.getTokens();
       if (getToken) {
