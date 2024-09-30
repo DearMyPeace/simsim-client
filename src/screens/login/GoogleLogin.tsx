@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
