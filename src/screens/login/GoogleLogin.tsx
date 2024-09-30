@@ -7,21 +7,26 @@ import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 
 GoogleSignin.configure({
-  webClientId: process.env.GOOGLE_CLIENT_ID,
+  webClientId: process.env.ANDROID_GOOGLE_CLIENT_ID,
   iosClientId: process.env.IOS_GOOGLE_CLIENT_ID,
 });
 
-const GoogleLogin = ({ handleLoginPress }) => {
+interface IGoogleLoginProps {
+  handleLoginPress: (func: () => Promise<void>) => void;
+}
+
+const GoogleLogin = ({ handleLoginPress }: IGoogleLoginProps) => {
   const sendUserToken = useSendUserToken('google');
 
   const signInWithGoogle = async () => {
     try {
+      await GoogleSignin.hasPlayServices();
       await GoogleSignin.signIn();
       const getToken = await GoogleSignin.getTokens();
       if (getToken) {
         sendUserToken.mutate({ access_token: getToken.accessToken });
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User cancelled the login flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
