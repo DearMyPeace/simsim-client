@@ -11,7 +11,11 @@ GoogleSignin.configure({
   iosClientId: process.env.IOS_GOOGLE_CLIENT_ID,
 });
 
-const GoogleLogin = ({ handleLoginPress }) => {
+interface IGoogleLoginProps {
+  handleLoginPress: (func: () => Promise<void>) => void;
+}
+
+const GoogleLogin = ({ handleLoginPress }: IGoogleLoginProps) => {
   const sendUserToken = useSendUserToken('google');
 
   const signInWithGoogle = async () => {
@@ -22,7 +26,7 @@ const GoogleLogin = ({ handleLoginPress }) => {
       if (getToken) {
         sendUserToken.mutate({ access_token: getToken.accessToken });
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User cancelled the login flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
