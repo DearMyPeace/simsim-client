@@ -154,7 +154,6 @@ const DiaryCard = ({
             onSave={onSave}
             onDelete={onDelete}
             onSend={onSend}
-            // isLoading={sendDiary.isPending || addNewDiary.isPending || editDiary.isPending}
           />
           <DiaryInput
             id={id}
