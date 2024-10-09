@@ -76,6 +76,7 @@ export const useDiaryActions = ({
       queryClient.invalidateQueries({ queryKey: ['diary', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
+      queryClient.invalidateQueries({ queryKey: ['fetchAiLetterByID'] });
     },
     onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');
