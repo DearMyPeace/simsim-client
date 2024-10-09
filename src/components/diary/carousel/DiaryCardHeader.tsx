@@ -1,10 +1,8 @@
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
-// import { IconButton } from 'react-native-paper';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-// import MyIconButton from '@components/common/MyIconButtons';
 import TextButton from '@components/common/TextButton';
 import { useRecoilValue } from 'recoil';
 import { tense } from '@stores/tense';
@@ -44,24 +42,17 @@ const DiaryCardHeader = ({
 
   return (
     <View style={styles.header}>
-      <MyText>{formatTime(createdTime) || formatTime(timeStartWriting)}</MyText>
+      <MyText size={15}>{formatTime(createdTime) || formatTime(timeStartWriting)}</MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <TextButton
             compact
             onPress={onSave}
-            labelStyle={{ textDecorationLine: 'underline', fontSize: 11 }}
+            labelStyle={styles.iconLabelStyle}
             loading={loadingButton === 'SAVE'}
           >
             저장
           </TextButton>
-          // <MyIconButton
-          //   iconSet="AntDesign"
-          //   name="save"
-          //   size={16}
-          //   onPress={onSave}
-          //   style={styles.icon}
-          // />
         )}
         {!isNew &&
           (isEditing ? (
@@ -69,7 +60,6 @@ const DiaryCardHeader = ({
               취소
             </TextButton>
           ) : (
-            // <IconButton icon="close" size={16} onPress={onClose} style={styles.icon} />
             <>
               {dateStatus !== 'FUTURE' && (
                 <TextButton
@@ -88,21 +78,6 @@ const DiaryCardHeader = ({
               >
                 삭제
               </TextButton>
-              {/* <MyIconButton
-                iconSet="Feather"
-                name="send"
-                size={16}
-                onPress={onSend}
-                style={styles.icon}
-                disabled={isLetterSent}
-              /> */}
-              {/* <MyIconButton
-                iconSet="Feather"
-                name="trash-2"
-                size={16}
-                onPress={onDelete}
-                style={styles.icon}
-              /> */}
             </>
           ))}
       </View>
@@ -126,9 +101,6 @@ const styles = StyleSheet.create({
   },
   iconLabelStyle: {
     textDecorationLine: 'underline',
-    fontSize: 11,
+    fontSize: 13,
   },
-  // icon: {
-  //   margin: 0,
-  // },
 });
