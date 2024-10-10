@@ -17,6 +17,7 @@ const DiaryCard = ({
   isEditing,
   setIsEditing,
   isLetterSent,
+  isSuccess,
 }: IDiaryCardProps) => {
   const [diaryInput, setDiaryInput] = useState('');
   const [timeStartWriting, setTimeStartWriting] = useState<string>('');
@@ -36,7 +37,6 @@ const DiaryCard = ({
     sendDiary,
   } = useDiaryActions({
     setIsEditing,
-    setDiaryInput,
     setTimeStartWriting,
   });
   const targetDate = useRecoilValue(selectedDateStatus);
@@ -143,20 +143,23 @@ const DiaryCard = ({
         disabled={Platform.OS === 'web'}
       >
         <View style={styles.card}>
-          <DiaryCardHeader
-            isNew={id === NEW_DIARY}
-            createdTime={id !== NEW_DIARY ? createdTime : ''}
-            timeStartWriting={timeStartWriting}
-            isEditing={isEditing}
-            isLetterSent={isLetterSent}
-            loadingButton={loagindButton}
-            onClose={onClose}
-            onSave={onSave}
-            onDelete={onDelete}
-            onSend={onSend}
-          />
+          {isSuccess ? (
+            <DiaryCardHeader
+              isNew={id === NEW_DIARY}
+              createdTime={id !== NEW_DIARY ? createdTime : ''}
+              timeStartWriting={timeStartWriting}
+              isEditing={isEditing}
+              isLetterSent={isLetterSent}
+              loadingButton={loagindButton}
+              onClose={onClose}
+              onSave={onSave}
+              onDelete={onDelete}
+              onSend={onSend}
+            />
+          ) : (
+            <View style={{ minHeight: 38 }} />
+          )}
           <DiaryInput
-            id={id}
             isNew={id === NEW_DIARY}
             diaryInput={diaryInput}
             setDiaryInput={setDiaryInput}

@@ -9,10 +9,15 @@ const useDiaryHook = (selectedDate: string) => {
     selectedDate,
     markedDateSet.has(selectedDate),
   );
-  const newDiaryData = [newDiary];
+
+  const diaryData = isSuccess
+    ? data?.diaryList || [newDiary]
+    : isPending
+    ? [{ ...newDiary, content: '심심기록을 가져오는 중입니다.' }]
+    : [{ ...newDiary, content: '심심기록을 가져올 수 없습니다.' }];
 
   return {
-    data: data?.diaryList || newDiaryData,
+    data: diaryData,
     isPending,
     isError,
     isSuccess,

@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    minHeight: 32,
+    minHeight: 38,
   },
   icons: {
     flexDirection: 'row',
