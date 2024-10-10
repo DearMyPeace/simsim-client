@@ -3,7 +3,6 @@ import { View, StyleSheet, PanResponder, Animated as RNAnimated } from 'react-na
 import { format } from 'date-fns';
 import { IDate, IDay } from '@type/Diary';
 import { CalendarProvider } from 'react-native-calendars';
-import { appColor3 } from '@utils/colors';
 import AiLetterCalendarHeader from '@screens/ai/AiLetterCalendarHeader';
 import TodayButton from '@components/common/TodayButton';
 
@@ -166,10 +165,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16,
-  },
-  todayButtonText: {
-    color: appColor3,
-    userSelect: 'none',
-    fontFamily: 'GowunBatang-Bold',
   },
 });
