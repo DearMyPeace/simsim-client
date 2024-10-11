@@ -1,17 +1,40 @@
 import React from 'react';
-import { Animated as RNAnimated, StyleSheet } from 'react-native';
+import {
+  GestureResponderHandlers,
+  Pressable,
+  Animated as RNAnimated,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import MyText from '@components/common/MyText';
 import { appColor3 } from '@utils/colors';
 
-const TodayButton = ({ props, buttonStyle }: any) => {
+interface ITodayButtonProps {
+  onPress?: () => void;
+  buttonStyle?: ViewStyle;
+  handler?: GestureResponderHandlers;
+}
+
+const TodayButton = ({ onPress, buttonStyle, handler }: ITodayButtonProps) => {
   return (
-    <RNAnimated.View {...props} style={[styles.todayButton, buttonStyle]}>
-      <MyText style={styles.todayButtonText}>오늘</MyText>
-    </RNAnimated.View>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+    >
+      <RNAnimated.View {...handler} style={[styles.todayButton, buttonStyle]}>
+        <MyText style={styles.todayButtonText}>오늘</MyText>
+      </RNAnimated.View>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginLeft: 8,
+  },
+  pressed: {
+    opacity: 0.5,
+  },
   todayButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.47)',
     borderRadius: 10,

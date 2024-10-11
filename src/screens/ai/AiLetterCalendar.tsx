@@ -144,7 +144,7 @@ const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
           onMonthYearSelect={handleMonthYearSelect}
         />
         {children}
-        {!isToday && <TodayButton props={panResponder.panHandlers} buttonStyle={animatedStyle} />}
+        {!isToday && <TodayButton handler={panResponder.panHandlers} buttonStyle={animatedStyle} />}
       </CalendarProvider>
     </View>
   );
