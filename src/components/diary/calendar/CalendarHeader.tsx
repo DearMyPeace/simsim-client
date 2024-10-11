@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import CalendarSelectModal from './CalendarSelectModal';
 import { kMonth } from '@utils/localeConfig';
-import { useRecoilState } from 'recoil';
-import { selectedDateStatus } from '@stores/tense';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { selectedDateStatus, tense } from '@stores/tense';
 import { fontLarge } from '@utils/Sizing';
 import TodayButton from '@components/common/TodayButton';
+import { getToday } from '@utils/dateUtils';
 
 const CalendarHeader = ({ date }: { date: string }) => {
+  const dateState = useRecoilValue(tense);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateStatus);
   const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.slice(5, 7), 10));
@@ -37,12 +39,16 @@ const CalendarHeader = ({ date }: { date: string }) => {
     return `${kMonth[month]} ${year}`;
   };
 
+  const onPressToday = () => {
+    setSelectedDate(getToday());
+  };
+
   return (
     <View style={styles.header}>
       <TextButton onPress={onHeaderPress}>
         <MyText style={styles.headerText}>{getDisplayDate(new Date(date))}</MyText>
       </TextButton>
-      <TodayButton />
+      {dateState !== 'TODAY' && <TodayButton onPress={onPressToday} />}
       <CalendarSelectModal
         isModalVisible={isModalVisible}
         handleModalDismiss={handleModalDismiss}
