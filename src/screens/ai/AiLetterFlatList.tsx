@@ -26,6 +26,8 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   refreshing,
 }) => {
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [itemHeight, setItemHeight] = useState<number>(0);
+  const defaultItemHeight = 40;
 
   useEffect(() => {
     setIsEmpty(aiLetterEntries.length === 0);
@@ -36,6 +38,12 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
       flatListRef.current.scrollToIndex({ index: activeSections[0], animated: true });
     }
   }, [activeSections, flatListRef]);
+
+  // 아이템의 높이를 측정하는 함수
+  const onItemLayout = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    setItemHeight(height); // 첫 번째 아이템의 높이를 저장
+  };
 
   const renderItem: ListRenderItem<IAiLetterEntry> = ({ item, index }) => {
     let consecutiveNotUsingDayCount = 0;
@@ -53,7 +61,10 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
     }
 
     return (
-      <View key={item.id ? item.id.toString() : `${item.date}-${index}`}>
+      <View
+        key={item.id ? item.id.toString() : `${item.date}-${index}`}
+        onLayout={index === 0 ? onItemLayout : undefined}
+      >
         {item.isPlaceholder ? (
           <View style={styles.notusingItem}>
             <NotUsingDay date={item.date} />
@@ -82,8 +93,8 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   }
 
   const getItemLayout = (_, index) => ({
-    length: 40,
-    offset: 40 * index,
+    length: defaultItemHeight,
+    offset: defaultItemHeight * index,
     index,
   });
 
@@ -96,6 +107,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
         keyExtractor={(item, index) => (item.id ? item.id.toString() : `${item.date}-${index}`)}
         showsVerticalScrollIndicator={false}
         getItemLayout={getItemLayout}
+        ListFooterComponent={<View style={{ height: itemHeight * 3 || defaultItemHeight * 3 }} />}
       />
       {/* <CustomRefreshControlWrapper /> */}
     </View>
