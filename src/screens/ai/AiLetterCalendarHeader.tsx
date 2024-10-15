@@ -12,12 +12,15 @@ import { IDay } from '@type/Diary';
 import MyText from '@components/common/MyText';
 import { appColor3 } from '@utils/colors';
 import { fontLarge } from '@utils/Sizing';
+import TodayButton from '@components/common/TodayButton';
 
 interface AiLetterCalendarHeaderProps {
   selectedDate: IDay;
   onLeftPress: () => void;
   onRightPress: () => void;
   onMonthYearSelect: (month: number, year: number) => void;
+  onPressToday: () => void;
+  isToday: boolean;
 }
 
 const AiLetterCalendarHeader = ({
@@ -25,6 +28,8 @@ const AiLetterCalendarHeader = ({
   onLeftPress,
   onRightPress,
   onMonthYearSelect,
+  isToday,
+  onPressToday,
 }: AiLetterCalendarHeaderProps) => {
   const kMonth = [
     '일 월',
@@ -40,7 +45,6 @@ const AiLetterCalendarHeader = ({
     '십일 월',
     '십이 월',
   ];
-
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.month, 10));
   const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.year, 10));
@@ -83,6 +87,7 @@ const AiLetterCalendarHeader = ({
             kMonth[selectedMonth - 1]
           } ${selectedYear}`}</MyText>
         </Pressable>
+        {!isToday   && <TodayButton onPress={onPressToday} />}
       </View>
       <View style={styles.arrowContainer}>
         <Pressable onPress={onLeftPress}>
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: 26,
+    fontSize: 20,
     color: '#333333',
   },
   arrowContainer: {
