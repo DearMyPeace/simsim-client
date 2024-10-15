@@ -27,6 +27,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [itemHeights, setItemHeights] = useState<{ [key: number]: number }>({});
   const scrollOffset = 40;
+  const defaultItemHeight = 57;
 
   useEffect(() => {
     setIsEmpty(aiLetterEntries.length === 0);
@@ -38,7 +39,13 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
       let offset = 0;
 
       for (let i = 0; i < index; i++) {
-        offset += itemHeights[i] || 40;
+        const itemHeight = itemHeights[i] || defaultItemHeight;
+
+        if (aiLetterEntries[i].isPlaceholder) {
+          continue;
+        } else {
+          offset += itemHeight;
+        }
       }
 
       flatListRef.current.scrollToOffset({
@@ -46,7 +53,7 @@ const AiLetterFlatList: React.FC<AiLetterFlatListProps> = ({
         animated: true,
       });
     }
-  }, [activeSections, flatListRef, itemHeights]);
+  }, [activeSections, flatListRef, itemHeights, aiLetterEntries]);
 
   const onItemLayout = (index: number) => (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
