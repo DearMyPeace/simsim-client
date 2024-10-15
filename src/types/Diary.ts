@@ -28,6 +28,7 @@ export interface IDiaryCardProps extends IDiary {
   isEditing: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   isLetterSent: boolean;
+  isSuccess: boolean;
 }
 
 export interface IDate {

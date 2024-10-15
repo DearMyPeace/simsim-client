@@ -3,9 +3,8 @@ import { View, StyleSheet, PanResponder, Animated as RNAnimated } from 'react-na
 import { format } from 'date-fns';
 import { IDate, IDay } from '@type/Diary';
 import { CalendarProvider } from 'react-native-calendars';
-import { appColor3 } from '@utils/colors';
 import AiLetterCalendarHeader from '@screens/ai/AiLetterCalendarHeader';
-import MyText from '@components/common/MyText';
+import TodayButton from '@components/common/TodayButton';
 
 const parseDateStr = (dateStr: string): IDay => {
   const [year, month, day] = dateStr.split('-');
@@ -128,6 +127,7 @@ const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
 
   const animatedStyle = {
     transform: position.getTranslateTransform(),
+    ...styles.todayButton,
   };
 
   return (
@@ -144,15 +144,7 @@ const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
           onMonthYearSelect={handleMonthYearSelect}
         />
         {children}
-
-        {!isToday && (
-          <RNAnimated.View
-            {...panResponder.panHandlers}
-            style={[styles.todayButton, animatedStyle]}
-          >
-            <MyText style={styles.todayButtonText}>오늘</MyText>
-          </RNAnimated.View>
-        )}
+        {!isToday && <TodayButton handler={panResponder.panHandlers} buttonStyle={animatedStyle} />}
       </CalendarProvider>
     </View>
   );
@@ -173,16 +165,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.47)',
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    borderColor: appColor3,
-    borderWidth: 1,
-  },
-  todayButtonText: {
-    color: appColor3,
-    userSelect: 'none',
-    fontFamily: 'GowunBatang-Bold',
   },
 });

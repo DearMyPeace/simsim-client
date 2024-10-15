@@ -4,28 +4,19 @@ import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
 import { NEW_DIARY } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
-import CenterViewText from '@components/common/CenterViewText';
 import { useRecoilValue } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
 
 const DiaryCarousel = () => {
   const selectedDate = useRecoilValue(selectedDateStatus);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data, isPending, isError, isSuccess, sendStatus } = useDiaryHook(selectedDate);
+  const { data, isSuccess, sendStatus } = useDiaryHook(selectedDate);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setActiveIndex(0);
     setIsEditing(false);
   }, [selectedDate]);
-
-  if (isPending) {
-    return <CenterViewText text="심심기록을 가져오는 중입니다." />;
-  }
-
-  if (isError) {
-    return <CenterViewText text="심심기록을 가져올 수 없습니다" />;
-  }
 
   const onLeftPress = () => {
     if (activeIndex === 0) return;
@@ -53,6 +44,7 @@ const DiaryCarousel = () => {
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isLetterSent={sendStatus}
+          isSuccess={isSuccess}
         />
       </View>
     </View>

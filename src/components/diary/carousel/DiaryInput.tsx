@@ -6,7 +6,6 @@ import { useRecoilValue } from 'recoil';
 import { selectedDateStatus } from '@stores/tense';
 
 interface IDiaryInputProps {
-  id: number;
   isNew: boolean;
   diaryInput: string;
   setDiaryInput: (diaryInput: string) => void;

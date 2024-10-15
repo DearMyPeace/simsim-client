@@ -11,7 +11,7 @@ import { selectedDateStatus } from '@stores/tense';
 
 const DiaryCarousel = () => {
   const selectedDate = useRecoilValue(selectedDateStatus);
-  const { data, isPending, isError, sendStatus } = useDiaryHook(selectedDate);
+  const { data, isSuccess, isPending, isError, sendStatus } = useDiaryHook(selectedDate);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const flatListRef = useRef<FlatList<IDiary>>(null);
@@ -31,6 +31,7 @@ const DiaryCarousel = () => {
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         isLetterSent={sendStatus}
+        isSuccess={isSuccess}
       />
     ),
     [data],
@@ -43,15 +44,15 @@ const DiaryCarousel = () => {
     }
   }, [selectedDate]);
 
-  if (isPending) {
-    return <CenterViewText text="심심기록을 가져오는 중입니다" />;
-  }
+  // if (isPending) {
+  //   return <CenterViewText text="심심기록을 가져오는 중입니다" />;
+  // }
 
-  if (isError) {
-    return (
-      <CenterViewText text="심심기록을 가져올 수 없습니다" textStyle={{ textAlign: 'center' }} />
-    );
-  }
+  // if (isError) {
+  //   return (
+  //     <CenterViewText text="심심기록을 가져올 수 없습니다" textStyle={{ textAlign: 'center' }} />
+  //   );
+  // }
 
   if (data.length === 0) {
     return (
@@ -63,6 +64,7 @@ const DiaryCarousel = () => {
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isLetterSent={sendStatus}
+          isSuccess={isSuccess}
         />
         <DiaryPagination activeIndex={0} diaryList={data} />
       </View>

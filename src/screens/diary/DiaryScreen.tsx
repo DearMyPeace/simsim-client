@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import MyCalendar from '@components/diary/calendar/MyCalendar';
 import DiaryCarousel from '@components/diary/carousel/DiaryCarousel';
 import MySnackbar from '@components/common/MySnackbar';

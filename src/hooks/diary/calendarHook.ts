@@ -22,13 +22,14 @@ const useCalendarHook = () => {
     }
   }, [data, setMarkedDateSet]);
 
-  const onDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
+  const onDayPress = (date: DateData) => {
+    setSelectedDate(date.dateString);
   };
 
   const onMonthChange = (date: DateData) => {
     const year = date.year.toString();
     const month = date.month.toString().padStart(2, '0') as IDate['month'];
+    setSelectedDate(date.dateString);
     setTargetMonth({ year, month });
   };
 

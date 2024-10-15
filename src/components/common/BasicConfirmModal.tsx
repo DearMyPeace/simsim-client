@@ -28,8 +28,12 @@ const BasicConfirmModal = ({
         <MyText style={{ textAlign: 'center' }}>{content}</MyText>
       </View>
       <View style={styles.modalButtons}>
-        <TextButton onPress={onCancel}>취소</TextButton>
-        <TextButton onPress={onConfirm}>{confirmText}</TextButton>
+        <TextButton style={styles.button} onPress={onCancel}>
+          취소
+        </TextButton>
+        <TextButton style={styles.button} onPress={onConfirm}>
+          {confirmText}
+        </TextButton>
       </View>
     </MyModal>
   );
@@ -47,7 +51,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 6,
-    width: '60%',
+    width: '100%',
+  },
+  button: {
+    flex: 1,
   },
 });
 
