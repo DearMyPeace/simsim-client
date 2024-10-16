@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   StyleSheet,
   Pressable,
   Modal,
-  FlatList,
+  ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
@@ -12,12 +12,15 @@ import { IDay } from '@type/Diary';
 import MyText from '@components/common/MyText';
 import { appColor3 } from '@utils/colors';
 import { fontLarge } from '@utils/Sizing';
+import TodayButton from '@components/common/TodayButton';
 
 interface AiLetterCalendarHeaderProps {
   selectedDate: IDay;
   onLeftPress: () => void;
   onRightPress: () => void;
   onMonthYearSelect: (month: number, year: number) => void;
+  onPressToday: () => void;
+  isToday: boolean;
 }
 
 const AiLetterCalendarHeader = ({
@@ -25,6 +28,8 @@ const AiLetterCalendarHeader = ({
   onLeftPress,
   onRightPress,
   onMonthYearSelect,
+  isToday,
+  onPressToday,
 }: AiLetterCalendarHeaderProps) => {
   const kMonth = [
     '일 월',
@@ -40,36 +45,50 @@ const AiLetterCalendarHeader = ({
     '십일 월',
     '십이 월',
   ];
-
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.month, 10));
   const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.year, 10));
+
+  const monthItemHeight = 49;
+  const yearItemHeight = 49;
+
+  const monthScrollRef = useRef<ScrollView>(null);
+  const yearScrollRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     setSelectedMonth(parseInt(selectedDate.month, 10));
     setSelectedYear(parseInt(selectedDate.year, 10));
   }, [selectedDate]);
 
+  useEffect(() => {
+    if (isModalVisible) {
+      const monthOffset = (selectedMonth - 1) * monthItemHeight - 120;
+      const yearOffset = (selectedYear - 2000) * yearItemHeight - 120;
+      monthScrollRef.current?.scrollTo({ y: monthOffset, animated: true });
+      yearScrollRef.current?.scrollTo({ y: yearOffset, animated: true });
+    }
+  }, [isModalVisible, selectedMonth, selectedYear]);
+
   const handleModalDismiss = () => {
     onMonthYearSelect(selectedMonth, selectedYear);
     setModalVisible(false);
   };
 
-  const renderMonthItem = ({ item }) => (
-    <Pressable style={styles.modalItem} onPress={() => setSelectedMonth(item.index + 1)}>
-      <View style={selectedMonth === item.index + 1 && styles.selectedStyle}>
-        <MyText style={selectedMonth === item.index + 1 ? styles.selectedText : styles.modalText}>
-          {item.month}
+  const renderMonthItem = (month, index) => (
+    <Pressable key={index} style={styles.modalItem} onPress={() => setSelectedMonth(index + 1)}>
+      <View style={selectedMonth === index + 1 ? styles.selectedStyle : null}>
+        <MyText style={selectedMonth === index + 1 ? styles.selectedText : styles.modalText}>
+          {month}
         </MyText>
       </View>
     </Pressable>
   );
 
-  const renderYearItem = ({ item }) => (
-    <Pressable style={styles.modalItem} onPress={() => setSelectedYear(item)}>
-      <View style={selectedYear === item && styles.selectedStyle}>
-        <MyText style={selectedYear === item ? styles.selectedText : styles.modalText}>
-          {item}
+  const renderYearItem = (year) => (
+    <Pressable key={year} style={styles.modalItem} onPress={() => setSelectedYear(year)}>
+      <View style={selectedYear === year ? styles.selectedStyle : null}>
+        <MyText style={selectedYear === year ? styles.selectedText : styles.modalText}>
+          {year}
         </MyText>
       </View>
     </Pressable>
@@ -83,6 +102,7 @@ const AiLetterCalendarHeader = ({
             kMonth[selectedMonth - 1]
           } ${selectedYear}`}</MyText>
         </Pressable>
+        {!isToday && <TodayButton onPress={onPressToday} />}
       </View>
       <View style={styles.arrowContainer}>
         <Pressable onPress={onLeftPress}>
@@ -99,26 +119,22 @@ const AiLetterCalendarHeader = ({
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <View style={styles.modalListContainer}>
-                <View style={styles.modalMonth}>
-                  <FlatList
-                    data={kMonth.map((month, index) => ({ month, index }))}
-                    renderItem={renderMonthItem}
-                    keyExtractor={(item) => item.index.toString()}
-                    initialScrollIndex={Math.max(0, selectedMonth - 1)}
-                    getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
-                <View style={styles.modalYear}>
-                  <FlatList
-                    data={Array.from({ length: 50 }, (_, i) => 2000 + i)}
-                    renderItem={renderYearItem}
-                    keyExtractor={(item) => item.toString()}
-                    initialScrollIndex={Math.max(0, selectedYear - 2000)}
-                    getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
+                <ScrollView
+                  ref={monthScrollRef}
+                  style={styles.modalMonth}
+                  showsVerticalScrollIndicator={false}
+                >
+                  {kMonth.map((month, index) => renderMonthItem(month, index))}
+                </ScrollView>
+                <ScrollView
+                  ref={yearScrollRef}
+                  style={styles.modalYear}
+                  showsVerticalScrollIndicator={false}
+                >
+                  {Array.from({ length: 50 }, (_, i) => 2000 + i).map((year) =>
+                    renderYearItem(year),
+                  )}
+                </ScrollView>
               </View>
             </View>
           </View>
@@ -144,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: 26,
+    fontSize: 20,
     color: '#333333',
   },
   arrowContainer: {
