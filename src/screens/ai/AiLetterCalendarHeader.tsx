@@ -119,10 +119,18 @@ const AiLetterCalendarHeader = ({
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <View style={styles.modalListContainer}>
-                <ScrollView ref={monthScrollRef} style={styles.modalMonth}>
+                <ScrollView
+                  ref={monthScrollRef}
+                  style={styles.modalMonth}
+                  showsVerticalScrollIndicator={false}
+                >
                   {kMonth.map((month, index) => renderMonthItem(month, index))}
                 </ScrollView>
-                <ScrollView ref={yearScrollRef} style={styles.modalYear}>
+                <ScrollView
+                  ref={yearScrollRef}
+                  style={styles.modalYear}
+                  showsVerticalScrollIndicator={false}
+                >
                   {Array.from({ length: 50 }, (_, i) => 2000 + i).map((year) =>
                     renderYearItem(year),
                   )}
