@@ -187,7 +187,7 @@ const DiaryCard = ({
         visible={isSendModalVisible}
         setIsVisible={setSendModalVisible}
         onConfirm={onConfirmSend}
-        content={`이 날의 기록을 모두 보내시겠습니까?\n편지는 하루에 한 번만 받을 수 있어요.`}
+        content={`이 날의 기록을 모두 보내시겠습니까?\n수정 후 기록을 다시 보내면\n이전 편지는 사라집니다.`}
         confirmText="보내기"
       />
       <BasicConfirmModal
