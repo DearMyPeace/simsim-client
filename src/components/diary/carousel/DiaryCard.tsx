@@ -12,8 +12,9 @@ import { useDiaryActions } from '@hooks/diary/useDiaryActions';
 
 const DiaryCard = ({
   id,
-  createdTime,
   content,
+  createdDate,
+  modifiedDate,
   isEditing,
   setIsEditing,
   isLetterSent,
@@ -90,11 +91,10 @@ const DiaryCard = ({
   };
 
   const sendDiaryData = () => {
-    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
       content: diaryInput,
-      createdDate: cretatedDate,
-      modifiedDate: cretatedDate,
+      createdDate: createdDate || timeStartWriting,
+      modifiedDate: timeStartWriting,
     };
     id === NEW_DIARY ? addNewDiary.mutate(data) : editDiary.mutate({ diaryId: id, data });
   };
@@ -146,7 +146,7 @@ const DiaryCard = ({
           {isSuccess ? (
             <DiaryCardHeader
               isNew={id === NEW_DIARY}
-              createdTime={id !== NEW_DIARY ? createdTime : ''}
+              modifiedDate={modifiedDate}
               timeStartWriting={timeStartWriting}
               isEditing={isEditing}
               isLetterSent={isLetterSent}

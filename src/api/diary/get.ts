@@ -19,7 +19,8 @@ export const useDiaryList = (targetDate: string, isMarked: boolean) => {
       const diaryList = data.diaries.map((item) => ({
         id: item.diaryId,
         content: item.content,
-        createdTime: item.createdDate,
+        createdDate: item.createdDate,
+        modifiedDate: item.modifiedDate,
       }));
       diaryList.length < 3 && diaryList.push(newDiary);
       return { sendStatus: data.sendStatus, diaryList };
