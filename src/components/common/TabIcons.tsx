@@ -19,15 +19,15 @@ export const AiLetterIcon = ({ focused, color, size }: ITabBarIconProps) => {
   const userInfo = useRecoilValue(userInfoState);
   const mailIcon =
     userInfo.replyStatus === 'C' ? (
-      <MailOpen width={26} height={26} fill={color} />
+      <MailOpen width={26} height={26} stroke={color} />
     ) : (
-      <Mail width={26} height={26} fill={color} />
+      <Mail width={26} height={26} stroke={color} />
     );
   const showBadge = userInfo.replyStatus === 'R';
 
   return (
     <View>
-      {focused ? <MailOpen width={26} height={26} fill={color} /> : mailIcon}
+      {focused ? <MailOpen width={26} height={26} stroke={color} /> : mailIcon}
       {showBadge && <View style={styles.badge} />}
     </View>
   );
