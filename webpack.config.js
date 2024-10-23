@@ -48,7 +48,7 @@ const babelLoaderConfiguration = {
 };
 
 const imageLoaderConfiguration = {
-  test: /\.(gif|jpe?g|png|svg|ttf)$/,
+  test: /\.(gif|jpe?g|png|ttf)$/,
   include: [
     path.resolve(appDirectory, 'src/assets'),
     ...uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
@@ -61,6 +61,16 @@ const imageLoaderConfiguration = {
       limit: 100,
       fallback: 'file-loader',
       publicPath: '/',
+    },
+  },
+};
+
+const svgLoaderConfiguration = {
+  test: /\.svg$/,
+  use: {
+    loader: '@svgr/webpack',
+    options: {
+      icon: true,
     },
   },
 };
@@ -78,7 +88,12 @@ module.exports = {
     publicPath: '/',
   },
   module: {
-    rules: [babelLoaderConfiguration, imageLoaderConfiguration, cssLoaderConfiguration],
+    rules: [
+      babelLoaderConfiguration,
+      imageLoaderConfiguration,
+      cssLoaderConfiguration,
+      svgLoaderConfiguration,
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),

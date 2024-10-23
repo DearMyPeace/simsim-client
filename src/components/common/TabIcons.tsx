@@ -1,5 +1,5 @@
-import React, { memo, useEffect } from 'react';
-import { View, StyleSheet, Platform, Image } from 'react-native';
+import React, { memo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { ITabBarIconProps } from '@type/ITabBarIconProps';
 import CalendarIconSVG from '@assets/images/diary.svg';
 import PieceIconSVG from '@assets/images/piece.svg';
@@ -11,9 +11,6 @@ import { userInfoState } from '@stores/login';
 import { alertColor } from '@utils/colors';
 
 export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
-  if (Platform.OS === 'web') {
-    return <Image source={CalendarIconSVG} tintColor={color} style={{ width: 24, height: 24 }} />;
-  }
   return <CalendarIconSVG style={{ color: color }} width={24} height={24} />;
 });
 
@@ -35,9 +32,6 @@ export const ShopIcon = memo(({ color }: ITabBarIconProps) => (
 ));
 
 export const PieceIcon = memo(({ color }: ITabBarIconProps) => {
-  if (Platform.OS === 'web') {
-    return <Image source={PieceIconSVG} tintColor={color} style={{ width: 34, height: 34 }} />;
-  }
   return <PieceIconSVG style={{ color: color }} width={34} height={34} />;
 });
 
