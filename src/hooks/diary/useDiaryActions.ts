@@ -33,9 +33,8 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
     onSuccess: (data: IDiariesResponse) => {
       queryClient.setQueryData(['diary', 'list', targetDate], (prev: IDiaryListResponse) => {
-        console.log('prev', prev);
         return {
-          ...prev,
+          sendStatus: false,
           diaries: [...prev.diaries, data],
         };
       });
@@ -55,7 +54,7 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
     onSuccess: (_, diaryId) => {
       queryClient.setQueryData(['diary', 'list', targetDate], (prev: IDiaryListResponse) => {
         return {
-          ...prev,
+          sendStatus: false,
           diaries: prev.diaries.filter((item: IDiariesResponse) => item.diaryId !== diaryId),
         };
       });
@@ -72,10 +71,9 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
   const editDiary = useMutation({
     mutationFn: (data: IDiaryPatchRequest) => patchDiary(data),
     onSuccess: (data) => {
-      setTimeStartWriting(data.createdDate);
       queryClient.setQueryData(['diary', 'list', targetDate], (prev: IDiaryListResponse) => {
         return {
-          ...prev,
+          sendStatus: false,
           diaries: prev.diaries.map((diary: IDiariesResponse) =>
             diary.diaryId === data.diaryId ? data : diary,
           ),

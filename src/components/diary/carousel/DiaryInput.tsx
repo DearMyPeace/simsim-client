@@ -32,19 +32,16 @@ const DiaryInput = ({
 
   const onChangeText = (text: string) => {
     if (text.length > MAX_LENGTH) return;
+    setDiaryInput(text);
+  };
+
+  const onFocus = () => {
     if (!timeStartWriting) {
       const now = new Date();
       const [year, month, date] = targetDate.split('-').map(Number);
       now.setFullYear(year, month - 1, date);
       setTimeStartWriting(now.toISOString());
     }
-    if (text.length === 0) {
-      setTimeStartWriting('');
-    }
-    setDiaryInput(text);
-  };
-
-  const onFocus = () => {
     setIsEditing(true);
   };
 

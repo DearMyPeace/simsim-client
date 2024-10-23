@@ -39,8 +39,9 @@ const DiaryCarousel = () => {
         )}
         <DiaryCard
           id={data[activeIndex]?.id || NEW_DIARY}
-          createdTime={data[activeIndex]?.createdTime || ''}
           content={data[activeIndex]?.content || ''}
+          createdDate={data[activeIndex]?.createdDate}
+          modifiedDate={data[activeIndex]?.modifiedDate}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isLetterSent={sendStatus}

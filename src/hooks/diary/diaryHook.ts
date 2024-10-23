@@ -1,6 +1,6 @@
 import { useDiaryList } from '@api/diary/get';
 import { markedDateStatus } from '@stores/tense';
-import { newDiary } from '@type/Diary';
+import { IDiary, newDiary } from '@type/Diary';
 import { useRecoilValue } from 'recoil';
 
 const useDiaryHook = (selectedDate: string) => {
@@ -10,7 +10,7 @@ const useDiaryHook = (selectedDate: string) => {
     markedDateSet.has(selectedDate),
   );
 
-  const diaryData = isSuccess
+  const diaryData: IDiary[] = isSuccess
     ? data?.diaryList || [newDiary]
     : isPending
     ? [{ ...newDiary, content: '심심기록을 가져오는 중입니다.' }]

@@ -10,7 +10,7 @@ import { DiaryButtonType } from '@type/Diary';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
-  createdTime: string;
+  modifiedDate: string;
   timeStartWriting: string;
   isEditing: boolean;
   isLetterSent: boolean;
@@ -28,7 +28,7 @@ const formatTime = (time: string) => {
 
 const DiaryCardHeader = ({
   isNew,
-  createdTime,
+  modifiedDate,
   timeStartWriting,
   isEditing,
   isLetterSent,
@@ -42,7 +42,9 @@ const DiaryCardHeader = ({
 
   return (
     <View style={styles.header}>
-      <MyText size={15}>{formatTime(createdTime) || formatTime(timeStartWriting)}</MyText>
+      <MyText size={15}>
+        {isEditing ? formatTime(timeStartWriting) : formatTime(modifiedDate)}
+      </MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <TextButton

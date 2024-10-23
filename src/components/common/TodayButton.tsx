@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   todayButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.47)',
     borderRadius: 10,
-    paddingVertical: 5,
+    paddingVertical: 1.5,
     paddingHorizontal: 5,
     borderColor: appColor3,
     borderWidth: 1,

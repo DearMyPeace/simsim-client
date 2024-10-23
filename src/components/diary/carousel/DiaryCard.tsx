@@ -12,8 +12,9 @@ import { useDiaryActions } from '@hooks/diary/useDiaryActions';
 
 const DiaryCard = ({
   id,
-  createdTime,
   content,
+  createdDate,
+  modifiedDate,
   isEditing,
   setIsEditing,
   isLetterSent,
@@ -90,11 +91,10 @@ const DiaryCard = ({
   };
 
   const sendDiaryData = () => {
-    const cretatedDate = id === NEW_DIARY ? timeStartWriting : createdTime;
     const data = {
       content: diaryInput,
-      createdDate: cretatedDate,
-      modifiedDate: cretatedDate,
+      createdDate: createdDate || timeStartWriting,
+      modifiedDate: timeStartWriting,
     };
     id === NEW_DIARY ? addNewDiary.mutate(data) : editDiary.mutate({ diaryId: id, data });
   };
@@ -146,7 +146,7 @@ const DiaryCard = ({
           {isSuccess ? (
             <DiaryCardHeader
               isNew={id === NEW_DIARY}
-              createdTime={id !== NEW_DIARY ? createdTime : ''}
+              modifiedDate={modifiedDate}
               timeStartWriting={timeStartWriting}
               isEditing={isEditing}
               isLetterSent={isLetterSent}
@@ -187,7 +187,7 @@ const DiaryCard = ({
         visible={isSendModalVisible}
         setIsVisible={setSendModalVisible}
         onConfirm={onConfirmSend}
-        content={`이 날의 기록을 모두 보내시겠습니까?\n편지는 하루에 한 번만 받을 수 있어요.`}
+        content={`이 날의 기록을 모두 보내시겠습니까?\n수정 후 기록을 다시 보내면\n이전 편지는 사라집니다.`}
         confirmText="보내기"
       />
       <BasicConfirmModal

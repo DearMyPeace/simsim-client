@@ -26,8 +26,9 @@ const DiaryCarousel = () => {
     ({ item }) => (
       <DiaryCard
         id={item.id}
-        createdTime={item.createdTime}
         content={item.content}
+        createdDate={item.createdDate}
+        modifiedDate={item.modifiedDate}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         isLetterSent={sendStatus}
@@ -59,8 +60,9 @@ const DiaryCarousel = () => {
       <View style={[styles.container, { marginBottom: 28 }]}>
         <DiaryCard
           id={NEW_DIARY}
-          createdTime=""
           content=""
+          createdDate=""
+          modifiedDate=""
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isLetterSent={sendStatus}
