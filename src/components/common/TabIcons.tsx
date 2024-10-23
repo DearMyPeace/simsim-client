@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { ITabBarIconProps } from '@type/ITabBarIconProps';
 import CalendarIconSVG from '@assets/images/diary.svg';
 import PieceIconSVG from '@assets/images/piece.svg';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MailOpen from '@assets/svg/icons/ion--mail-open-outline.svg';
+import Mail from '@assets/svg/icons/ion--mail-outline.svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MyIconButtons from '@components/common/MyIconButtons';
 import { useRecoilValue } from 'recoil';
@@ -16,12 +17,17 @@ export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
 
 export const AiLetterIcon = ({ focused, color, size }: ITabBarIconProps) => {
   const userInfo = useRecoilValue(userInfoState);
-  const iconName = userInfo.replyStatus === 'C' ? 'mail-open-outline' : 'mail-outline';
+  const mailIcon =
+    userInfo.replyStatus === 'C' ? (
+      <MailOpen width={26} height={26} fill={color} />
+    ) : (
+      <Mail width={26} height={26} fill={color} />
+    );
   const showBadge = userInfo.replyStatus === 'R';
 
   return (
     <View>
-      <Ionicons name={focused ? 'mail-open-outline' : iconName} color={color} size={26} />
+      {focused ? <MailOpen width={26} height={26} fill={color} /> : mailIcon}
       {showBadge && <View style={styles.badge} />}
     </View>
   );

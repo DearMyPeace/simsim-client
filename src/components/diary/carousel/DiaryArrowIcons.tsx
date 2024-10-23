@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Left from '@assets/svg/icons/entypo--chevron-thin-left.svg';
+import Right from '@assets/svg/icons/entypo--chevron-thin-right.svg';
 
 interface DiaryArrowIconsProps {
   direction: 'left' | 'right';
@@ -15,7 +16,11 @@ const DiaryArrowIcons = ({ direction, onPress }: DiaryArrowIconsProps) => {
       style={({ pressed }) => [{ opacity: pressed ? 0.3 : 0.7 }, styles.icon, iconStyle]}
       onPress={onPress}
     >
-      <Entypo name={`chevron-thin-${direction}`} size={24} color="#666666" />
+      {direction === 'left' ? (
+        <Left width={24} height={24} fill="#666666" />
+      ) : (
+        <Right width={24} height={24} fill="#666666" />
+      )}
     </Pressable>
   );
 };

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import ErrorCircle from '@assets/svg/icons/ant-design--exclamation-circle-outlined.svg';
 import { Dropdown } from 'react-native-element-dropdown';
 import PurchaseHistoryEntries from '@api/mock/PurchaseHistoryEntries';
 import MyText from '@components/common/MyText';
-import Entypo from 'react-native-vector-icons/Entypo';
+import RightSVG from '@assets/svg/icons/entypo--chevron-small-right.svg';
 import { fontBasic, fontMedium } from '@utils/Sizing';
 
 const formatNumber = (number) => {
@@ -104,7 +104,7 @@ export default function PurchaseHistory() {
 
         {sortedEntries.length !== 0 ? (
           <View style={styles.emptyContainer}>
-            <AntDesign name="exclamationcircleo" size={120} color="#D9D9D9" />
+            <ErrorCircle width={120} height={120} fill="#D9D9D9" />
             <MyText style={styles.emptyText}>구매 항목이 없습니다.</MyText>
           </View>
         ) : (
@@ -119,7 +119,7 @@ export default function PurchaseHistory() {
       <View style={styles.outerView}>
         <View style={styles.outerRow}>
           <MyText style={styles.outerText}>더보기</MyText>
-          <Entypo name="chevron-small-right" color="gray" size={18} />
+          <RightSVG width={20} height={20} fill="gray" />
         </View>
       </View>
     </View>

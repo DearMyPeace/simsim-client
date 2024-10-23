@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
+import MailOpen from '@assets/svg/icons/ion--mail-open-outline.svg';
 import MyText from '@components/common/MyText';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fontMedium } from '@utils/Sizing';
 
 const AiLetterEmptyView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.emptyContainer}>
-        <Ionicons name="mail-open-outline" size={120} color="#ccc" />
+        <MailOpen width={120} height={120} fill="#ccc" />
         <MyText style={styles.emptyText}>받은 편지가 없어요.</MyText>
       </View>
     </View>

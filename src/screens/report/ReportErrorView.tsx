@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MyText from '@components/common/MyText';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import ErrorCircle from '@assets/svg/icons/ant-design--exclamation-circle-outlined.svg';
 import { fontMedium } from '@utils/Sizing';
 
 const ReportErrorView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.emptyContainer}>
-        <AntDesign name="exclamationcircleo" size={120} color="#ccc" />
+        <ErrorCircle width={120} height={120} fill="#ccc" />
         <MyText style={styles.emptyText}>조각을 표시할 수 없어요.</MyText>
       </View>
     </View>

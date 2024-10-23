@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, StyleSheet, Pressable, Animated } from 'react-native';
 import { IAiLetterEntry } from '@type/IAiLetterEntry';
 import MyText from '@components/common/MyText';
-import Entypo from 'react-native-vector-icons/Entypo';
+import RightSVG from '@assets/svg/icons/entypo--chevron-small-right.svg';
 import { fontBasic, fontMedium } from '@utils/Sizing';
 import { alertColor } from '@utils/colors';
 
@@ -59,7 +59,7 @@ const AiLetterEntryHeader: React.FC<AiLetterEntryHeaderProps> = ({
         </MyText>
 
         <Animated.View style={{ transform: [{ rotate }] }}>
-          <Entypo name="chevron-small-right" size={24} color="gray" />
+          <RightSVG width={24} height={24} fill="gray" />
         </Animated.View>
       </View>
     </Pressable>
