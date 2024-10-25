@@ -41,9 +41,9 @@ export const PieceIcon = memo(({ color }: ITabBarIconProps) => {
   return <PieceIconSVG style={{ color: color }} width={34} height={34} />;
 });
 
-export const CloseIcon = ({ onPress }: { onPress: () => {} }) => (
+export const CloseIcon = memo(({ onPress }: { onPress: () => {} }) => (
   <MyIconButton name="close" style={{ paddingHorizontal: 16 }} onPress={onPress} />
-);
+));
 
 const styles = StyleSheet.create({
   badge: {
