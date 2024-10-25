@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 8,
     marginVertical: 9,
   },

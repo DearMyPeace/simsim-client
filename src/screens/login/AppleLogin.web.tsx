@@ -6,6 +6,7 @@ import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
+import AppleIcon from '@components/common/AppleIcon';
 
 const AppleLoginWeb = ({ handleLoginPress }) => {
   const sendUserToken = useSendUserToken('apple');
@@ -24,7 +25,7 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
     <View>
       <Pressable style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
         <View style={styles.iconAndText}>
-          <Icon name="apple" size={20} color="#000" style={styles.icon} />
+          <AppleIcon style={styles.icon} />
           <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
         </View>
       </Pressable>
@@ -98,8 +99,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-    width: 20,
-    height: 20,
   },
   loginButtonText: {
     fontSize: fontBasic,
