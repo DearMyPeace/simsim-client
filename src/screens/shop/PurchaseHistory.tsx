@@ -139,12 +139,13 @@ const styles = StyleSheet.create({
   outerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.47)',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#cccccc',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     borderBottomWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#cccccc',
   },
   dropdown: {
     height: 24,

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     marginBottom: 10,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#cccccc',
     backgroundColor: 'transparent',
   },
   dateWrapper: {
