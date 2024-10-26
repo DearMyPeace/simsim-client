@@ -26,8 +26,8 @@ const TabNavigator = () => {
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
         tabBarActiveTintColor: appColor3,
         tabBarInactiveTintColor: 'gray',
-        headerLeft: PieceChip,
-        headerRight: SettingButton,
+        headerLeft: () => <PieceChip />,
+        headerRight: () => <SettingButton />,
         headerShadowVisible: false,
         headerTitle: '',
         headerStyle: {
