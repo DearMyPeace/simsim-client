@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MyText from '@components/common/MyText';
 import AppleIcon from '@components/common/AppleIcon';
 

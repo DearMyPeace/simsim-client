@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 import MyText from '@components/common/MyText';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AppleSignin from 'react-apple-signin-auth';
 import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
@@ -59,7 +58,7 @@ const AppleLoginWeb = ({ handleLoginPress }) => {
           return (
             <Pressable style={styles.hiddenLoginButton} onPress={props.onClick}>
               <View style={styles.iconAndText}>
-                <Icon name="apple" size={20} color="#000" style={styles.icon} />
+                <AppleIcon style={styles.icon} />
                 <MyText style={styles.loginButtonText}>Apple로 계속</MyText>
               </View>
             </Pressable>
