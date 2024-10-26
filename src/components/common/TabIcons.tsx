@@ -42,7 +42,7 @@ export const PieceIcon = memo(({ color }: ITabBarIconProps) => {
 });
 
 export const CloseIcon = memo(({ onPress }: { onPress: () => {} }) => (
-  <MyIconButton name="close" style={{ paddingHorizontal: 16 }} onPress={onPress} />
+  <MyIconButton name="close" size={28} style={{ paddingHorizontal: 16 }} onPress={onPress} />
 ));
 
 const styles = StyleSheet.create({
