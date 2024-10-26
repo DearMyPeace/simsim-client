@@ -1,19 +1,17 @@
 @font-face {
   font-family: 'GowunBatang-Regular';
-  src: url(./fonts/GowunBatang-Regular.ttf);
-  font-display: swap;
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'GowunBatang-Bold';
-  src: url(./fonts/GowunBatang-Bold.ttf);
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Kalam-Bold';
-  src: url(./fonts/Kalam-Bold.ttf);
-  font-display: swap;
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Bold.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 html,
