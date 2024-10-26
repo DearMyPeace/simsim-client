@@ -8,7 +8,7 @@ const AiLetterErrorView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.emptyContainer}>
-        <ErrorCircle width={120} height={120} fill="#ccc" />
+        <ErrorCircle width={120} height={120} />
         <MyText style={styles.emptyText}>편지를 표시할 수 없어요.</MyText>
       </View>
     </View>
