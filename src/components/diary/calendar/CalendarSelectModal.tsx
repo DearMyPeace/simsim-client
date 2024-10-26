@@ -1,16 +1,15 @@
+import React, { useRef, useEffect } from 'react';
 import MyText from '@components/common/MyText';
 import { appColor3 } from '@utils/colors';
 import { kMonth } from '@utils/localeConfig';
 import { fontLarge } from '@utils/Sizing';
-import React from 'react';
 import {
   View,
   Modal,
-  FlatList,
   Pressable,
   TouchableWithoutFeedback,
   StyleSheet,
-  ListRenderItem,
+  ScrollView,
 } from 'react-native';
 
 interface IMonthItem {
@@ -35,51 +34,61 @@ const CalendarSelectModal = ({
   setSelectedMonth,
   setSelectedYear,
 }: ICalendarSelectModalProps) => {
-  const renderMonthItem: ListRenderItem<IMonthItem> = ({ item }) => (
-    <Pressable style={styles.modalItem} onPress={() => setSelectedMonth(item.index + 1)}>
-      <View style={selectedMonth === item.index + 1 && styles.selectedStyle}>
-        <MyText style={selectedMonth === item.index + 1 ? styles.selectedText : styles.modalText}>
-          {item.month}
+  const monthScrollRef = useRef<ScrollView>(null);
+  const yearScrollRef = useRef<ScrollView>(null);
+
+  const monthItemHeight = 49;
+  const yearItemHeight = 49;
+
+  const renderMonthItem = ({ month, index }: IMonthItem) => (
+    <Pressable key={index} style={styles.modalItem} onPress={() => setSelectedMonth(index + 1)}>
+      <View style={selectedMonth === index + 1 ? styles.selectedStyle : null}>
+        <MyText style={selectedMonth === index + 1 ? styles.selectedText : styles.modalText}>
+          {month}
         </MyText>
       </View>
     </Pressable>
   );
 
-  const renderYearItem: ListRenderItem<number> = ({ item }) => (
-    <Pressable style={styles.modalItem} onPress={() => setSelectedYear(item)}>
-      <View style={selectedYear === item && styles.selectedStyle}>
-        <MyText style={selectedYear === item ? styles.selectedText : styles.modalText}>
-          {item}
+  const renderYearItem = (year: number) => (
+    <Pressable key={year} style={styles.modalItem} onPress={() => setSelectedYear(year)}>
+      <View style={selectedYear === year ? styles.selectedStyle : null}>
+        <MyText style={selectedYear === year ? styles.selectedText : styles.modalText}>
+          {year}
         </MyText>
       </View>
     </Pressable>
   );
+
+  useEffect(() => {
+    if (isModalVisible) {
+      const monthOffset = (selectedMonth - 1) * monthItemHeight - 120;
+      const yearOffset = (selectedYear - 2000) * yearItemHeight - 120;
+      monthScrollRef.current?.scrollTo({ y: monthOffset, animated: true });
+      yearScrollRef.current?.scrollTo({ y: yearOffset, animated: true });
+    }
+  }, [isModalVisible, selectedMonth, selectedYear]);
+
   return (
     <Modal visible={isModalVisible} transparent={true} animationType="fade">
       <TouchableWithoutFeedback onPress={handleModalDismiss}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalListContainer}>
-              <View style={styles.modalMonth}>
-                <FlatList
-                  data={kMonth.map((month, index) => ({ month, index }))}
-                  renderItem={renderMonthItem}
-                  keyExtractor={(item) => item.index.toString()}
-                  initialScrollIndex={Math.max(0, selectedMonth - 1)}
-                  getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
-                  showsVerticalScrollIndicator={false}
-                />
-              </View>
-              <View style={styles.modalYear}>
-                <FlatList
-                  data={Array.from({ length: 50 }, (_, i) => 2000 + i)}
-                  renderItem={renderYearItem}
-                  keyExtractor={(item) => item.toString()}
-                  initialScrollIndex={Math.max(0, selectedYear - 2000)}
-                  getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
-                  showsVerticalScrollIndicator={false}
-                />
-              </View>
+              <ScrollView
+                ref={monthScrollRef}
+                style={styles.modalMonth}
+                showsVerticalScrollIndicator={false}
+              >
+                {kMonth.map((month, index) => renderMonthItem({ month, index }))}
+              </ScrollView>
+              <ScrollView
+                ref={yearScrollRef}
+                style={styles.modalYear}
+                showsVerticalScrollIndicator={false}
+              >
+                {Array.from({ length: 50 }, (_, i) => 2000 + i).map((year) => renderYearItem(year))}
+              </ScrollView>
             </View>
           </View>
         </View>
