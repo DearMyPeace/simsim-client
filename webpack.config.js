@@ -48,7 +48,7 @@ const babelLoaderConfiguration = {
 };
 
 const imageLoaderConfiguration = {
-  test: /\.(gif|jpe?g|png|ttf)$/,
+  test: /\.(gif|jpe?g|png)$/,
   include: [
     path.resolve(appDirectory, 'src/assets'),
     ...uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
