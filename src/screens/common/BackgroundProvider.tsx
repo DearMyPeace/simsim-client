@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 
 const BackgroundProvider = ({ children }) => {
   return (
