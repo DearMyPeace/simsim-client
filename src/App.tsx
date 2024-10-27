@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,13 +6,16 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
-import MainNavigator from '@navigators/MainNavigator';
+// import MainNavigator from '@navigators/MainNavigator';
 import SplashScreen from '@screens/common/SplashScreen';
 import { lightTheme } from '@utils/lightTheme';
 import BackgroundProvider from '@screens/common/BackgroundProvider';
 
+const MainNavigator = lazy(() => import('@navigators/MainNavigator'));
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -49,7 +52,9 @@ const App = () => {
                         },
                       }}
                     >
+                      {/* <Suspense fallback={<SplashScreen onFinish={() => setIsLoading(false)} />}> */}
                       <MainNavigator />
+                      {/* </Suspense> */}
                     </NavigationContainer>
                   </PaperProvider>
                 )}

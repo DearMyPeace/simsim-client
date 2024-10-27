@@ -83,7 +83,7 @@ const cssLoaderConfiguration = {
 module.exports = {
   entry: [path.resolve(appDirectory, 'index.web.js')],
   output: {
-    filename: 'bundle.web.js',
+    filename: '[name].web.js',
     path: path.resolve(appDirectory, 'dist'),
     publicPath: '/',
   },

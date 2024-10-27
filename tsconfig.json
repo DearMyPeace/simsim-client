@@ -13,7 +13,8 @@
       "@stores/*": ["stores/*"],
       "@type/*": ["types/*"],
       "@utils/*": ["utils/*"]
-    }
+    },
+    "module": "esnext"
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
