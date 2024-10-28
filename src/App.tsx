@@ -10,6 +10,7 @@ import SplashScreen from '@screens/common/SplashScreen';
 import { lightTheme } from '@utils/lightTheme';
 import BackgroundProvider from '@screens/common/BackgroundProvider';
 import CustomRefreshControl from '@screens/common/CustomRefreshControl';
+import { alertColor, appColor3 } from '@utils/colors';
 
 const MainNavigator = lazy(() => import('@navigators/MainNavigator'));
 
@@ -47,7 +48,13 @@ const App = () => {
                   <PaperProvider theme={theme}>
                     <NavigationContainer
                       theme={{
+                        dark: false,
                         colors: {
+                          primary: appColor3,
+                          card: 'rgb(255, 255, 255)',
+                          text: 'rgb(28, 28, 30)',
+                          border: 'rgb(216, 216, 216)',
+                          notification: alertColor,
                           background: 'transparent',
                         },
                       }}
