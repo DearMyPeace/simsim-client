@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy, useEffect } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { StyleSheet } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';

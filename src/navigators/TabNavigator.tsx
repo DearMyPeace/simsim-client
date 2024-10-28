@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Diary from '@navigators/DiaryStackNavigator';
-import Shop from '@navigators/ShopStackNavigator';
-import AiLetter from '@navigators/AiLetterStackNavigator';
-import Piece from '@navigators/PieceStackNavigator';
 import PieceChip from '@components/diary/header/PieceChip';
 import SettingButton from '@components/diary/header/SettingButton';
 import { CalendarIcon, AiLetterIcon, PieceIcon, ShopIcon } from '@components/common/TabIcons';
 import { appColor3 } from '@utils/colors';
+
+const AiLetter = lazy(() => import('@navigators/AiLetterStackNavigator'));
+const Piece = lazy(() => import('@navigators/PieceStackNavigator'));
+const Shop = lazy(() => import('@navigators/ShopStackNavigator'));
 
 const Tab = createBottomTabNavigator();
 
