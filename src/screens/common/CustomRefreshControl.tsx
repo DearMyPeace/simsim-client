@@ -1,14 +1,17 @@
 // src/components/CustomRefreshControl.tsx
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import Svg, { G, Path } from 'react-native-svg';
 
 // Import your SVG files as components
 import LoadingL from '@assets/svg/loading/left.svg';
 import LoadingC from '@assets/svg/loading/center.svg';
 import LoadingR from '@assets/svg/loading/right.svg';
 
-const CustomRefreshControl = () => {
+interface ICustomeRefreshControlProps {
+  centered?: boolean;
+}
+
+const CustomRefreshControl = ({ centered }: ICustomeRefreshControlProps) => {
   const size = 20;
   const width = 100;
   const leftValue = useRef(new Animated.Value(0)).current;
@@ -45,15 +48,15 @@ const CustomRefreshControl = () => {
   }, []);
 
   return (
-    <View style={styles.loadingContainer}>
+    <View style={[styles.loadingContainer, centered && { height: '100%' }]}>
       <Animated.View style={[styles.loadingImage, { transform: [{ translateY: leftValue }] }]}>
         <LoadingL width={width} height={size} style={{ color: '#666', width: '30' }} />
       </Animated.View>
       <Animated.View style={[styles.loadingImage, { transform: [{ translateY: centerValue }] }]}>
-        <LoadingC width={width} height={size} style={{ color: '#666', width: '10' }} />
+        <LoadingC width={width} height={size} style={{ color: '#666', width: '30' }} />
       </Animated.View>
       <Animated.View style={[styles.loadingImage, { transform: [{ translateY: rightValue }] }]}>
-        <LoadingR width={width} height={size} style={{ color: '#666', width: '10' }} />
+        <LoadingR width={width} height={size} style={{ color: '#666', width: '30' }} />
       </Animated.View>
     </View>
   );
