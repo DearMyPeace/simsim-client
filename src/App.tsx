@@ -6,10 +6,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import GoogleOAuthProviderWrapper from '@components/login/GoogleOAuthProviderWrapper';
-// import MainNavigator from '@navigators/MainNavigator';
 import SplashScreen from '@screens/common/SplashScreen';
 import { lightTheme } from '@utils/lightTheme';
 import BackgroundProvider from '@screens/common/BackgroundProvider';
+import CustomRefreshControl from '@screens/common/CustomRefreshControl';
 
 const MainNavigator = lazy(() => import('@navigators/MainNavigator'));
 
@@ -52,9 +52,9 @@ const App = () => {
                         },
                       }}
                     >
-                      {/* <Suspense fallback={<SplashScreen onFinish={() => setIsLoading(false)} />}> */}
-                      <MainNavigator />
-                      {/* </Suspense> */}
+                      <Suspense fallback={<CustomRefreshControl centered />}>
+                        <MainNavigator />
+                      </Suspense>
                     </NavigationContainer>
                   </PaperProvider>
                 )}
