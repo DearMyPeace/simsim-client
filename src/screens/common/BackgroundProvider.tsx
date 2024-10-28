@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 
-const BackgroundProvider = ({ children }) => {
+const BackgroundProvider = ({ children }: { children: React.ReactElement }) => {
   return (
     <ImageBackground
       source={require('@assets/images/background.jpg')}
