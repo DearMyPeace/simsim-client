@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const appDirectory = path.resolve(__dirname, './');
 
@@ -126,14 +126,14 @@ module.exports = {
         },
       ],
     }),
-    // bundle 분석 시 사용
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: 'bundle-report.html',
-      generateStatsFile: true,
-      statsFilename: 'bundle-stat.json',
-      openAnalyzer: false,
-    }),
+    // make analyze 전 주석 해제 필요
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static',
+    //   reportFilename: 'bundle-report.html',
+    //   generateStatsFile: true,
+    //   statsFilename: 'bundle-stat.json',
+    //   openAnalyzer: false,
+    // }),
   ],
   resolve: {
     alias: {
