@@ -52,3 +52,7 @@ export const getToday = () => format(new Date(), 'yyyy-MM-dd');
 export const getYear = () => format(new Date(), 'yyyy');
 
 export const getMonth = () => format(new Date(), 'MM') as IDate['month'];
+
+export const formatTimeToKorean = (date: string) => {
+  return date.startsWith('AM') ? date.replace('AM', '오전') : date.replace('PM', '오후');
+};
