@@ -126,9 +126,12 @@ module.exports = {
         },
       ],
     }),
+    // bundle 분석 시 사용
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       reportFilename: 'bundle-report.html',
+      generateStatsFile: true,
+      statsFilename: 'bundle-stat.json',
       openAnalyzer: false,
     }),
   ],

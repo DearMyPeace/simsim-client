@@ -20,6 +20,9 @@ web-cc:
 web-build:
 	npm run build
 
+web-analyze:
+	npm run analyze
+
 npm:
 	sudo npm install
 

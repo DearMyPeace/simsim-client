@@ -10,7 +10,8 @@
     "test": "jest",
     "build-react": "BABEL_ENV=web webpack --mode production",
     "start-react": "BABEL_ENV=web webpack serve --config ./webpack.config.js --mode development",
-    "build": "BABEL_ENV=web webpack --config webpack.config.js --mode production"
+    "build": "BABEL_ENV=web webpack --config webpack.config.js --mode production",
+    "analyze": "webpack-bundle-analyzer dist/bundle-stat.json"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
