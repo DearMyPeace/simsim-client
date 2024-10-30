@@ -14,7 +14,6 @@ const DiaryCard = ({
   id,
   content,
   createdDate,
-  modifiedDate,
   isEditing,
   setIsEditing,
   isLetterSent,
@@ -146,7 +145,7 @@ const DiaryCard = ({
           {isSuccess ? (
             <DiaryCardHeader
               isNew={id === NEW_DIARY}
-              modifiedDate={modifiedDate}
+              createdDate={createdDate}
               timeStartWriting={timeStartWriting}
               isEditing={isEditing}
               isLetterSent={isLetterSent}

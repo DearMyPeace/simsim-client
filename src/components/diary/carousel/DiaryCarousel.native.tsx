@@ -28,7 +28,6 @@ const DiaryCarousel = () => {
         id={item.id}
         content={item.content}
         createdDate={item.createdDate}
-        modifiedDate={item.modifiedDate}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         isLetterSent={sendStatus}
@@ -62,7 +61,6 @@ const DiaryCarousel = () => {
           id={NEW_DIARY}
           content=""
           createdDate=""
-          modifiedDate=""
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isLetterSent={sendStatus}
