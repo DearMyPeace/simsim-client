@@ -28,8 +28,6 @@ const DiaryCard = ({
     setSendModalVisible,
     isEditModalVisible,
     setEditModalVisible,
-    isInformModalVisible,
-    setInformModalVisible,
     setSnackbar,
     addNewDiary,
     removeDiary,
@@ -111,22 +109,7 @@ const DiaryCard = ({
       setIsEditing(false);
       return;
     }
-    if (isLetterSent) {
-      setInformModalVisible(true);
-      return;
-    }
     sendDiaryData();
-  };
-
-  const onConfirmSaveEdit = () => {
-    setInformModalVisible(false);
-    sendDiaryData();
-  };
-
-  const onCancelSaveEdit = () => {
-    setInformModalVisible(false);
-    setIsEditing(false);
-    setDiaryInput(content);
   };
 
   const onKeyboardDismiss = () => {
@@ -188,14 +171,6 @@ const DiaryCard = ({
         onConfirm={onConfirmSend}
         content={`이 날의 기록을 모두 보내시겠습니까?\n수정 후 기록을 다시 보내면\n이전 편지는 사라집니다.`}
         confirmText="보내기"
-      />
-      <BasicConfirmModal
-        visible={isInformModalVisible}
-        setIsVisible={setInformModalVisible}
-        onConfirm={onConfirmSaveEdit}
-        onCancel={onCancelSaveEdit}
-        content={`기록을 수정해도\n편지의 내용은 바뀌지 않아요.`}
-        confirmText="저장"
       />
       {sendDiary.isPending && <DiaryLoading />}
     </>
