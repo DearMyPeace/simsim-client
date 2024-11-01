@@ -27,7 +27,6 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isSendModalVisible, setSendModalVisible] = useState(false);
   const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const [isInformModalVisible, setInformModalVisible] = useState(false);
 
   const addNewDiary = useMutation({
     mutationFn: (data: IDiaryPostRequest) => postDiary(data),
@@ -114,8 +113,6 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
     setSendModalVisible,
     isEditModalVisible,
     setEditModalVisible,
-    isInformModalVisible,
-    setInformModalVisible,
     setSnackbar,
     addNewDiary,
     removeDiary,
