@@ -8,7 +8,7 @@ const AiLetterEmptyView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.emptyContainer}>
-        <MailOpen width={120} height={120} stroke="#ccc" />
+        <MailOpen width={120} height={120} color="#cccccc" />
         <MyText style={styles.emptyText}>받은 편지가 없어요.</MyText>
       </View>
     </View>
