@@ -11,7 +11,7 @@ const DiaryPagination = ({ activeIndex, diaryList }: IDiaryPaginationProps) => {
   return (
     <View style={styles.container}>
       {diaryList.length === 0 && <View style={[styles.dot, styles.empty]} />}
-      {diaryList.map((diary, index) => {
+      {diaryList.map((_, index) => {
         return <View key={index} style={[styles.dot, activeIndex === index && styles.activeDot]} />;
       })}
     </View>

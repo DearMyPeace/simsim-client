@@ -10,7 +10,7 @@ import { formatTimeToKorean } from '@utils/dateUtils';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
-  modifiedDate: string;
+  createdDate: string;
   timeStartWriting: string;
   isEditing: boolean;
   isLetterSent: boolean;
@@ -28,7 +28,7 @@ const formatTime = (time: string) => {
 
 const DiaryCardHeader = ({
   isNew,
-  modifiedDate,
+  createdDate,
   timeStartWriting,
   isEditing,
   isLetterSent,
@@ -42,9 +42,7 @@ const DiaryCardHeader = ({
 
   return (
     <View style={styles.header}>
-      <MyText size={15}>
-        {isEditing ? formatTime(timeStartWriting) : formatTime(modifiedDate)}
-      </MyText>
+      <MyText size={15}>{formatTime(createdDate) || formatTime(timeStartWriting)}</MyText>
       <View style={styles.icons}>
         {Platform.OS === 'web' && isEditing && (
           <TextButton

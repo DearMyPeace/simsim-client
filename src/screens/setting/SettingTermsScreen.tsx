@@ -42,13 +42,10 @@ const SettingTermsScreen = () => {
 
   return (
     <SettingContainer modals={modals} footerText="SimSim.Co">
-      <SettingSection label="개인정보 처리방침" onLabelPress={() => setModalName('policy')} />
-      <SettingSection label="이용약관" onLabelPress={() => setModalName('terms')} />
-      <SettingSection
-        label="오픈 소스 라이브러리"
-        onLabelPress={() => setModalName('openSource')}
-      />
-      {/* <SettingSection label="사업자 정보" onLabelPress={() => setModalName('business')} /> */}
+      <SettingSection label="개인정보 처리방침" onPress={() => setModalName('policy')} />
+      <SettingSection label="이용약관" onPress={() => setModalName('terms')} />
+      <SettingSection label="오픈 소스 라이브러리" onPress={() => setModalName('openSource')} />
+      {/* <SettingSection label="사업자 정보" onPress={() => setModalName('business')} /> */}
     </SettingContainer>
   );
 };

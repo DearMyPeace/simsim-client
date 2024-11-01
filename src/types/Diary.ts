@@ -4,7 +4,7 @@ export interface IDiary {
   id: number;
   content: string;
   createdDate: string;
-  modifiedDate: string;
+  modifiedDate?: string;
 }
 
 export interface IDiaryList {
