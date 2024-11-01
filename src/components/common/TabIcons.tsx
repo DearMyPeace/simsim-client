@@ -1,55 +1,49 @@
-import React, { memo, useEffect } from 'react';
-import { View, StyleSheet, Platform, Image } from 'react-native';
+import React, { memo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { ITabBarIconProps } from '@type/ITabBarIconProps';
 import CalendarIconSVG from '@assets/images/diary.svg';
 import PieceIconSVG from '@assets/images/piece.svg';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MyIconButtons from '@components/common/MyIconButtons';
+import MailOpen from '@assets/svg/icons/ion--mail-open-outline.svg';
+import Mail from '@assets/svg/icons/ion--mail-outline.svg';
+import Shop from '@assets/svg/icons/tdesign--shop-5.svg';
+import MyIconButton from '@components/common/MyIconButton';
 import { useRecoilValue } from 'recoil';
 import { userInfoState } from '@stores/login';
 import { alertColor } from '@utils/colors';
 
 export const CalendarIcon = memo(({ color }: ITabBarIconProps) => {
-  if (Platform.OS === 'web') {
-    return <Image source={CalendarIconSVG} tintColor={color} style={{ width: 24, height: 24 }} />;
-  }
   return <CalendarIconSVG style={{ color: color }} width={24} height={24} />;
 });
 
 export const AiLetterIcon = ({ focused, color, size }: ITabBarIconProps) => {
   const userInfo = useRecoilValue(userInfoState);
-  const iconName = userInfo.replyStatus === 'C' ? 'mail-open-outline' : 'mail-outline';
+  const mailIcon =
+    userInfo.replyStatus === 'C' ? (
+      <MailOpen width={26} height={26} color={color} />
+    ) : (
+      <Mail width={26} height={26} color={color} />
+    );
   const showBadge = userInfo.replyStatus === 'R';
 
   return (
     <View>
-      <Ionicons name={focused ? 'mail-open-outline' : iconName} color={color} size={26} />
+      {focused ? <MailOpen width={26} height={26} color={color} /> : mailIcon}
       {showBadge && <View style={styles.badge} />}
     </View>
   );
 };
 
 export const ShopIcon = memo(({ color }: ITabBarIconProps) => (
-  <AntDesign name="isv" color={color} size={24.5} />
+  <Shop width={24.5} height={24.5} fill={color} />
 ));
 
 export const PieceIcon = memo(({ color }: ITabBarIconProps) => {
-  if (Platform.OS === 'web') {
-    return <Image source={PieceIconSVG} tintColor={color} style={{ width: 34, height: 34 }} />;
-  }
   return <PieceIconSVG style={{ color: color }} width={34} height={34} />;
 });
 
-export const CloseIcon = ({ onPress }: { onPress: () => {} }) => (
-  <MyIconButtons
-    name={'close'}
-    iconSet={'MaterialCommunityIcons'}
-    size={24}
-    onPress={onPress}
-    style={{ paddingHorizontal: 16 }}
-  />
-);
+export const CloseIcon = memo(({ onPress }: { onPress: () => {} }) => (
+  <MyIconButton name="close" size={28} style={{ paddingHorizontal: 16 }} onPress={onPress} />
+));
 
 const styles = StyleSheet.create({
   badge: {

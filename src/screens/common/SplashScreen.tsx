@@ -4,7 +4,7 @@ import MyText from '@components/common/MyText';
 import logo from '@assets/logo/logo.png';
 import SequentialText from '@screens/common/Sequential';
 
-const SplashScreen = ({ onFinish }) => {
+const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   const [stopText, setStopText] = useState(false);
   const translateYAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(1)).current;

@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MyText from '@components/common/MyText';
+import AppleIcon from '@components/common/AppleIcon';
 
 const AppleLogin = ({ handleLoginPress }) => {
   const sendUserToken = useSendUserToken('apple');
@@ -41,7 +41,7 @@ const AppleLogin = ({ handleLoginPress }) => {
   return (
     <Pressable style={styles.loginButton} onPress={() => handleLoginPress(AppleSignIn)}>
       <View style={styles.iconAndText}>
-        <Icon name="apple" size={20} color="#000" style={styles.icon} />
+        <AppleIcon style={styles.icon} />
         <MyText style={styles.loginButtonText}>Apple로 계속하기</MyText>
       </View>
     </Pressable>
@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-    width: 20,
-    height: 20,
   },
   loginButtonText: {
     fontSize: fontBasic,

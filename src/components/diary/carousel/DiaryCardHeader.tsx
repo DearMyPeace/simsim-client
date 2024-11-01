@@ -2,11 +2,11 @@ import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import TextButton from '@components/common/TextButton';
 import { useRecoilValue } from 'recoil';
 import { tense } from '@stores/tense';
 import { DiaryButtonType } from '@type/Diary';
+import { formatTimeToKorean } from '@utils/dateUtils';
 
 interface DiaryCardHeaderProps {
   isNew: boolean;
@@ -23,7 +23,7 @@ interface DiaryCardHeaderProps {
 
 const formatTime = (time: string) => {
   if (!time) return '';
-  return format(new Date(time), 'a hh:mm', { locale: ko });
+  return formatTimeToKorean(format(new Date(time), 'a hh:mm'));
 };
 
 const DiaryCardHeader = ({

@@ -1,10 +1,7 @@
 import React from 'react';
-import { Platform, StyleSheet, ImageBackground } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
 
-const BackgroundProvider = ({ children }) => {
-  if (Platform.OS === 'web') {
-    return <>{children}</>;
-  }
+const BackgroundProvider = ({ children }: { children: React.ReactElement }) => {
   return (
     <ImageBackground
       source={require('@assets/images/background.jpg')}

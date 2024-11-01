@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Icon } from 'react-native-paper';
+import Left from '@assets/svg/icons/entypo--chevron-small-left.svg';
+import Right from '@assets/svg/icons/entypo--chevron-small-right.svg';
 
 export type Direction = 'left' | 'right';
 
@@ -11,11 +12,11 @@ interface CalendarArrowProps {
 const CalendarArrow = ({ direction }: CalendarArrowProps) => {
   return (
     <View style={direction === 'left' && { marginRight: 20 }}>
-      <Icon
-        source={direction === 'left' ? 'chevron-left' : 'chevron-right'}
-        size={24}
-        color="#333333"
-      />
+      {direction === 'left' ? (
+        <Left width={24} height={24} fill="#333333" />
+      ) : (
+        <Right width={24} height={24} fill="#333333" />
+      )}
     </View>
   );
 };

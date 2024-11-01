@@ -1,16 +1,16 @@
-import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, { memo, useCallback } from 'react';
+import MyIconButton from '@components/common/MyIconButton';
 import { useNavigation } from '@react-navigation/native';
 
-const SettingButton = () => {
+const SettingButton = memo(() => {
   const navigation = useNavigation();
 
-  const onPress = () => {
-    // naviagte to setting page
+  const onPress = useCallback(() => {
+    // navigate to setting page
     navigation.navigate('Settings');
-  };
+  }, [navigation]);
 
-  return <Ionicons name="ellipsis-horizontal-outline" color="#555" size={24} onPress={onPress} />;
-};
+  return <MyIconButton name="setting" onPress={onPress} />;
+});
 
 export default SettingButton;

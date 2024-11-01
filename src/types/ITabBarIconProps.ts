@@ -1,5 +1,5 @@
 export interface ITabBarIconProps {
-  focused: boolean;
+  focused?: boolean;
   color: string;
-  size: number;
+  size?: number;
 }

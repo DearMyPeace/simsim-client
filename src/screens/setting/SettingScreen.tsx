@@ -9,10 +9,10 @@ import BasicBottomSheet from '@components/common/BasicBottomSheet';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { snackMessage } from '@stores/snackMessage';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userInfoState } from '@stores/login';
 import SettingContainer from '@components/setting/SettingContainer';
+import { formatTimeToKorean } from '@utils/dateUtils';
 
 // todo: type 수정
 const SettingScreen = ({ navigation }: { navigation: any }) => {
@@ -32,7 +32,7 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
   const onTimePickerClose = () => {
     setDiaryNotiEnabled(true);
     const time = format(notiTime, 'a hh시 mm분', { locale: ko });
-    setSnackbarText(`${time}에 알림이 울립니다`);
+    setSnackbarText(`${formatTimeToKorean(time)}에 알림이 울립니다`);
   };
 
   const onFeedback = async () => {

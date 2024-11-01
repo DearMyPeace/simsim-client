@@ -2,8 +2,7 @@
 import React from 'react';
 import { View, StyleSheet, Linking, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { fontLarge, fontMedium } from '@utils/Sizing';
+import { fontMedium } from '@utils/Sizing';
 
 export default function ArtworkShop() {
   const handlePress = () => {

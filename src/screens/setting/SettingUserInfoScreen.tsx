@@ -4,7 +4,7 @@ import SettingSection from '@components/setting/SettingSection';
 import useSetting from '@hooks/setting/settingHook';
 import BasicConfirmModal from '@components/common/BasicConfirmModal';
 import SettingContainer from '@components/setting/SettingContainer';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import AppleIcon from '@components/common/AppleIcon';
 
 const SettingUserInfoScreen = () => {
   const {
@@ -34,7 +34,7 @@ const SettingUserInfoScreen = () => {
     />
   );
 
-  const appleIcon = <Icon name="apple" size={20} color="#000" style={styles.appleIcon} />;
+  const appleIcon = <AppleIcon style={styles.appleIcon} />;
 
   const icon = userProvider === 'Google' ? googleIcon : appleIcon;
 

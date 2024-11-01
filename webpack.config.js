@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const appDirectory = path.resolve(__dirname, './');
 
@@ -48,7 +49,7 @@ const babelLoaderConfiguration = {
 };
 
 const imageLoaderConfiguration = {
-  test: /\.(gif|jpe?g|png|svg|ttf)$/,
+  test: /\.(gif|jpe?g|png)$/,
   include: [
     path.resolve(appDirectory, 'src/assets'),
     ...uncompiled.map((name) => path.resolve(appDirectory, `node_modules/${name}`)),
@@ -65,6 +66,16 @@ const imageLoaderConfiguration = {
   },
 };
 
+const svgLoaderConfiguration = {
+  test: /\.svg$/,
+  use: {
+    loader: '@svgr/webpack',
+    options: {
+      icon: true,
+    },
+  },
+};
+
 const cssLoaderConfiguration = {
   test: /\.css$/,
   use: ['style-loader', 'css-loader'],
@@ -73,12 +84,17 @@ const cssLoaderConfiguration = {
 module.exports = {
   entry: [path.resolve(appDirectory, 'index.web.js')],
   output: {
-    filename: 'bundle.web.js',
+    filename: '[name].web.js',
     path: path.resolve(appDirectory, 'dist'),
     publicPath: '/',
   },
   module: {
-    rules: [babelLoaderConfiguration, imageLoaderConfiguration, cssLoaderConfiguration],
+    rules: [
+      babelLoaderConfiguration,
+      imageLoaderConfiguration,
+      cssLoaderConfiguration,
+      svgLoaderConfiguration,
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './public/index.html' }),
@@ -110,6 +126,14 @@ module.exports = {
         },
       ],
     }),
+    // make analyze 전 주석 해제 필요
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static',
+    //   reportFilename: 'bundle-report.html',
+    //   generateStatsFile: true,
+    //   statsFilename: 'bundle-stat.json',
+    //   openAnalyzer: false,
+    // }),
   ],
   resolve: {
     alias: {
