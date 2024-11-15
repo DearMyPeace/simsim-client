@@ -3,44 +3,76 @@ import { View, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-nat
 import { fontMedium, fontLarge } from '@utils/Sizing';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
 import MyText from '@components/common/MyText';
-import { appColor1, appColor2, appColor3, appColor4, appColor5 } from '@utils/colors';
+import NewChartView from '@screens/report/NewChartView';
+import { appColor1 } from '@utils/colors';
+import CalendarSelectModal from '@components/diary/calendar/CalendarSelectModal';
+import { kMonth } from '@utils/localeConfig';
 
 function NewReportView() {
-  const [targetMonth, setTargetMonth] = useState(new Date().getMonth() + 1);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    parseInt(selectedDate.slice(5, 7), 10),
+  );
+  const [selectedYear, setSelectedYear] = useState<number>(parseInt(selectedDate.slice(0, 4), 10));
+
+  const handleModalDismiss = () => {
+    const day = selectedDate.slice(8, 10);
+    const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+    const month = selectedMonth.toString().padStart(2, '0');
+    if (parseInt(day, 10) > lastDay) {
+      setSelectedDate(`${selectedYear}-${month}-${lastDay}`);
+    } else {
+      setSelectedDate(`${selectedYear}-${month}-${day}`);
+    }
+    setModalVisible(false);
+  };
+
+  const onHeaderPress = () => {
+    setModalVisible(true);
+  };
 
   const onLeftPress = () => {
-    targetMonth === 1 ? setTargetMonth(12) : setTargetMonth(targetMonth - 1);
+    selectedMonth === 1 ? setSelectedMonth(12) : setSelectedMonth(selectedMonth - 1);
   };
 
   const onRightPress = () => {
-    targetMonth === 12 ? setTargetMonth(1) : setTargetMonth(targetMonth + 1);
+    selectedMonth === 11 ? setSelectedMonth(1) : setSelectedMonth(selectedMonth + 1);
   };
 
   const keyword = '건강';
   const content = `날씨가 추워질수록 건강에 대한 언급이 많아졌어요. 다음주부터는 더 춥다고 하니, 따뜻하게 입는다면 건강에 대한 걱정이 덜 할 것 같아요.
   목을 따뜻하게 감싸면 체온이 3도 이상 올라가는 효과가 있다고 해요. 저번에 지수에게 선물받은 부드러운 앙고라 목도리를 해보는건 어떤가요?`;
 
-  const keywords = ['건강', '요리', '영화', '운동', '책'];
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginBottom: 16 }}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
           <Pressable onPress={onLeftPress}>
             <CalendarArrow direction="left" size={30} style={null} />
           </Pressable>
-          <MyText size={fontLarge} style={styles.title} bold>
-            {targetMonth}월의 기억 조각
-          </MyText>
+          <Pressable onPress={onHeaderPress}>
+            <MyText size={fontLarge} bold>
+              {kMonth[selectedMonth - 1]}의 기억 조각
+            </MyText>
+          </Pressable>
+          <CalendarSelectModal
+            isModalVisible={isModalVisible}
+            handleModalDismiss={handleModalDismiss}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+            setSelectedMonth={setSelectedMonth}
+            setSelectedYear={setSelectedYear}
+          />
           <Pressable onPress={onRightPress}>
             <CalendarArrow direction="right" size={30} />
           </Pressable>
         </View>
-        <View style={styles.chart}>
-          <MyText>차트</MyText>
+        <View style={{ marginTop: 16 }}>
+          <NewChartView />
         </View>
         <View style={{ marginVertical: 16 }}>
-          <MyText>{targetMonth}월에 가장 많이 언급한 단어를 모아봤어요.</MyText>
+          <MyText>{kMonth[selectedMonth - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
         </View>
         <View style={styles.cardContainer}>
           <MyText size={fontMedium} bold>
@@ -67,11 +99,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    minWidth: '80%',
   },
-  title: {
-    marginHorizontal: 56,
-  },
-  chart: {},
   cardContainer: {
     backgroundColor: appColor1,
     borderWidth: 1,
