@@ -7,15 +7,16 @@ export type Direction = 'left' | 'right';
 
 interface CalendarArrowProps {
   direction: Direction;
+  size?: number;
 }
 
-const CalendarArrow = ({ direction }: CalendarArrowProps) => {
+const CalendarArrow = ({ direction, size = 24 }: CalendarArrowProps) => {
   return (
     <View style={direction === 'left' && { marginRight: 20 }}>
       {direction === 'left' ? (
-        <Left width={24} height={24} fill="#333333" />
+        <Left width={size} height={size} fill="#333333" />
       ) : (
-        <Right width={24} height={24} fill="#333333" />
+        <Right width={size} height={size} fill="#333333" />
       )}
     </View>
   );
