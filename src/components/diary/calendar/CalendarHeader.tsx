@@ -49,14 +49,14 @@ const CalendarHeader = ({ date }: { date: string }) => {
         <MyText style={styles.headerText}>{getDisplayDate(new Date(date))}</MyText>
       </TextButton>
       {dateState !== 'TODAY' && <TodayButton onPress={onPressToday} />}
-      <CalendarSelectModal
+      {/* <CalendarSelectModal
         isModalVisible={isModalVisible}
         handleModalDismiss={handleModalDismiss}
         selectedMonth={selectedMonth}
         selectedYear={selectedYear}
         setSelectedMonth={setSelectedMonth}
         setSelectedYear={setSelectedYear}
-      />
+      /> */}
     </View>
   );
 };
