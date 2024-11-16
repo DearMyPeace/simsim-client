@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ICalendarModalDate } from '@type/Diary';
 
 const useCalendarModal = ({ month, year }: ICalendarModalDate) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-native';
 import { fontMedium, fontLarge } from '@utils/Sizing';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
@@ -7,24 +7,26 @@ import NewChartView from '@screens/report/NewChartView';
 import { appColor1 } from '@utils/colors';
 import CalendarSelectModal from '@components/diary/calendar/CalendarSelectModal';
 import { kMonth } from '@utils/localeConfig';
+import useCalendarModal from '@hooks/common/useCalendarModal';
+import { ICalendarModalDate } from '@type/Diary';
 
 function NewReportView() {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    parseInt(selectedDate.slice(5, 7), 10),
-  );
-  const [selectedYear, setSelectedYear] = useState<number>(parseInt(selectedDate.slice(0, 4), 10));
+  const [selectedDate, setSelectedDate] = useState<ICalendarModalDate>({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+  });
+  const { isModalVisible, setModalVisible, selectedModalDate, setSelectedModalDate } =
+    useCalendarModal({
+      month: selectedDate.month,
+      year: selectedDate.year,
+    });
+
+  useEffect(() => {
+    setSelectedModalDate(selectedDate);
+  }, [selectedDate]);
 
   const handleModalDismiss = () => {
-    const day = selectedDate.slice(8, 10);
-    const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
-    const month = selectedMonth.toString().padStart(2, '0');
-    if (parseInt(day, 10) > lastDay) {
-      setSelectedDate(`${selectedYear}-${month}-${lastDay}`);
-    } else {
-      setSelectedDate(`${selectedYear}-${month}-${day}`);
-    }
+    setSelectedDate(selectedModalDate);
     setModalVisible(false);
   };
 
@@ -33,11 +35,17 @@ function NewReportView() {
   };
 
   const onLeftPress = () => {
-    selectedMonth === 1 ? setSelectedMonth(12) : setSelectedMonth(selectedMonth - 1);
+    const { month, year } = selectedDate;
+    month === 1
+      ? setSelectedDate({ month: 12, year: year - 1 })
+      : setSelectedDate({ month: month - 1, year });
   };
 
   const onRightPress = () => {
-    selectedMonth === 11 ? setSelectedMonth(1) : setSelectedMonth(selectedMonth + 1);
+    const { month, year } = selectedDate;
+    month === 12
+      ? setSelectedDate({ month: 1, year: year + 1 })
+      : setSelectedDate({ month: month + 1, year });
   };
 
   const keyword = '건강';
@@ -53,16 +61,14 @@ function NewReportView() {
           </Pressable>
           <Pressable onPress={onHeaderPress}>
             <MyText size={fontLarge} bold>
-              {kMonth[selectedMonth - 1]}의 기억 조각
+              {kMonth[selectedDate.month - 1]}의 기억 조각
             </MyText>
           </Pressable>
           <CalendarSelectModal
             isModalVisible={isModalVisible}
             handleModalDismiss={handleModalDismiss}
-            selectedMonth={selectedMonth}
-            selectedYear={selectedYear}
-            setSelectedMonth={setSelectedMonth}
-            setSelectedYear={setSelectedYear}
+            selectedModalDate={selectedModalDate}
+            setSelectedModalDate={setSelectedModalDate}
           />
           <Pressable onPress={onRightPress}>
             <CalendarArrow direction="right" size={30} />
@@ -74,7 +80,7 @@ function NewReportView() {
         >
           <NewChartView />
           <View style={{ marginVertical: 16 }}>
-            <MyText>{kMonth[selectedMonth - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
+            <MyText>{kMonth[selectedDate.month - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
           </View>
           <View style={styles.cardContainer}>
             <MyText size={fontMedium} bold>
