@@ -1,52 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-native';
-import { fontMedium, fontLarge } from '@utils/Sizing';
-import CalendarArrow from '@components/diary/calendar/CalendarArrow';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { fontMedium } from '@utils/Sizing';
 import MyText from '@components/common/MyText';
 import NewChartView from '@screens/report/NewChartView';
 import { appColor1 } from '@utils/colors';
-import CalendarSelectModal from '@components/diary/calendar/CalendarSelectModal';
 import { kMonth } from '@utils/localeConfig';
-import useCalendarModal from '@hooks/common/useCalendarModal';
 import { ICalendarModalDate } from '@type/Diary';
+import ReportHeader from './ReportHeader';
 
 function NewReportView() {
   const [selectedDate, setSelectedDate] = useState<ICalendarModalDate>({
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
   });
-  const { isModalVisible, setModalVisible, selectedModalDate, setSelectedModalDate } =
-    useCalendarModal({
-      month: selectedDate.month,
-      year: selectedDate.year,
-    });
-
-  useEffect(() => {
-    setSelectedModalDate(selectedDate);
-  }, [selectedDate]);
-
-  const handleModalDismiss = () => {
-    setSelectedDate(selectedModalDate);
-    setModalVisible(false);
-  };
-
-  const onHeaderPress = () => {
-    setModalVisible(true);
-  };
-
-  const onLeftPress = () => {
-    const { month, year } = selectedDate;
-    month === 1
-      ? setSelectedDate({ month: 12, year: year - 1 })
-      : setSelectedDate({ month: month - 1, year });
-  };
-
-  const onRightPress = () => {
-    const { month, year } = selectedDate;
-    month === 12
-      ? setSelectedDate({ month: 1, year: year + 1 })
-      : setSelectedDate({ month: month + 1, year });
-  };
 
   const keyword = '건강';
   const content = `날씨가 추워질수록 건강에 대한 언급이 많아졌어요. 다음주부터는 더 춥다고 하니, 따뜻하게 입는다면 건강에 대한 걱정이 덜 할 것 같아요.
@@ -55,25 +21,7 @@ function NewReportView() {
   return (
     <SafeAreaView style={{ flex: 1, marginBottom: 16 }}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Pressable onPress={onLeftPress}>
-            <CalendarArrow direction="left" size={30} style={null} />
-          </Pressable>
-          <Pressable onPress={onHeaderPress}>
-            <MyText size={fontLarge} bold>
-              {kMonth[selectedDate.month - 1]}의 기억 조각
-            </MyText>
-          </Pressable>
-          <CalendarSelectModal
-            isModalVisible={isModalVisible}
-            handleModalDismiss={handleModalDismiss}
-            selectedModalDate={selectedModalDate}
-            setSelectedModalDate={setSelectedModalDate}
-          />
-          <Pressable onPress={onRightPress}>
-            <CalendarArrow direction="right" size={30} />
-          </Pressable>
-        </View>
+        <ReportHeader selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         <ScrollView
           contentContainerStyle={styles.mainContainer}
           showsVerticalScrollIndicator={false}
