@@ -17,4 +17,4 @@ export const dotColors: { [key: number]: string } = {
   3: '#7A5F3F',
 };
 
-export const pieColors = [appColor1, '#F3D9B4', appColor2, appColor3, appColor4, appColor5];
+export const pieColors = [appColor2, '#dcb15c', appColor3, appColor4, '#856017'];
