@@ -91,7 +91,14 @@ function NewChartView() {
 }
 
 const styles = StyleSheet.create({
-  chart: {},
+  chart: {
+    flex: 1,
+    marginTop: 16,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 200,
+  },
 });
 
 export default NewChartView;
