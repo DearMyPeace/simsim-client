@@ -13,6 +13,7 @@ import AiPersonaSelectModal from '@components/setting/AiPersonaSelectModal';
 import { userInfoState } from '@stores/login';
 import SettingContainer from '@components/setting/SettingContainer';
 import { formatTimeToKorean } from '@utils/dateUtils';
+import SettingAdminButtons from './SettingAdminButtons';
 
 // todo: type 수정
 const SettingScreen = ({ navigation }: { navigation: any }) => {
@@ -96,6 +97,7 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
       <SettingSection label="편지 작성자" content={userInfo.personaName} onPress={aiPickerOpen} />
       <SettingSection label="의견 보내기" content="보내기" onPress={onFeedback} />
       <SettingSection label="심심조각 방침" content="방침 보기" onPress={onViewTerms} />
+      {userInfo.role === 'ADMIN' && <SettingAdminButtons />}
     </SettingContainer>
   );
 };
