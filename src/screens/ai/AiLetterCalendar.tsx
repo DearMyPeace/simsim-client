@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
-import { IDate, IDay } from '@type/Diary';
+import { ICalendarModalDate, IDate, IDay } from '@type/Diary';
 import { CalendarProvider } from 'react-native-calendars';
 import AiLetterCalendarHeader from '@screens/ai/AiLetterCalendarHeader';
 
@@ -46,7 +46,7 @@ const AiLetterCalendar = ({ children, targetDateStr, onMonthChange }) => {
     [onMonthChange],
   );
 
-  const handleMonthYearSelect = (month: number, year: number) => {
+  const handleMonthYearSelect = ({ month, year }: ICalendarModalDate) => {
     const formattedMonth = month.toString().padStart(2, '0') as IDate['month'];
     setSelectedDate((prevState) => ({
       ...prevState,
