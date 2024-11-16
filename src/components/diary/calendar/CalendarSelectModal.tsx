@@ -21,10 +21,6 @@ interface IMonthItem {
 interface ICalendarSelectModalProps {
   isModalVisible: boolean;
   handleModalDismiss: () => void;
-  // selectedMonth: number;
-  // selectedYear: number;
-  // setSelectedMonth: (month: number) => void;
-  // setSelectedYear: (year: number) => void;
   selectedModalDate: ICalendarModalDate;
   setSelectedModalDate: (date: ICalendarModalDate) => void;
 }
@@ -32,10 +28,6 @@ interface ICalendarSelectModalProps {
 const CalendarSelectModal = ({
   isModalVisible,
   handleModalDismiss,
-  // selectedMonth,
-  // selectedYear,
-  // setSelectedMonth,
-  // setSelectedYear,
   selectedModalDate,
   setSelectedModalDate,
 }: ICalendarSelectModalProps) => {

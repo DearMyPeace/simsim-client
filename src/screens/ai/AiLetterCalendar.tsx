@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
 import { ICalendarModalDate, IDate, IDay } from '@type/Diary';
