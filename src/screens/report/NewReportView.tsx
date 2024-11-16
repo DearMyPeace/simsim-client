@@ -68,18 +68,23 @@ function NewReportView() {
             <CalendarArrow direction="right" size={30} />
           </Pressable>
         </View>
-        <NewChartView />
-        <View style={{ marginVertical: 16 }}>
-          <MyText>{kMonth[selectedMonth - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
-        </View>
-        <View style={styles.cardContainer}>
-          <MyText size={fontMedium} bold>
-            {keyword}
-          </MyText>
-          <ScrollView contentContainerStyle={{ maxHeight: 300 }} style={{ marginTop: 5 }}>
-            <MyText>{content}</MyText>
-          </ScrollView>
-        </View>
+        <ScrollView
+          contentContainerStyle={styles.mainContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <NewChartView />
+          <View style={{ marginVertical: 16 }}>
+            <MyText>{kMonth[selectedMonth - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
+          </View>
+          <View style={styles.cardContainer}>
+            <MyText size={fontMedium} bold>
+              {keyword}
+            </MyText>
+            <ScrollView contentContainerStyle={{ maxHeight: 300 }} style={{ marginTop: 5 }}>
+              <MyText>{content}</MyText>
+            </ScrollView>
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -99,8 +104,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     minWidth: '80%',
   },
+  mainContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+  },
   cardContainer: {
-    flex: 1,
     backgroundColor: appColor1,
     borderWidth: 1,
     borderRadius: 12,
