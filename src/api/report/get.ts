@@ -55,7 +55,7 @@ export const fetchMockReportKeyword = async ({
 }): Promise<IReportContent> => {
   console.log(`fetchMockReportKeyword: ${targetDate}, ${rank}`);
   return {
-    keyword: mockReportData[rank].keyword,
-    content: mockReportData[rank].content,
+    keyword: mockReportData[rank - 1].keyword,
+    content: mockReportData[rank - 1].content,
   };
 };

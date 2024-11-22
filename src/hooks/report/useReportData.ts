@@ -4,7 +4,7 @@ import { ICalendarModalDate } from '@type/Diary';
 
 export const useReportData = (selectedDate: ICalendarModalDate) => {
   return useQuery({
-    queryKey: ['report', selectedDate],
+    queryKey: ['reportList', selectedDate],
     queryFn: () =>
       fetchMockReportData(`${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`),
   });
@@ -18,7 +18,7 @@ export const useReportKeyword = ({
   rank: number;
 }) => {
   return useQuery({
-    queryKey: ['report', selectedDate],
+    queryKey: ['reportKeyword', selectedDate, rank],
     queryFn: () =>
       fetchMockReportKeyword({
         targetDate: `${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`,
