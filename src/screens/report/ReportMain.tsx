@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
 import NewChartView from '@screens/report/NewChartView';
 import { kMonth } from '@utils/localeConfig';
@@ -29,8 +29,15 @@ function ReportMain({ selectedDate }: { selectedDate: ICalendarModalDate }) {
     setSelectedRank(rank);
   };
 
+  const onPressBackground = () => {
+    setSelectedRank(null);
+  };
+
   return (
-    <>
+    <Pressable
+      onPress={onPressBackground}
+      style={({ hovered }) => [styles.container, hovered && { cursor: 'default' }]}
+    >
       <View style={styles.container}>
         <NewChartView chartData={data} setSelectedRank={setSelectedRank} />
         <View>
@@ -51,11 +58,15 @@ function ReportMain({ selectedDate }: { selectedDate: ICalendarModalDate }) {
           />
         )}
       </View>
-    </>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    width: '100%',
+  },
   container: {
     width: '100%',
     alignItems: 'center',
