@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import MyText from '@components/common/MyText';
-import NewChartView from '@screens/report/NewChartView';
-import { appColor1 } from '@utils/colors';
-import { kMonth } from '@utils/localeConfig';
 import { ICalendarModalDate } from '@type/Diary';
 import ReportHeader from './ReportHeader';
-import NewReportContent from './NewReportContent';
+import ReportMain from './ReportMain';
 
 function NewReportView() {
   const [selectedDate, setSelectedDate] = useState<ICalendarModalDate>({
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
   });
-
-  const keyword = '건강';
-  const content = `날씨가 추워질수록 건강에 대한 언급이 많아졌어요. 다음주부터는 더 춥다고 하니, 따뜻하게 입는다면 건강에 대한 걱정이 덜 할 것 같아요.
-  목을 따뜻하게 감싸면 체온이 3도 이상 올라가는 효과가 있다고 해요. 저번에 지수에게 선물받은 부드러운 앙고라 목도리를 해보는건 어떤가요?`;
 
   return (
     <SafeAreaView style={{ flex: 1, marginBottom: 16 }}>
@@ -25,12 +17,9 @@ function NewReportView() {
         <ScrollView
           contentContainerStyle={styles.mainContainer}
           showsVerticalScrollIndicator={false}
+          style={{ width: '100%' }}
         >
-          <NewChartView />
-          <View style={{ marginVertical: 16 }}>
-            <MyText>{kMonth[selectedDate.month - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
-          </View>
-          <NewReportContent keyword={keyword} content={content} />
+          <ReportMain selectedDate={selectedDate} />
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -47,16 +36,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexGrow: 1,
     alignItems: 'center',
-  },
-  cardContainer: {
-    backgroundColor: appColor1,
-    borderWidth: 1,
-    borderRadius: 12,
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    padding: 16,
-    width: '100%',
-    flexGrow: 1,
   },
 });
 

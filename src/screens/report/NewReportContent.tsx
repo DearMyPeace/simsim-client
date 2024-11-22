@@ -1,19 +1,47 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { StyleSheet, ScrollView, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
 import { fontMedium } from '@utils/Sizing';
 import { appColor1 } from '@utils/colors';
+import { ICalendarModalDate } from '@type/Diary';
+import { useReportKeyword } from '@hooks/report/useReportData';
+import ReportLoadingView from './ReportLoadingView';
+import ReportErrorView from './ReportErrorView';
 
-const NewReportContent = ({ keyword, content }) => {
+interface INewReportContentProps {
+  selectedDate: ICalendarModalDate;
+  rank: number;
+  setSelectedRank: Dispatch<SetStateAction<number | null>>;
+}
+
+const NewReportContent = ({ selectedDate, rank, setSelectedRank }: INewReportContentProps) => {
+  const { data, isPending, isError } = useReportKeyword({ selectedDate, rank });
+
+  useEffect(() => {
+    console.log(`rank: ${rank}`);
+    console.log(data);
+  }, [rank, data]);
+
+  const onPress = () => {
+    setSelectedRank(null);
+  };
+
+  if (isPending) {
+    return <ReportLoadingView />;
+  }
+  if (isError || !data) {
+    return <ReportErrorView />;
+  }
+
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <MyText size={fontMedium} bold>
-        {keyword}
+        {data?.keyword}
       </MyText>
       <ScrollView contentContainerStyle={{ maxHeight: 300 }} style={{ marginTop: 5 }}>
-        <MyText>{content}</MyText>
+        <MyText>{data?.content}</MyText>
       </ScrollView>
-    </View>
+    </Pressable>
   );
 };
 

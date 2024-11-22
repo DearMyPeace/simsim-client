@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
   Chart as ChartJS,
@@ -14,6 +14,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Doughnut } from 'react-chartjs-2';
 import { pieColors } from '@utils/colors';
 import { fontBasic } from '@utils/Sizing';
+import { IReportData } from '@type/IReport';
 
 ChartJS.register(
   RadialLinearScale,
@@ -26,12 +27,17 @@ ChartJS.register(
   ChartDataLabels,
 );
 
-function NewChartView() {
+interface INewChartViewProps {
+  chartData: IReportData[];
+  setSelectedRank: Dispatch<SetStateAction<number | null>>;
+}
+
+function NewChartView({ chartData, setSelectedRank }: INewChartViewProps) {
   const data = {
-    labels: ['엄청나게 긴 단어라고 합니다', '영화', '날씨', '요리하다', '독서'],
+    labels: chartData.map((item) => item.keyword),
     datasets: [
       {
-        data: [30, 20, 20, 15, 15],
+        data: chartData.map((item) => item.rate),
         backgroundColor: pieColors,
       },
     ],
@@ -40,6 +46,12 @@ function NewChartView() {
   const options = {
     responsive: true,
     cutout: '40%',
+    onClick: (event: any, elements: any[]) => {
+      if (elements.length > 0) {
+        const clickedIndex = elements[0].index;
+        setSelectedRank(clickedIndex + 1);
+      }
+    },
     plugins: {
       datalabels: {
         display: true,
@@ -73,7 +85,7 @@ function NewChartView() {
         callbacks: {
           label: function (tooltipItem: any) {
             const label = tooltipItem.label || '';
-            return `${label}: ${tooltipItem.raw}번`;
+            return `${label}: ${tooltipItem.raw * 100}%`;
           },
         },
       },
@@ -93,11 +105,10 @@ function NewChartView() {
 const styles = StyleSheet.create({
   chart: {
     flex: 1,
-    marginTop: 16,
+    marginVertical: 16,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 200,
   },
 });
 
