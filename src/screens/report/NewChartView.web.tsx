@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Pressable } from 'react-native';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -29,10 +29,10 @@ ChartJS.register(
 
 interface INewChartViewProps {
   chartData: IReportData[];
-  setSelectedRank: Dispatch<SetStateAction<number | null>>;
+  onLabelPress: (rank: number) => void;
 }
 
-function NewChartView({ chartData, setSelectedRank }: INewChartViewProps) {
+function NewChartView({ chartData, onLabelPress }: INewChartViewProps) {
   const data = {
     labels: chartData.map((item) => item.keyword),
     datasets: [
@@ -49,7 +49,7 @@ function NewChartView({ chartData, setSelectedRank }: INewChartViewProps) {
     onClick: (event: any, elements: any[]) => {
       if (elements.length > 0) {
         const clickedIndex = elements[0].index;
-        setSelectedRank(clickedIndex + 1);
+        onLabelPress(clickedIndex + 1);
       }
     },
     plugins: {
@@ -96,17 +96,15 @@ function NewChartView({ chartData, setSelectedRank }: INewChartViewProps) {
   };
 
   return (
-    <View style={styles.chart}>
+    <Pressable onPress={() => {}} style={styles.container}>
       <Doughnut data={data} options={options} />
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  chart: {
+  container: {
     flex: 1,
-    marginVertical: 16,
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

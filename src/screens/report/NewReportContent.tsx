@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
 import { fontMedium } from '@utils/Sizing';
@@ -11,10 +11,10 @@ import ReportErrorView from './ReportErrorView';
 interface INewReportContentProps {
   selectedDate: ICalendarModalDate;
   rank: number;
-  setSelectedRank: Dispatch<SetStateAction<number | null>>;
+  onPress: () => void;
 }
 
-const NewReportContent = ({ selectedDate, rank, setSelectedRank }: INewReportContentProps) => {
+const NewReportContent = ({ selectedDate, rank, onPress }: INewReportContentProps) => {
   const { data, isPending, isError } = useReportKeyword({ selectedDate, rank });
 
   useEffect(() => {
@@ -22,9 +22,9 @@ const NewReportContent = ({ selectedDate, rank, setSelectedRank }: INewReportCon
     console.log(data);
   }, [rank, data]);
 
-  const onPress = () => {
-    setSelectedRank(null);
-  };
+  // const onPress = () => {
+  //   setSelectedRank(null);
+  // };
 
   if (isPending) {
     return <ReportLoadingView />;
