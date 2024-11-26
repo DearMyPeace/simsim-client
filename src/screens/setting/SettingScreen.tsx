@@ -71,7 +71,7 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
           setVisible={setTimePickerVisible}
           onClose={onTimePickerClose}
         >
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.container}>
             <DatePicker
               mode="time"
               locale="ko-KR"
@@ -97,11 +97,16 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
       <SettingSection label="편지 작성자" content={userInfo.personaName} onPress={aiPickerOpen} />
       <SettingSection label="의견 보내기" content="보내기" onPress={onFeedback} />
       <SettingSection label="심심조각 방침" content="방침 보기" onPress={onViewTerms} />
-      {userInfo.role === 'ADMIN' && <SettingAdminButtons />}
+      {userInfo.role === 'ADMIN' && Platform.OS === 'web' && <SettingAdminButtons />}
     </SettingContainer>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default SettingScreen;

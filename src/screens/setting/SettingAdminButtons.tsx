@@ -1,20 +1,43 @@
-import React from 'react';
-import SettingSection from '@components/setting/SettingSection';
+import React, { useState } from 'react';
 import { fetchExportDiary, fetchExportReport } from '@api/admin/get';
+import ExportCSVButton from './ExportCSVButton';
 
 function SettingAdminButtons() {
-  const onGetDiary = () => {
-    fetchExportDiary();
+  const [diaryData, setDiaryData] = useState('');
+  const [letterData, setLetterData] = useState('');
+
+  const onGetDiary = async () => {
+    try {
+      const data = await fetchExportDiary();
+      setDiaryData(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const onGetReport = () => {
-    fetchExportReport();
+  const onGetLetter = async () => {
+    try {
+      const data = await fetchExportReport();
+      setLetterData(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
-      <SettingSection label="기록 가져오기" onPress={onGetDiary} />
-      <SettingSection label="편지 가져오기" onPress={onGetReport} />
+      <ExportCSVButton
+        label="기록 가져오기"
+        onPress={onGetDiary}
+        data={diaryData}
+        filename="simsim_diary.csv"
+      />
+      <ExportCSVButton
+        label="편지 가져오기"
+        onPress={onGetLetter}
+        data={letterData}
+        filename="simsim_letter.csv"
+      />
     </>
   );
 }
