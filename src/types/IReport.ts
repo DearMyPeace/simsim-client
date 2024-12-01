@@ -25,3 +25,12 @@ export interface DayEmotionData {
   negativeTotalCnt: number;
   negativeSummary: string;
 }
+
+export interface IReportContent {
+  keyword: string;
+  content: string;
+}
+
+export interface IReportData extends IReportContent {
+  rate: number;
+}

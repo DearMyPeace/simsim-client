@@ -11,28 +11,25 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import { ICalendarModalDate } from '@type/Diary';
 
 interface IMonthItem {
-  month: string;
-  index: number;
+  displayedMonth: string;
+  month: number;
 }
 
 interface ICalendarSelectModalProps {
   isModalVisible: boolean;
   handleModalDismiss: () => void;
-  selectedMonth: number;
-  selectedYear: number;
-  setSelectedMonth: (month: number) => void;
-  setSelectedYear: (year: number) => void;
+  selectedModalDate: ICalendarModalDate;
+  setSelectedModalDate: (date: ICalendarModalDate) => void;
 }
 
 const CalendarSelectModal = ({
   isModalVisible,
   handleModalDismiss,
-  selectedMonth,
-  selectedYear,
-  setSelectedMonth,
-  setSelectedYear,
+  selectedModalDate,
+  setSelectedModalDate,
 }: ICalendarSelectModalProps) => {
   const monthScrollRef = useRef<ScrollView>(null);
   const yearScrollRef = useRef<ScrollView>(null);
@@ -40,20 +37,33 @@ const CalendarSelectModal = ({
   const monthItemHeight = 49;
   const yearItemHeight = 49;
 
-  const renderMonthItem = ({ month, index }: IMonthItem) => (
-    <Pressable key={index} style={styles.modalItem} onPress={() => setSelectedMonth(index + 1)}>
-      <View style={selectedMonth === index + 1 ? styles.selectedStyle : null}>
-        <MyText style={selectedMonth === index + 1 ? styles.selectedText : styles.modalText}>
-          {month}
+  const renderMonthItem = ({ displayedMonth, month }: IMonthItem) => (
+    <Pressable
+      key={displayedMonth}
+      style={styles.modalItem}
+      onPress={() => setSelectedModalDate({ ...selectedModalDate, month })}
+    >
+      <View style={selectedModalDate.month === month ? styles.selectedStyle : null}>
+        <MyText style={selectedModalDate.month === month ? styles.selectedText : styles.modalText}>
+          {displayedMonth}
         </MyText>
       </View>
     </Pressable>
   );
 
   const renderYearItem = (year: number) => (
-    <Pressable key={year} style={styles.modalItem} onPress={() => setSelectedYear(year)}>
-      <View style={selectedYear === year ? styles.selectedStyle : null}>
-        <MyText style={selectedYear === year ? styles.selectedText : styles.modalText}>
+    <Pressable
+      key={year}
+      style={styles.modalItem}
+      onPress={() =>
+        setSelectedModalDate({
+          ...selectedModalDate,
+          year,
+        })
+      }
+    >
+      <View style={selectedModalDate.year === year ? styles.selectedStyle : null}>
+        <MyText style={selectedModalDate.year === year ? styles.selectedText : styles.modalText}>
           {year}
         </MyText>
       </View>
@@ -62,12 +72,12 @@ const CalendarSelectModal = ({
 
   useEffect(() => {
     if (isModalVisible) {
-      const monthOffset = (selectedMonth - 1) * monthItemHeight - 120;
-      const yearOffset = (selectedYear - 2000) * yearItemHeight - 120;
+      const monthOffset = (selectedModalDate.month - 1) * monthItemHeight - 120;
+      const yearOffset = (selectedModalDate.year - 2000) * yearItemHeight - 120;
       monthScrollRef.current?.scrollTo({ y: monthOffset, animated: true });
       yearScrollRef.current?.scrollTo({ y: yearOffset, animated: true });
     }
-  }, [isModalVisible, selectedMonth, selectedYear]);
+  }, [isModalVisible, selectedModalDate]);
 
   return (
     <Modal visible={isModalVisible} transparent={true} animationType="fade">
@@ -80,7 +90,9 @@ const CalendarSelectModal = ({
                 style={styles.modalMonth}
                 showsVerticalScrollIndicator={false}
               >
-                {kMonth.map((month, index) => renderMonthItem({ month, index }))}
+                {kMonth.map((displayedMonth, index) =>
+                  renderMonthItem({ displayedMonth, month: index + 1 }),
+                )}
               </ScrollView>
               <ScrollView
                 ref={yearScrollRef}
