@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, FlatList, ListRenderItem, ViewToken } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
 import DiaryPagination from '@components/diary/carousel/DiaryPagination';
@@ -22,19 +22,16 @@ const DiaryCarousel = () => {
     }
   }).current;
 
-  const renderDiaries: ListRenderItem<IDiary> = useCallback(
-    ({ item }) => (
-      <DiaryCard
-        id={item.id}
-        content={item.content}
-        createdDate={item.createdDate}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-        isLetterSent={sendStatus}
-        isSuccess={isSuccess}
-      />
-    ),
-    [data],
+  const renderDiaries: ListRenderItem<IDiary> = ({ item }) => (
+    <DiaryCard
+      id={item.id}
+      content={item.content}
+      createdDate={item.createdDate}
+      isEditing={isEditing}
+      setIsEditing={setIsEditing}
+      isLetterSent={sendStatus}
+      isSuccess={isSuccess}
+    />
   );
 
   useEffect(() => {
