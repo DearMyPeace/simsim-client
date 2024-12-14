@@ -34,3 +34,8 @@ export interface IReportContent {
 export interface IReportData extends IReportContent {
   rate: number;
 }
+
+export interface INewChartViewProps {
+  chartData: IReportData[];
+  onLabelPress: (rank: number) => void;
+}
