@@ -2,6 +2,7 @@ import { fontBasic } from '@utils/Sizing';
 import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import Markdown from 'react-native-markdown-display';
+import MyText from './MyText';
 
 interface IMarkDownViewProps {
   containerStyle?: StyleProp<ViewStyle>;
@@ -13,6 +14,7 @@ const MarkDownView = ({ containerStyle, children }: IMarkDownViewProps) => {
     body: {
       fontSize: fontBasic,
       fontFamily: 'GowunBatang-Regular',
+      color: 'black',
     },
     heading2: {
       fontSize: 24,
@@ -21,6 +23,10 @@ const MarkDownView = ({ containerStyle, children }: IMarkDownViewProps) => {
     },
     heading3: {
       marginTop: 10,
+      fontFamily: 'GowunBatang-Bold',
+    },
+    strong: {
+      fontFamily: 'GowunBatang-Bold',
     },
   });
 
