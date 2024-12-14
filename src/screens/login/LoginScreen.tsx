@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontLarge,
-    fontFamily: 'Kalam',
+    fontFamily: 'Kalam-Bold',
     marginBottom: 72,
   },
   loginOptions: {
