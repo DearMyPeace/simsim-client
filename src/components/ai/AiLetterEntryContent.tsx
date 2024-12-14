@@ -26,14 +26,17 @@ const styles = StyleSheet.create({
     body: {
       fontSize: fontBasic,
       fontFamily: 'GowunBatang-Regular',
+      color: 'black',
     },
     heading2: {
       fontSize: 24,
       fontFamily: 'GowunBatang-Bold',
       marginTop: 10,
+      color: 'black',
     },
     heading3: {
       marginTop: 10,
+      color: 'black',
     },
   },
 });
