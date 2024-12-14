@@ -54,41 +54,14 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
     navigation.navigate('SettingTerms');
   };
 
-  const alarmSection = Platform.OS !== 'web' && (
-    <NotiSection
-      diaryNotiEnabled={diaryNotiEnabled}
-      onToggleDiarySwitch={onToggleDiarySwitch}
-      letterNotiEnabled={letterNotiEnabled}
-      onToggleLetterSwitch={onToggleLetterSwitch}
-    />
-  );
+  const alarmSection = Platform.OS !== 'web' && <NotiSection />;
 
   const modals = (
-    <>
-      {Platform.OS !== 'web' && (
-        <BasicBottomSheet
-          visible={timePickerVisible}
-          setVisible={setTimePickerVisible}
-          onClose={onTimePickerClose}
-        >
-          <View style={styles.container}>
-            <DatePicker
-              mode="time"
-              locale="ko-KR"
-              date={notiTime}
-              minuteInterval={10}
-              onDateChange={setNotiTime}
-              dividerColor="black"
-            />
-          </View>
-        </BasicBottomSheet>
-      )}
-      <AiPersonaSelectModal
-        visible={aiPickerVisible}
-        setIsVisible={setAiPickerVisible}
-        aiPersonaList={aiPersonaList}
-      />
-    </>
+    <AiPersonaSelectModal
+      visible={aiPickerVisible}
+      setIsVisible={setAiPickerVisible}
+      aiPersonaList={aiPersonaList}
+    />
   );
 
   return (
