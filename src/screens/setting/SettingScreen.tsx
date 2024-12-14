@@ -32,7 +32,7 @@ const SettingScreen = ({ navigation }: { navigation: any }) => {
   const setSnackbarText = useSetRecoilState(snackMessage);
   const onTimePickerClose = () => {
     setDiaryNotiEnabled(true);
-    const time = format(notiTime, 'a hh시 mm분', { locale: ko });
+    const time = format(notiTime, 'a hh시 mm분');
     setSnackbarText(`${formatTimeToKorean(time)}에 알림이 울립니다`);
   };
 
