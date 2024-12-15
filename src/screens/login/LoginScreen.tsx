@@ -5,6 +5,7 @@ import logo from '@assets/logo/logo.png';
 import { fontLarge } from '@utils/Sizing';
 import AppleLogin from '@screens/login/AppleLogin';
 import GoogleLogin from '@screens/login/GoogleLogin';
+import KakaoLogin from '@screens/login/KakaoLogin';
 import TermsModal from '@screens/login/TermsModal';
 import CheckboxWrapper from '@screens/login/CheckBoxWrapper';
 import { saveCheckStatus, getCheckStatus } from '@components/login/storageUtils';
@@ -74,6 +75,7 @@ const LoginScreen = () => {
         <View style={styles.loginOptions}>
           <GoogleLogin handleLoginPress={handleLoginPress} />
           <AppleLogin handleLoginPress={handleLoginPress} />
+          <KakaoLogin handleLoginPress={handleLoginPress} />
         </View>
         <CheckboxWrapper
           isPolicyChecked={isPolicyChecked}
