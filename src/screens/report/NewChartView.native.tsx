@@ -28,7 +28,6 @@ function NewChartView({ chartData, onLabelPress }: INewChartViewProps) {
       radius={150}
       onPress={onPress}
       textSize={fontBasic}
-      showTooltip
       font="GowunBatang-Bold"
       labelsPosition="outward"
       data={data}
