@@ -5,8 +5,9 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
 import useSendUserToken from '@hooks/login/useSendUserToken';
+import { ILoginProps } from '@type/Login';
 
-const GoogleLoginWeb = ({ handleLoginPress }) => {
+const GoogleLoginWeb = ({ handleLoginPress }: ILoginProps) => {
   const sendUserToken = useSendUserToken('google');
 
   const login = useGoogleLogin({

@@ -6,8 +6,9 @@ import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 import AppleIcon from '@components/common/AppleIcon';
+import { ILoginProps } from '@type/Login';
 
-const AppleLoginWeb = ({ handleLoginPress }) => {
+const AppleLoginWeb = ({ handleLoginPress }: ILoginProps) => {
   const sendUserToken = useSendUserToken('apple');
   const appleSignInRef = useRef(null);
 

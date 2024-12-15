@@ -5,17 +5,14 @@ import MyText from '@components/common/MyText';
 import googleLogo from '@assets/logo/google.png';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
+import { ILoginProps } from '@type/Login';
 
 GoogleSignin.configure({
   webClientId: process.env.ANDROID_GOOGLE_CLIENT_ID,
   iosClientId: process.env.IOS_GOOGLE_CLIENT_ID,
 });
 
-interface IGoogleLoginProps {
-  handleLoginPress: (func: () => Promise<void>) => void;
-}
-
-const GoogleLogin = ({ handleLoginPress }: IGoogleLoginProps) => {
+const GoogleLogin = ({ handleLoginPress }: ILoginProps) => {
   const sendUserToken = useSendUserToken('google');
 
   const signInWithGoogle = async () => {

@@ -5,8 +5,9 @@ import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 import MyText from '@components/common/MyText';
 import AppleIcon from '@components/common/AppleIcon';
+import { ILoginProps } from '@type/Login';
 
-const AppleLogin = ({ handleLoginPress }) => {
+const AppleLogin = ({ handleLoginPress }: ILoginProps) => {
   const sendUserToken = useSendUserToken('apple');
 
   const AppleSignIn = async () => {
