@@ -2,7 +2,6 @@ import { fontBasic } from '@utils/Sizing';
 import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import MyText from './MyText';
 
 interface IMarkDownViewProps {
   containerStyle?: StyleProp<ViewStyle>;
