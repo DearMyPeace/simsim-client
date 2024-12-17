@@ -5,14 +5,24 @@ import useSendUserToken from '@hooks/login/useSendUserToken';
 import MyText from '@components/common/MyText';
 import kakaoIcon from '@assets/logo/katalk.png';
 import { ILoginProps } from '@type/Login';
+import { login, KakaoOAuthToken } from '@react-native-seoul/kakao-login';
 
 const KakaoLogin = ({ handleLoginPress }: ILoginProps) => {
-  const sendUserToken = useSendUserToken('apple');
+  const sendUserToken = useSendUserToken('kakao');
 
-  const KakaoSignIn = async () => {};
+  const signInWithKakao = async (): Promise<void> => {
+    try {
+      const { accessToken }: KakaoOAuthToken = await login();
+      console.log('Kakao login response:', accessToken);
+      // TODO: 백엔드 api 완성 후 확인
+      // sendUserToken.mutate({ access_token: accessToken });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <Pressable style={styles.loginButton} onPress={() => handleLoginPress(KakaoSignIn)}>
+    <Pressable style={styles.loginButton} onPress={() => handleLoginPress(signInWithKakao)}>
       <View style={styles.iconAndText}>
         <Image source={kakaoIcon} style={styles.icon} />
         <MyText style={styles.loginButtonText}>Kakao로 계속하기</MyText>
