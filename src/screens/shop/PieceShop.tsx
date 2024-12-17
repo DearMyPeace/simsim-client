@@ -1,13 +1,23 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Pressable, Image } from 'react-native';
+import { ScrollView, View, StyleSheet, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
 import { useRecoilState } from 'recoil';
 import { pieces } from '@stores/pieces';
-import p500 from '@assets/images/p500.png';
-import p200 from '@assets/images/p200.png';
-import p100 from '@assets/images/p100.png';
-import p5 from '@assets/images/p5.png';
+import P1 from '@assets/svg/logo_shop_1.svg';
+import P2 from '@assets/svg/logo_shop_2.svg';
+import P3 from '@assets/svg/logo_shop_3.svg';
+import P4 from '@assets/svg/logo_shop_4.svg';
+
 import { fontBasic, fontLarge } from '@utils/Sizing';
+
+import * as RNIap from 'react-native-iap';
+
+const productIds = [
+  'com.dearmy.piece1',
+  'com.dearmy.piece5',
+  'com.dearmy.piece11',
+  'com.dearmy.subscription',
+];
 
 const PieceShop: React.FC = () => {
   const [, setPieceCount] = useRecoilState(pieces);
@@ -32,8 +42,8 @@ const PieceShop: React.FC = () => {
 
         <View style={styles.itemContainer}>
           <View style={styles.pieceContainer}>
-            <Image source={p5} style={styles.image} />
-            <MyText style={styles.pieceText}>5개</MyText>
+            <P1 style={styles.image} />
+            <MyText style={styles.pieceText}>1개</MyText>
           </View>
           <Pressable style={styles.button} onPress={handleAdReward}>
             <MyText style={styles.buttonText}>광고 보기</MyText>
@@ -44,31 +54,31 @@ const PieceShop: React.FC = () => {
 
         <View style={styles.itemContainer}>
           <View style={styles.pieceContainer}>
-            <Image source={p100} style={styles.image} />
-            <MyText style={styles.pieceText}>100개</MyText>
+            <P2 style={styles.image} />
+            <MyText style={styles.pieceText}>5개</MyText>
           </View>
           <Pressable style={styles.button} onPress={() => handlePurchase(100)}>
+            <MyText style={styles.buttonText}>500 원</MyText>
+          </Pressable>
+        </View>
+
+        <View style={styles.itemContainer}>
+          <View style={styles.pieceContainer}>
+            <P3 style={styles.image} />
+            <MyText style={styles.pieceText}>11개</MyText>
+          </View>
+          <Pressable style={styles.button} onPress={() => handlePurchase(220)}>
             <MyText style={styles.buttonText}>1,000 원</MyText>
           </Pressable>
         </View>
 
         <View style={styles.itemContainer}>
           <View style={styles.pieceContainer}>
-            <Image source={p200} style={styles.image} />
-            <MyText style={styles.pieceText}>200개</MyText>
-          </View>
-          <Pressable style={styles.button} onPress={() => handlePurchase(220)}>
-            <MyText style={styles.buttonText}>2,000 원</MyText>
-          </Pressable>
-        </View>
-
-        <View style={styles.itemContainer}>
-          <View style={styles.pieceContainer}>
-            <Image source={p500} style={styles.image} />
-            <MyText style={styles.pieceText}>월간 구독</MyText>
+            <P4 style={styles.image} />
+            <MyText style={styles.pieceText}>편지작성자 +</MyText>
           </View>
           <Pressable style={styles.button} onPress={() => handlePurchase(500)}>
-            <MyText style={styles.buttonText}>4,900 원</MyText>
+            <MyText style={styles.buttonText}>2,800 원</MyText>
           </Pressable>
         </View>
       </View>
