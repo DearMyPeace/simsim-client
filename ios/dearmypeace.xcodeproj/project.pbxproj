@@ -16,6 +16,7 @@
 		37709B0C850C4E079916FAAF /* GowunBatang-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69C39DA37EE04490A92B2DD3 /* GowunBatang-Regular.ttf */; };
 		64880C4F2C3283F9009E2304 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64880C4E2C3283F8009E2304 /* GoogleService-Info.plist */; };
 		64880C532C33C1BC009E2304 /* Kalam-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */; };
+		64F3ABE52CE76EF5006464FD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F3ABE42CE76EF5006464FD /* StoreKit.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		EEA3DB0D7E4A80F3F1CF1AC3 /* libPods-dearmypeace-dearmypeaceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71E790C2D11877C38E4C93F6 /* libPods-dearmypeace-dearmypeaceTests.a */; };
 		FC7A548B569647A7B0A537E7 /* GowunBatang-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C134CBC23561433A9B1EA77C /* GowunBatang-Bold.ttf */; };
@@ -47,6 +48,7 @@
 		64880C4E2C3283F8009E2304 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../key/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Kalam-Bold.ttf"; path = "../src/assets/fonts/Kalam-Bold.ttf"; sourceTree = "<group>"; };
 		64C8F1AC2C2BFBBD00CAC7F8 /* dearmypeace.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = dearmypeace.entitlements; path = dearmypeace/dearmypeace.entitlements; sourceTree = "<group>"; };
+		64F3ABE42CE76EF5006464FD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		69C39DA37EE04490A92B2DD3 /* GowunBatang-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GowunBatang-Regular.ttf"; path = "../src/assets/fonts/GowunBatang-Regular.ttf"; sourceTree = "<group>"; };
 		71E790C2D11877C38E4C93F6 /* libPods-dearmypeace-dearmypeaceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dearmypeace-dearmypeaceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		72431CFA959C8F6262843DC9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = dearmypeace/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E393ADA26EB29D6592BA6D /* libPods-dearmypeace.a in Frameworks */,
+				64F3ABE52CE76EF5006464FD /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +118,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64F3ABE42CE76EF5006464FD /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				01CBCA0C2B5A7C70184E05B7 /* libPods-dearmypeace.a */,
 				71E790C2D11877C38E4C93F6 /* libPods-dearmypeace-dearmypeaceTests.a */,
@@ -133,8 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				64880C502C33C1BC009E2304 /* Kalam-Bold.ttf */,
-				64880C512C33C1BC009E2304 /* Kalam-Light.ttf */,
-				64880C522C33C1BC009E2304 /* Kalam-Regular.ttf */,
 				13B07FAE1A68108700A75B9A /* dearmypeace */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dearmypeaceTests */,
@@ -235,7 +237,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1610;
 					};
 				};
 			};
@@ -511,7 +513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -520,6 +522,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = site.peace.my.dear.ios;
 				PRODUCT_NAME = dearmypeace;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "dearmypeace-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -543,7 +546,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -552,6 +555,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = site.peace.my.dear.ios;
 				PRODUCT_NAME = dearmypeace;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "dearmypeace-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -630,10 +634,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -705,10 +706,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
