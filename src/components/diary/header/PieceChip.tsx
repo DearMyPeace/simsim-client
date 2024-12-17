@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { pieces } from '@stores/pieces';
-import pieceImage from '@assets/images/tab_piece_4.png';
+import PieceImage from '@assets/svg/tab_piece.svg';
 import MyText from '@components/common/MyText';
 
 const PieceChip = memo(() => {
@@ -10,7 +10,7 @@ const PieceChip = memo(() => {
 
   return (
     <View style={styles.container}>
-      <Image source={pieceImage} style={styles.icon} />
+      <PieceImage />
       <MyText size={11} style={styles.text}>
         {count}
       </MyText>
