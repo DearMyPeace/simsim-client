@@ -1,5 +1,5 @@
 export interface ILoginProps {
-  handleLoginPress: (func: () => Promise<void>) => void;
+  handleLoginPress: (func: () => void) => void;
 }
 
 export interface AppleData {
