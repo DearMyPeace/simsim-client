@@ -67,11 +67,7 @@ function ReportMain({ selectedDate }: { selectedDate: ICalendarModalDate }) {
       onPress={onPressBackground}
       style={({ hovered }) => [styles.container, hovered && { cursor: 'default' }]}
     >
-      <NewChartView
-        chartData={data}
-        setSelectedRank={setSelectedRank}
-        onLabelPress={onKeywordPress}
-      />
+      <NewChartView chartData={data} onLabelPress={onKeywordPress} />
       <View style={styles.descriptionContainer}>
         <MyText>{kMonth[selectedDate.month - 1]}에 가장 많이 언급한 단어를 모아봤어요.</MyText>
       </View>

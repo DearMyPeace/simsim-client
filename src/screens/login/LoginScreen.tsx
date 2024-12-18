@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Image, View, StyleSheet, Animated } from 'react-native';
 import MyText from '@components/common/MyText';
 import logo from '@assets/logo/logo.png';
-import { fontLarge } from '@utils/Sizing';
 import AppleLogin from '@screens/login/AppleLogin';
 import GoogleLogin from '@screens/login/GoogleLogin';
 import TermsModal from '@screens/login/TermsModal';
@@ -70,7 +69,9 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Image source={logo} style={{ width: 120, height: 120 }} />
       <Animated.View style={{ opacity: fadeAnim, width: '100%', alignItems: 'center' }}>
-        <MyText style={styles.title}>Dear my peace</MyText>
+        <MyText style={styles.title} bold>
+          심심조각
+        </MyText>
         <View style={styles.loginOptions}>
           <GoogleLogin handleLoginPress={handleLoginPress} />
           <AppleLogin handleLoginPress={handleLoginPress} />
@@ -100,9 +101,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: fontLarge,
-    fontFamily: 'Kalam',
+    fontSize: 25,
     marginBottom: 72,
+    letterSpacing: 3,
+    marginTop: 10,
   },
   loginOptions: {
     width: '80%',

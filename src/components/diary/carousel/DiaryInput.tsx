@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import MyTextInput from '@components/common/MyTextInput';
 import LengthCheckView from '@components/common/LengthCheckView';
@@ -12,7 +12,7 @@ interface IDiaryInputProps {
   timeStartWriting: string;
   setTimeStartWriting: (timeStartWriting: string) => void;
   isEditing: boolean;
-  setIsEditing: (isEditing: boolean) => void;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
   placeholder: string;
 }
 
@@ -42,7 +42,9 @@ const DiaryInput = ({
       now.setFullYear(year, month - 1, date);
       setTimeStartWriting(now.toISOString());
     }
-    setIsEditing(true);
+    if (!isEditing) {
+      setIsEditing(true);
+    }
   };
 
   return (

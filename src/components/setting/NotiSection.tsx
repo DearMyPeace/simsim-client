@@ -4,22 +4,24 @@ import { StyleSheet, View } from 'react-native';
 import { fontLarge } from '@utils/Sizing';
 import MySwitch from '@components/common/MySwitch';
 
-interface INotiSectionProps {
-  diaryNotiEnabled: boolean;
-  onToggleDiarySwitch: () => void;
-  letterNotiEnabled: boolean;
-  onToggleLetterSwitch: () => void;
-}
+import useNotification from '@hooks/setting/notificationHook';
 
-const NotiSection = ({
-  diaryNotiEnabled,
-  onToggleDiarySwitch,
-  letterNotiEnabled,
-  onToggleLetterSwitch,
-}: INotiSectionProps) => {
+import NotiTimePicker from './NotiTimePicker';
+
+const NotiSection = () => {
+  const {
+    diaryNotiEnabled,
+    letterNotiEnabled,
+    timePickerVisible,
+    setDiaryNotiEnabled,
+    setTimePickerVisible,
+    onToggleDiarySwitch,
+    onToggleLetterSwitch,
+  } = useNotification();
+
   return (
-    <View style={{ paddingHorizontal: 24 }}>
-      <MyText size={fontLarge} style={{ paddingVertical: 11 }} bold>
+    <View style={styles.container}>
+      <MyText size={fontLarge} bold>
         알림
       </MyText>
       <View style={styles.row}>
@@ -34,14 +36,23 @@ const NotiSection = ({
         <MySwitch value={letterNotiEnabled} onValueChange={onToggleLetterSwitch} />
       </View>
       <View style={styles.border} />
+      <NotiTimePicker
+        timePickerVisible={timePickerVisible}
+        setTimePickerVisible={setTimePickerVisible}
+        setDiaryNotiEnabled={setDiaryNotiEnabled}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 24,
+  },
   border: {
     borderBottomWidth: 3,
     borderBottomColor: '#D5D5D5',
+    marginVertical: 10,
   },
   row: {
     flexDirection: 'row',

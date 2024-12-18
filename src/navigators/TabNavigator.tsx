@@ -17,14 +17,10 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       // initialRouteName="AiLetter"
-      theme={{
-        colors: {
-          background: 'transparent',
-        },
-      }}
       screenOptions={{
         tabBarStyle: styles.tabbarStyle,
         tabBarLabelStyle: { fontFamily: 'GowunBatang-Regular' },
+        tabBarLabelPosition: 'beside-icon',
         tabBarActiveTintColor: appColor3,
         tabBarInactiveTintColor: 'gray',
         headerLeft: () => <PieceChip />,
@@ -81,9 +77,21 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabbarStyle: {
     backgroundColor: 'rgba(255, 255, 255, 0.47)',
-    paddingBottom: Platform.OS === 'web' ? 5 : 20,
-    paddingTop: Platform.OS === 'web' ? 0 : 10,
     borderColor: 'transparent',
+    ...Platform.select({
+      web: {
+        paddingBottom: 5,
+        paddingTop: 0,
+      },
+      ios: {
+        paddingBottom: 20,
+        paddingTop: 10,
+      },
+      android: {
+        paddingBottom: 5,
+        elevation: 0,
+      },
+    }),
   },
 });
 

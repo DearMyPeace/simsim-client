@@ -44,7 +44,7 @@ const DiaryCardHeader = ({
     <View style={styles.header}>
       <MyText size={15}>{formatTime(createdDate) || formatTime(timeStartWriting)}</MyText>
       <View style={styles.icons}>
-        {Platform.OS === 'web' && isEditing && (
+        {isEditing && (
           <TextButton
             compact
             onPress={onSave}

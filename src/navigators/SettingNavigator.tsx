@@ -26,7 +26,7 @@ const SettingNavigator = () => {
         headerRight: () => <CloseIcon onPress={navigation.goBack} />,
       })}
     >
-      <Stack.Screen name="Settings" component={SettingScreen} options={{ title: '설정' }} />
+      <Stack.Screen name="Setting" component={SettingScreen} options={{ title: '설정' }} />
       <Stack.Screen
         name="SettingUserInfo"
         component={SettingUserInfoScreen}

@@ -14,7 +14,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Doughnut } from 'react-chartjs-2';
 import { pieColors } from '@utils/colors';
 import { fontBasic } from '@utils/Sizing';
-import { IReportData } from '@type/IReport';
+import { INewChartViewProps } from '@type/IReport';
 
 ChartJS.register(
   RadialLinearScale,
@@ -26,11 +26,6 @@ ChartJS.register(
   ArcElement,
   ChartDataLabels,
 );
-
-interface INewChartViewProps {
-  chartData: IReportData[];
-  onLabelPress: (rank: number) => void;
-}
 
 function NewChartView({ chartData, onLabelPress }: INewChartViewProps) {
   const data = {

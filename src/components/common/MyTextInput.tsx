@@ -24,10 +24,13 @@ const styles = StyleSheet.create({
     fontSize: fontBasic,
     color: 'black',
     borderWidth: 0,
+    flex: 1,
     ...Platform.select({
       web: {
-        height: '100%',
         outlineStyle: 'none',
+      },
+      android: {
+        textAlignVertical: 'top',
       },
     }),
   },
