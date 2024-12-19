@@ -10,15 +10,6 @@ import P4 from '@assets/svg/logo_shop_4.svg';
 
 import { fontBasic, fontLarge } from '@utils/Sizing';
 
-import * as RNIap from 'react-native-iap';
-
-const productIds = [
-  'com.dearmy.piece1',
-  'com.dearmy.piece5',
-  'com.dearmy.piece11',
-  'com.dearmy.subscription',
-];
-
 const PieceShop: React.FC = () => {
   const [, setPieceCount] = useRecoilState(pieces);
 
