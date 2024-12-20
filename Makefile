@@ -11,6 +11,9 @@ start:
 ios:
 	npm run ios
 
+ios-cc:
+	npm run ios -- reset-cache
+
 web:
 	npm run start-react
 
@@ -27,7 +30,7 @@ npm:
 	sudo npm install
 
 pod:
-	cd ios && pod install
+	cd ios && pod install --repo-update
 
 repod:
 	cd ios && pod deintegrate && pod cache clean --all && pod install
