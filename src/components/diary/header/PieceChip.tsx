@@ -10,7 +10,7 @@ const PieceChip = memo(() => {
 
   return (
     <View style={styles.container}>
-      <PieceImage />
+      <PieceImage width={16} height={16} />
       <MyText size={11} style={styles.text}>
         {count}
       </MyText>
