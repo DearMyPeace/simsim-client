@@ -25,3 +25,17 @@ export interface DayEmotionData {
   negativeTotalCnt: number;
   negativeSummary: string;
 }
+
+export interface IReportContent {
+  keyword: string;
+  content: string;
+}
+
+export interface IReportData extends IReportContent {
+  rate: number;
+}
+
+export interface INewChartViewProps {
+  chartData: IReportData[];
+  onLabelPress: (rank: number) => void;
+}

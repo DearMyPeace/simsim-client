@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import Piece from '@screens/piece/Piece';
 import useUserSetup from '@hooks/user/useUserSetup';
+import NewReportView from '@screens/report/NewReportView';
 const Stack = createStackNavigator();
 
 const PieceStackNavigator = () => {
@@ -42,6 +43,7 @@ const PieceStackNavigator = () => {
         }}
         name="Piece"
         component={Piece}
+        // component={NewReportView}
       />
     </Stack.Navigator>
   );

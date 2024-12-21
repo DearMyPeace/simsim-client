@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import CalendarSelectModal from './CalendarSelectModal';
@@ -9,16 +9,20 @@ import { selectedDateStatus, tense } from '@stores/tense';
 import { fontLarge } from '@utils/Sizing';
 import TodayButton from '@components/common/TodayButton';
 import { getToday } from '@utils/dateUtils';
+import useCalendarModal from '@hooks/common/useCalendarModal';
 
 const CalendarHeader = ({ date }: { date: string }) => {
   const dateState = useRecoilValue(tense);
-  const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateStatus);
-  const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.slice(5, 7), 10));
-  const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.slice(0, 4), 10));
+  const { isModalVisible, setModalVisible, selectedModalDate, setSelectedModalDate } =
+    useCalendarModal({
+      month: parseInt(selectedDate.slice(5, 7), 10),
+      year: parseInt(selectedDate.slice(0, 4), 10),
+    });
 
   const handleModalDismiss = () => {
     const day = selectedDate.slice(8, 10);
+    const { year: selectedYear, month: selectedMonth } = selectedModalDate;
     const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
     const month = selectedMonth.toString().padStart(2, '0');
     if (parseInt(day, 10) > lastDay) {
@@ -45,17 +49,17 @@ const CalendarHeader = ({ date }: { date: string }) => {
 
   return (
     <View style={styles.header}>
-      <TextButton onPress={onHeaderPress}>
+      <TextButton onPress={onHeaderPress} labelStyle={styles.headerButton}>
         <MyText style={styles.headerText}>{getDisplayDate(new Date(date))}</MyText>
       </TextButton>
-      {dateState !== 'TODAY' && <TodayButton onPress={onPressToday} />}
+      {dateState !== 'TODAY' && (
+        <TodayButton containerStyle={styles.todayButton} onPress={onPressToday} />
+      )}
       <CalendarSelectModal
         isModalVisible={isModalVisible}
         handleModalDismiss={handleModalDismiss}
-        selectedMonth={selectedMonth}
-        selectedYear={selectedYear}
-        setSelectedMonth={setSelectedMonth}
-        setSelectedYear={setSelectedYear}
+        selectedModalDate={selectedModalDate}
+        setSelectedModalDate={setSelectedModalDate}
       />
     </View>
   );
@@ -67,12 +71,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  headerButton: {
+    ...Platform.select({
+      android: {
+        paddingVertical: 5,
+      },
+    }),
+  },
   headerText: {
     color: '#333333',
     fontSize: fontLarge,
   },
-  headerButton: {
-    fontSize: 20,
+  todayButton: {
+    ...Platform.select({
+      android: {
+        marginBottom: 10,
+      },
+    }),
   },
 });
 

@@ -42,6 +42,11 @@ export interface IDay extends IDate {
   day: string;
 }
 
+export interface ICalendarModalDate {
+  year: number;
+  month: number;
+}
+
 export interface IMarkedDates {
   [key: string]: {
     selected: boolean;

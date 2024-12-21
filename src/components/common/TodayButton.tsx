@@ -11,15 +11,16 @@ import { appColor3 } from '@utils/colors';
 
 interface ITodayButtonProps {
   onPress?: () => void;
+  containerStyle?: ViewStyle;
   buttonStyle?: ViewStyle;
   handler?: GestureResponderHandlers;
 }
 
-const TodayButton = ({ onPress, buttonStyle, handler }: ITodayButtonProps) => {
+const TodayButton = ({ onPress, containerStyle, buttonStyle, handler }: ITodayButtonProps) => {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.container, containerStyle, pressed && styles.pressed]}
     >
       <RNAnimated.View {...handler} style={[styles.todayButton, buttonStyle]}>
         <MyText style={styles.todayButtonText}>오늘</MyText>
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     color: appColor3,
     userSelect: 'none',
     fontFamily: 'GowunBatang-Bold',
+    marginBottom: 1,
   },
 });
 

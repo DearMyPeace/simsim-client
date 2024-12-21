@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import CalendarArrow from '@components/diary/calendar/CalendarArrow';
-import { IDay } from '@type/Diary';
+import { ICalendarModalDate, IDay } from '@type/Diary';
 import MyText from '@components/common/MyText';
 import TodayButton from '@components/common/TodayButton';
 import CalendarSelectModal from '@components/diary/calendar/CalendarSelectModal';
 import { kMonth } from '@utils/localeConfig';
+import useCalendarModal from '@hooks/common/useCalendarModal';
 
 interface AiLetterCalendarHeaderProps {
   selectedDate: IDay;
   onLeftPress: () => void;
   onRightPress: () => void;
-  onMonthYearSelect: (month: number, year: number) => void;
+  onMonthYearSelect: (date: ICalendarModalDate) => void;
   onPressToday: () => void;
   isToday: boolean;
 }
@@ -24,17 +25,20 @@ const AiLetterCalendarHeader = ({
   isToday,
   onPressToday,
 }: AiLetterCalendarHeaderProps) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(parseInt(selectedDate.month, 10));
-  const [selectedYear, setSelectedYear] = useState(parseInt(selectedDate.year, 10));
+  const { isModalVisible, setModalVisible, selectedModalDate, setSelectedModalDate } =
+    useCalendarModal({
+      month: parseInt(selectedDate.month, 10),
+      year: parseInt(selectedDate.year, 10),
+    });
 
   useEffect(() => {
-    setSelectedMonth(parseInt(selectedDate.month, 10));
-    setSelectedYear(parseInt(selectedDate.year, 10));
+    const year = parseInt(selectedDate.year, 10);
+    const month = parseInt(selectedDate.month, 10);
+    setSelectedModalDate({ year, month });
   }, [selectedDate]);
 
   const handleModalDismiss = () => {
-    onMonthYearSelect(selectedMonth, selectedYear);
+    onMonthYearSelect(selectedModalDate);
     setModalVisible(false);
   };
 
@@ -42,9 +46,9 @@ const AiLetterCalendarHeader = ({
     <View style={styles.headerContainer}>
       <View style={styles.MYContainer}>
         <Pressable onPress={() => setModalVisible(true)}>
-          <MyText style={styles.headerText}>{`${
-            kMonth[selectedMonth - 1]
-          } ${selectedYear}`}</MyText>
+          <MyText style={styles.headerText}>{`${kMonth[selectedModalDate.month - 1]} ${
+            selectedModalDate.year
+          }`}</MyText>
         </Pressable>
         {!isToday && <TodayButton onPress={onPressToday} />}
       </View>
@@ -56,14 +60,11 @@ const AiLetterCalendarHeader = ({
           <CalendarArrow direction="right" />
         </Pressable>
       </View>
-      {/* Month and Year Modal */}
       <CalendarSelectModal
         isModalVisible={isModalVisible}
         handleModalDismiss={handleModalDismiss}
-        selectedMonth={selectedMonth}
-        selectedYear={selectedYear}
-        setSelectedMonth={setSelectedMonth}
-        setSelectedYear={setSelectedYear}
+        selectedModalDate={selectedModalDate}
+        setSelectedModalDate={setSelectedModalDate}
       />
     </View>
   );
