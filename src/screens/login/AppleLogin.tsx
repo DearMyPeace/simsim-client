@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
+import sha256 from 'sha256';
 import { fontBasic } from '@utils/Sizing';
 import useSendUserToken from '@hooks/login/useSendUserToken';
 import MyText from '@components/common/MyText';
@@ -14,27 +15,47 @@ const AppleLogin = ({ handleLoginPress }) => {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        nonce: sha256('unique_nonce_value'),
+        state: 'state_value',
       });
+
+      console.log('Apple Auth Response:', appleAuthRequestResponse);
 
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user,
       );
 
       if (credentialState === appleAuth.State.AUTHORIZED) {
-        const { identityToken, email, fullName } = appleAuthRequestResponse;
+        const { identityToken, email, fullName, authorizationCode, state } =
+          appleAuthRequestResponse;
 
         if (identityToken) {
-          const token = {
-            authorization: identityToken,
-            user: JSON.stringify({ email, fullName }),
+          const payload = {
+            authorization: {
+              code: authorizationCode,
+              id_token: identityToken,
+              state: state,
+            },
+            user: {
+              name: {
+                firstName: fullName?.givenName || 'Unknown',
+                lastName: fullName?.familyName || 'Unknown',
+              },
+              email: email || 'unknown@apple.com',
+            },
           };
-          sendUserToken.mutate(token);
+
+          console.log('Payload to be sent:', payload);
+
+          sendUserToken.mutate(payload);
         } else {
           console.error('Failed to get identity token');
         }
+      } else {
+        console.error('Credential state is not authorized');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Apple Sign-In Error:', error);
     }
   };
 
