@@ -7,6 +7,7 @@ import GoogleLogin from '@screens/login/GoogleLogin';
 import TermsModal from '@screens/login/TermsModal';
 import CheckboxWrapper from '@screens/login/CheckBoxWrapper';
 import { saveCheckStatus, getCheckStatus } from '@components/login/storageUtils';
+import KakaoTalkLogin from '@screens/login/KakaoTalkLogin';
 
 const LoginScreen = () => {
   const [isPolicyChecked, setIsPolicyChecked] = useState(false);
@@ -75,6 +76,7 @@ const LoginScreen = () => {
         <View style={styles.loginOptions}>
           <GoogleLogin handleLoginPress={handleLoginPress} />
           <AppleLogin handleLoginPress={handleLoginPress} />
+          <KakaoTalkLogin handleLoginPress={handleLoginPress} />
         </View>
         <CheckboxWrapper
           isPolicyChecked={isPolicyChecked}

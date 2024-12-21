@@ -30,6 +30,7 @@ const uncompiled = [
   'react-chartjs-2',
   'chart.js',
   'chartjs-plugin-datalabels',
+  'react-native-iap',
 ];
 
 const babelLoaderConfiguration = {
