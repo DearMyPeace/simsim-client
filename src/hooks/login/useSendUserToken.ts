@@ -24,18 +24,30 @@ const useSendUserToken = (loginType: 'google' | 'apple') => {
   return useMutation({
     mutationFn: (data: GoogleTokenData | AppleData) => {
       if (loginType === 'google') {
+        // console.log('Google token:', data);
         return mutationFn({ access_token: (data as GoogleTokenData).access_token });
       } else {
+        // console.log('Apple token:', data);
         return mutationFn(data);
       }
     },
     onSuccess: async (data) => {
+      // console.log('onSuccess data:', data); // 서버 응답 확인
+      if (!data.accessToken) {
+        console.error('No accessToken in response');
+        return;
+      }
       await saveToken(data.accessToken);
-      setIsLoggedIn(true);
+      console.log('AccessToken saved successfully');
+      setIsLoggedIn(true); // 로그인 상태 업데이트
       queryClient.resetQueries();
     },
     onError: (error) => {
-      console.error(error.response.data.message);
+      if (error?.response?.data?.message) {
+        console.error('Error message:', error.response.data.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     },
   });
 };
