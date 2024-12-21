@@ -7,7 +7,7 @@ import TabNavigator from '@navigators/TabNavigator';
 import LoginScreen from '@screens/login/LoginScreen';
 import useAxiosInterceptors from '@hooks/useAxiosInterceptors';
 import useUserSetup from '@hooks/user/useUserSetup';
-import IapInitializer from '@components/purchase/IapInitializer';
+import IapInitializer from '@components/purchase/IapInitializer.ios';
 
 const SettingNavigator = lazy(() => import('./SettingNavigator'));
 
@@ -32,7 +32,7 @@ const MainNavigator = () => {
               backgroundColor: 'transparent',
             },
           }),
-          animationEnabled: true,
+          animationEnabled: false,
         }}
       >
         {isLoggedIn ? (
