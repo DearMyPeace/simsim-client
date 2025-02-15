@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: fontLarge,
     textAlign: 'center',
+    color: 'black',
   },
   selectedText: {
     fontSize: fontLarge,
@@ -155,6 +156,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     paddingVertical: 10,
-    paddingHorizontal: 19,
   },
 });

@@ -13,6 +13,7 @@ const MarkDownView = ({ containerStyle, children }: IMarkDownViewProps) => {
     body: {
       fontSize: fontBasic,
       fontFamily: 'GowunBatang-Regular',
+      color: 'black',
     },
     heading2: {
       fontSize: 24,
@@ -21,6 +22,10 @@ const MarkDownView = ({ containerStyle, children }: IMarkDownViewProps) => {
     },
     heading3: {
       marginTop: 10,
+      fontFamily: 'GowunBatang-Bold',
+    },
+    strong: {
+      fontFamily: 'GowunBatang-Bold',
     },
   });
 

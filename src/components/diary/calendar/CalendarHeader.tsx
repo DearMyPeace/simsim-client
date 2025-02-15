@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import MyText from '@components/common/MyText';
 import TextButton from '@components/common/TextButton';
 import CalendarSelectModal from './CalendarSelectModal';
@@ -49,10 +49,12 @@ const CalendarHeader = ({ date }: { date: string }) => {
 
   return (
     <View style={styles.header}>
-      <TextButton onPress={onHeaderPress}>
+      <TextButton onPress={onHeaderPress} labelStyle={styles.headerButton}>
         <MyText style={styles.headerText}>{getDisplayDate(new Date(date))}</MyText>
       </TextButton>
-      {dateState !== 'TODAY' && <TodayButton onPress={onPressToday} />}
+      {dateState !== 'TODAY' && (
+        <TodayButton containerStyle={styles.todayButton} onPress={onPressToday} />
+      )}
       <CalendarSelectModal
         isModalVisible={isModalVisible}
         handleModalDismiss={handleModalDismiss}
@@ -69,12 +71,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  headerButton: {
+    ...Platform.select({
+      android: {
+        paddingVertical: 5,
+      },
+    }),
+  },
   headerText: {
     color: '#333333',
     fontSize: fontLarge,
   },
-  headerButton: {
-    fontSize: 20,
+  todayButton: {
+    ...Platform.select({
+      android: {
+        marginBottom: 10,
+      },
+    }),
   },
 });
 

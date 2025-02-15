@@ -17,7 +17,7 @@ const MyText = ({
   ...rest
 }: MyTextProps) => {
   const fontFamily = bold ? font.replace('Regular', 'Bold') : font;
-  return <Text style={[{ fontFamily, fontSize: size }, style]} {...rest} />;
+  return <Text style={[{ fontFamily, fontSize: size, color: 'black' }, style]} {...rest} />;
 };
 
 export default MyText;

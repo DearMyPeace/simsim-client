@@ -52,6 +52,7 @@
     "react-native-gesture-handler": "^2.16.2",
     "react-native-gifted-charts": "^1.4.47",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-iap": "^12.15.7",
     "react-native-markdown-display": "^7.0.2",
     "react-native-paper": "^5.12.3",
     "react-native-reanimated": "^3.12.1",

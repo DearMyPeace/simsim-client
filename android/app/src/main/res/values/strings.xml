@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">dearmypeace</string>
+    <string name="app_name">심심조각</string>
     <string name="kakao_app_key">@string/KAKAO_NATIVE_APP_KEY</string>
 </resources>

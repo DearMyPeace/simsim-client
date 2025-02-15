@@ -1,39 +1,38 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-
-import { PieChart } from 'react-native-gifted-charts';
+import { PieChart, pieDataItem } from 'react-native-gifted-charts';
 import { pieColors } from '@utils/colors';
+import { INewChartViewProps } from '@type/IReport';
+import { fontBasic } from '@utils/Sizing';
 
-function NewChartView() {
-  const keywords = ['건강', '요리', '영화', '운동', '책'];
+function NewChartView({ chartData, onLabelPress }: INewChartViewProps) {
+  const data = chartData.map((item, index) => ({
+    text: item.keyword,
+    value: item.rate,
+    tooltipText: `${item.keyword}: ${item.rate * 100}%`,
+    color: pieColors[index],
+  }));
 
-  const pieData = [
-    { value: 5, color: pieColors[5], text: '책' },
-    { value: 15, color: pieColors[4], text: '운동' },
-    { value: 20, color: pieColors[3], text: '영화' },
-    { value: 24, color: pieColors[2], text: '요리' },
-    { value: 26, color: pieColors[1], text: '건강' },
-  ];
+  const onPress = (item: pieDataItem, index: number) => {
+    onLabelPress(index + 1);
+  };
 
   return (
-    <View style={styles.chart}>
-      <PieChart
-        donut
-        isThreeD
-        showText
-        textColor="black"
-        radius={170}
-        textSize={20}
-        showTextBackground
-        textBackgroundRadius={26}
-        data={pieData}
-      />
-    </View>
+    <PieChart
+      strokeColor="white"
+      strokeWidth={2}
+      donut
+      showText
+      innerCircleBorderColor={'white'}
+      innerCircleColor={'#EDEDED'}
+      textColor="white"
+      radius={150}
+      onPress={onPress}
+      textSize={fontBasic}
+      font="GowunBatang-Bold"
+      labelsPosition="outward"
+      data={data}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  chart: {},
-});
 
 export default NewChartView;

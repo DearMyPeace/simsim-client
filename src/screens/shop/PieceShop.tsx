@@ -1,23 +1,99 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, Pressable, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, StyleSheet, Pressable } from 'react-native';
 import MyText from '@components/common/MyText';
 import { useRecoilState } from 'recoil';
 import { pieces } from '@stores/pieces';
-import p500 from '@assets/images/p500.png';
-import p200 from '@assets/images/p200.png';
-import p100 from '@assets/images/p100.png';
-import p5 from '@assets/images/p5.png';
+import P1 from '@assets/svg/logo_shop_1.svg';
+import P2 from '@assets/svg/logo_shop_2.svg';
+import P3 from '@assets/svg/logo_shop_3.svg';
+import P4 from '@assets/svg/logo_shop_4.svg';
+
 import { fontBasic, fontLarge } from '@utils/Sizing';
+
+import * as RNIap from 'react-native-iap';
+
+const productIds = ['piece_100', 'piece11', 'piece5', 'piece1'];
+
+const subscriptionIds = ['writer'];
 
 const PieceShop: React.FC = () => {
   const [, setPieceCount] = useRecoilState(pieces);
+  const [products, setProducts] = useState<RNIap.Product[]>([]);
+  const [subscriptions, setSubscriptions] = useState<RNIap.Subscription[]>([]);
 
-  const handleAdReward = () => {
-    setPieceCount((prevCount) => prevCount + 5);
+  useEffect(() => {
+    const fetchProductsAndSubscriptions = async () => {
+      try {
+        const availableProducts = await RNIap.getProducts(productIds);
+        setProducts(availableProducts);
+
+        const availableSubscriptions = await RNIap.getSubscriptions(subscriptionIds);
+        setSubscriptions(availableSubscriptions);
+      } catch (err) {
+        console.error('Failed to fetch products or subscriptions:', err);
+        Alert.alert('상품 정보를 불러오지 못했습니다.');
+      }
+    };
+
+    fetchProductsAndSubscriptions();
+
+    const purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase) => {
+      const receipt = purchase.transactionReceipt;
+      if (receipt) {
+        if (subscriptionIds.includes(purchase.productId)) {
+          Alert.alert('구독 성공', 'WriterPlus 구독이 활성화되었습니다.');
+        } else {
+          handlePurchase(purchase.productId);
+        }
+        RNIap.finishTransaction(purchase).catch((err) =>
+          console.error('Failed to finish transaction:', err),
+        );
+      }
+    });
+
+    const purchaseErrorSubscription = RNIap.purchaseErrorListener((error) => {
+      console.error('Purchase Error:', error);
+      Alert.alert('구매 실패', error.message);
+    });
+
+    return () => {
+      purchaseUpdateSubscription.remove();
+      purchaseErrorSubscription.remove();
+    };
+  }, []);
+
+  const handlePurchase = (productId: string) => {
+    switch (productId) {
+      case 'com.dearmy.piece1':
+        setPieceCount((prevCount) => prevCount + 1);
+        break;
+      case 'com.dearmy.piece5':
+        setPieceCount((prevCount) => prevCount + 5);
+        break;
+      case 'com.dearmy.piece11':
+        setPieceCount((prevCount) => prevCount + 11);
+        break;
+      default:
+        console.warn('Unknown product ID:', productId);
+    }
   };
 
-  const handlePurchase = (amount: number) => {
-    setPieceCount((prevCount) => prevCount + amount);
+  const requestPurchase = async (productId: string) => {
+    try {
+      await RNIap.requestPurchase(productId);
+    } catch (err) {
+      console.error('Purchase request error:', err);
+      Alert.alert('구매 실패', '다시 시도해주세요.');
+    }
+  };
+
+  const requestSubscription = async (subscriptionId: string) => {
+    try {
+      await RNIap.requestSubscription(subscriptionId);
+    } catch (err) {
+      console.error('Subscription request error:', err);
+      Alert.alert('구독 실패', '다시 시도해주세요.');
+    }
   };
 
   return (
@@ -32,45 +108,47 @@ const PieceShop: React.FC = () => {
 
         <View style={styles.itemContainer}>
           <View style={styles.pieceContainer}>
-            <Image source={p5} style={styles.image} />
-            <MyText style={styles.pieceText}>5개</MyText>
+            <P1 style={styles.image} width={38} height={38} />
+            <MyText style={styles.pieceText}>1개</MyText>
           </View>
-          <Pressable style={styles.button} onPress={handleAdReward}>
+          <Pressable
+            style={styles.button}
+            onPress={() => setPieceCount((prevCount) => prevCount + 1)}
+          >
             <MyText style={styles.buttonText}>광고 보기</MyText>
           </Pressable>
         </View>
 
         <MyText style={styles.header}>구매하기</MyText>
 
-        <View style={styles.itemContainer}>
-          <View style={styles.pieceContainer}>
-            <Image source={p100} style={styles.image} />
-            <MyText style={styles.pieceText}>100개</MyText>
+        {products.map((product) => (
+          <View style={styles.itemContainer} key={product.productId}>
+            <View style={styles.pieceContainer}>
+              {/* 제품에 따라 이미지를 매핑합니다 */}
+              <MyText style={styles.pieceText}>{product.title}</MyText>
+            </View>
+            <Pressable style={styles.button} onPress={() => requestPurchase(product.productId)}>
+              <MyText style={styles.buttonText}>{product.localizedPrice}</MyText>
+            </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={() => handlePurchase(100)}>
-            <MyText style={styles.buttonText}>1,000 원</MyText>
-          </Pressable>
-        </View>
+        ))}
 
-        <View style={styles.itemContainer}>
-          <View style={styles.pieceContainer}>
-            <Image source={p200} style={styles.image} />
-            <MyText style={styles.pieceText}>200개</MyText>
-          </View>
-          <Pressable style={styles.button} onPress={() => handlePurchase(220)}>
-            <MyText style={styles.buttonText}>2,000 원</MyText>
-          </Pressable>
-        </View>
+        <MyText style={styles.header}>구독하기</MyText>
 
-        <View style={styles.itemContainer}>
-          <View style={styles.pieceContainer}>
-            <Image source={p500} style={styles.image} />
-            <MyText style={styles.pieceText}>월간 구독</MyText>
+        {subscriptions.map((subscription) => (
+          <View style={styles.itemContainer} key={subscription.productId}>
+            <View style={styles.pieceContainer}>
+              <P4 style={styles.image} />
+              <MyText style={styles.pieceText}>{subscription.title}</MyText>
+            </View>
+            <Pressable
+              style={styles.button}
+              onPress={() => requestSubscription(subscription.productId)}
+            >
+              <MyText style={styles.buttonText}>{subscription.localizedPrice}</MyText>
+            </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={() => handlePurchase(500)}>
-            <MyText style={styles.buttonText}>4,900 원</MyText>
-          </Pressable>
-        </View>
+        ))}
       </View>
     </ScrollView>
   );

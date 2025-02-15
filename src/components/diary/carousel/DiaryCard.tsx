@@ -112,18 +112,9 @@ const DiaryCard = ({
     sendDiaryData();
   };
 
-  const onKeyboardDismiss = () => {
-    setIsEditing(false);
-    Keyboard.dismiss();
-  };
-
   return (
     <>
-      <Pressable
-        style={styles.container}
-        onPress={onKeyboardDismiss}
-        disabled={Platform.OS === 'web'}
-      >
+      <View style={styles.container}>
         <View style={styles.card}>
           {isSuccess ? (
             <DiaryCardHeader
@@ -152,7 +143,7 @@ const DiaryCard = ({
             placeholder={content}
           />
         </View>
-      </Pressable>
+      </View>
       <BasicConfirmModal
         visible={isDeleteModalVisible}
         setIsVisible={setIsDeleteModalVisible}
