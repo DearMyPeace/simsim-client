@@ -33,6 +33,7 @@ const MainNavigator = () => {
             },
           }),
           animationEnabled: false,
+          title: '심심조각',
         }}
       >
         {isLoggedIn ? (

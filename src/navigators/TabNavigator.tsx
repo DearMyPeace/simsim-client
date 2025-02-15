@@ -32,6 +32,7 @@ const TabNavigator = () => {
         },
         headerLeftContainerStyle: { paddingLeft: 16 },
         headerRightContainerStyle: { paddingRight: 16 },
+        title: '심심조각',
       }}
     >
       <Tab.Screen
