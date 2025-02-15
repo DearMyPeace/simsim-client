@@ -12,17 +12,16 @@ const useUserSetup = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
   const setUserInfo = useSetRecoilState(userInfoState);
   const { data, refetch } = useUserInfo(isLoggedIn);
-
   useFocusEffect(
     useCallback(() => {
       const checkToken = async () => {
         const token = await getToken();
         if (token) {
           setIsLoggedIn(true);
+          refetch();
         }
       };
       checkToken();
-      refetch();
     }, [setIsLoggedIn, refetch]),
   );
 
