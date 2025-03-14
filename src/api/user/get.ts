@@ -2,7 +2,7 @@ import instance from '@api/axios';
 import { useQuery } from '@tanstack/react-query';
 
 export const getMyUserInfo = async () => {
-  const response = await instance.get(`/user/me`);
+  const response = await instance.get('/user/me');
   return response.data;
 };
 

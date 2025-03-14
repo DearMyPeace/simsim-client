@@ -11,7 +11,11 @@ const useAxiosInterceptors = () => {
   const reqConfig = async (config: InternalAxiosRequestConfig) => {
     // console.log('Starting Request', JSON.stringify(config, null, 2));
 
-    if (config.url === '/auth/google') {
+    if (
+      config.url === '/auth/google' ||
+      config.url === '/auth/apple' ||
+      config.url === '/auth/kakao'
+    ) {
       return config;
     }
 

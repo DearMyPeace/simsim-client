@@ -9,7 +9,7 @@ import { login, KakaoOAuthWebToken } from '@react-native-seoul/kakao-login';
 
 const KakaoLogin = ({ handleLoginPress }: ILoginProps) => {
   const sendUserToken = useSendUserToken('kakao');
-  const REDIRECT_URI = process.env.REDIRECT_URI;
+  const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI;
   const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
 
   useEffect(() => {
