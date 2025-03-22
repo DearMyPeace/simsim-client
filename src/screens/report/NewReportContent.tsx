@@ -22,10 +22,6 @@ const NewReportContent = ({ selectedDate, rank, onPress }: INewReportContentProp
     console.log(data);
   }, [rank, data]);
 
-  // const onPress = () => {
-  //   setSelectedRank(null);
-  // };
-
   if (isPending) {
     return <ReportLoadingView />;
   }
@@ -36,10 +32,10 @@ const NewReportContent = ({ selectedDate, rank, onPress }: INewReportContentProp
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <MyText size={fontMedium} bold>
-        {data?.keyword}
+        {data.keyword}
       </MyText>
       <ScrollView contentContainerStyle={{ maxHeight: 300 }} style={{ marginTop: 5 }}>
-        <MyText>{data?.content}</MyText>
+        <MyText>{data.comment}</MyText>
       </ScrollView>
     </Pressable>
   );

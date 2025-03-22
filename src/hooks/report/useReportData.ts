@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchMockReportData, fetchMockReportKeyword } from '@api/report/get';
+import { fetchMonthlyReport } from '@api/report/get';
 import { ICalendarModalDate } from '@type/Diary';
+import { IReportData } from '@type/IReport';
 
 export const useReportData = (selectedDate: ICalendarModalDate) => {
   return useQuery({
     queryKey: ['reportList', selectedDate],
     queryFn: () =>
-      fetchMockReportData(`${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`),
+      fetchMonthlyReport(`${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`),
+    placeholderData: [],
   });
 };
 
@@ -20,9 +22,10 @@ export const useReportKeyword = ({
   return useQuery({
     queryKey: ['reportKeyword', selectedDate, rank],
     queryFn: () =>
-      fetchMockReportKeyword({
-        targetDate: `${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`,
-        rank: rank,
-      }),
+      fetchMonthlyReport(`${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`),
+    select: (reportData: IReportData[]) => ({
+      keyword: reportData[rank - 1].keyword,
+      comment: reportData[rank - 1].comment,
+    }),
   });
 };
