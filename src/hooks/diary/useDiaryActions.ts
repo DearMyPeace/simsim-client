@@ -100,6 +100,8 @@ export const useDiaryActions = ({ setIsEditing, setTimeStartWriting }: IUseDiary
       queryClient.invalidateQueries({ queryKey: ['userInfo'] });
       queryClient.invalidateQueries({ queryKey: ['fetchAiLettersMonthSummary'] });
       queryClient.invalidateQueries({ queryKey: ['fetchAiLetterByID'] });
+      const [year, month] = targetDate.split('-').map((date) => Number(date));
+      queryClient.invalidateQueries({ queryKey: ['reportList', { year, month }] });
     },
     onError: (error: any) => {
       setSnackbar(error.response.data.message || '오류가 발생했습니다.');

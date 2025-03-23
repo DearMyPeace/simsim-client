@@ -68,7 +68,7 @@ const DiaryCardHeader = ({
                   disabled={isLetterSent}
                   loading={loadingButton === 'SEND'}
                 >
-                  보내기
+                  편지 받기
                 </TextButton>
               )}
               <TextButton

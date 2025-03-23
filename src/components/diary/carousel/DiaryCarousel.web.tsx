@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DiaryCard from '@components/diary/carousel/DiaryCard';
-import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
+// import DiaryArrowIcons from '@components/diary/carousel/DiaryArrowIcons';
 import { NEW_DIARY } from '@type/Diary';
 import useDiaryHook from '@hooks/diary/diaryHook';
 import { useRecoilValue } from 'recoil';
@@ -18,25 +18,25 @@ const DiaryCarousel = () => {
     setIsEditing(false);
   }, [selectedDate]);
 
-  const onLeftPress = () => {
-    if (activeIndex === 0) return;
-    setActiveIndex(activeIndex - 1);
-  };
+  // const onLeftPress = () => {
+  //   if (activeIndex === 0) return;
+  //   setActiveIndex(activeIndex - 1);
+  // };
 
-  const onRightPress = () => {
-    if (activeIndex === data.length - 1) return;
-    setActiveIndex(activeIndex + 1);
-  };
+  // const onRightPress = () => {
+  //   if (activeIndex === data.length - 1) return;
+  //   setActiveIndex(activeIndex + 1);
+  // };
 
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
-        {isSuccess && !isEditing && activeIndex > 0 && (
+        {/* {isSuccess && !isEditing && activeIndex > 0 && (
           <DiaryArrowIcons direction="left" onPress={onLeftPress} />
         )}
         {isSuccess && !isEditing && activeIndex < data.length - 1 && (
           <DiaryArrowIcons direction="right" onPress={onRightPress} />
-        )}
+        )} */}
         <DiaryCard
           id={data[activeIndex]?.id || NEW_DIARY}
           content={data[activeIndex]?.content || ''}

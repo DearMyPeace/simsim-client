@@ -161,7 +161,7 @@ const DiaryCard = ({
         setIsVisible={setSendModalVisible}
         onConfirm={onConfirmSend}
         content={`이 날의 기록을 모두 보내시겠습니까?\n수정 후 기록을 다시 보내면\n이전 편지는 사라집니다.`}
-        confirmText="보내기"
+        confirmText="편지 받기"
       />
       {sendDiary.isPending && <DiaryLoading />}
     </>
