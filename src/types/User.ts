@@ -1,5 +1,5 @@
 // todo: 필요한 정보만 저장하기
-interface IUserInfo {
+export interface IUserInfo {
   userId: number;
   name: string;
   email: string;

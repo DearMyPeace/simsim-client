@@ -1,3 +1,4 @@
+import { IUserInfo } from '@type/User';
 import { atom } from 'recoil';
 
 export const authTokenState = atom({

@@ -1,12 +1,15 @@
 // useAxiosInterceptors.ts
 import { useEffect } from 'react';
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import instance from '@api/axios';
 import useLogout from '@hooks/login/logoutHook';
 import { getToken, saveToken } from '@components/login/AuthService';
+import { useQueryClient } from '@tanstack/react-query';
+import { reissueToken } from '@api/auth/post';
 
 const useAxiosInterceptors = () => {
   const { handleLogout } = useLogout();
+  const queryClient = useQueryClient();
 
   const reqConfig = async (config: InternalAxiosRequestConfig) => {
     // console.log('Starting Request', JSON.stringify(config, null, 2));
@@ -39,26 +42,26 @@ const useAxiosInterceptors = () => {
       error.config.url === '/auth/google' ||
       error.config.url === '/auth/apple' ||
       error.config.url === '/auth/reissue'
-    )
+    ) {
       return Promise.reject(error);
+    }
     const originalRequest = error.config;
     // auth/google 제외한 요청 401(토큰 만료) 에러 시 토큰 재발급, 403(권한 없음) 에러 시 로그아웃
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       // console.log('토큰 만료');
-      axios
-        .post(`${process.env.BASE_URL}/auth/reissue`, null, {
-          headers: { 'X-Custom-Header': 'foobar', 'Content-Type': 'application/json' },
-          withCredentials: true,
+      queryClient
+        .fetchQuery({
+          queryKey: ['refreshToken'],
+          queryFn: reissueToken,
+          staleTime: 1000 * 30,
         })
-        .then(async (res) => {
-          await saveToken(res.data.accessToken);
-          originalRequest.headers.Authorization = res.data.accessToken;
-          // queryClient retry 옵션 동작
-          // return instance.request(originalRequest);
+        .then(async (data) => {
+          // console.log('토큰 재발급 성공');
+          await saveToken(data.accessToken);
+          originalRequest.headers.Authorization = data.accessToken;
         })
-        .catch((err) => {
-          // console.log('토큰 재발급 실패', err);
+        .catch(() => {
           handleLogout();
         });
     } else if (error.response.status === 403 && !originalRequest._retry) {
