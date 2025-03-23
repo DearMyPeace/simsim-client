@@ -7,6 +7,7 @@ export const useReportData = (selectedDate: ICalendarModalDate) => {
     queryKey: ['reportList', selectedDate],
     queryFn: () =>
       fetchMonthlyReport(`${selectedDate.year}${selectedDate.month.toString().padStart(2, '0')}`),
+    placeholderData: undefined,
   });
 };
 
