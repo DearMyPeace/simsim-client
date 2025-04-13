@@ -80,7 +80,8 @@ function NewChartView({ chartData, onLabelPress }: INewChartViewProps) {
         callbacks: {
           label: function (tooltipItem: any) {
             const label = tooltipItem.label || '';
-            return `${label}: ${tooltipItem.raw * 100}%`;
+            const rate = tooltipItem.raw * 100;
+            return `${label}: ${rate.toFixed(2)}%`;
           },
         },
       },
