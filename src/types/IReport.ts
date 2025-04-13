@@ -28,7 +28,7 @@ export interface DayEmotionData {
 
 export interface IReportContent {
   keyword: string;
-  content: string;
+  comment: string;
 }
 
 export interface IReportData extends IReportContent {
